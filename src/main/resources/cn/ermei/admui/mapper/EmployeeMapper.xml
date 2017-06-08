@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.EmployeeMapper" >
+	
+	<select id="queryAll" resultType="employee">
+		select * from demo_employee
+	</select>
+	
+	<select id="getTotal" resultType="int">
+		select count(1) from demo_employee
+	</select>
+	
+	<select id="getCount" parameterType="employeeVo" resultType="int">
+		select count(1) from demo_employee where 1 = 1
+		<if test="searchValue != null and searchValue !=''">
+			and (name like #{searchValue} or title like #{searchValue} or base like #{searchValue} or age like #{searchValue} or hire_date like binary #{searchValue} or salary like #{searchValue})
+		</if>
+	</select>
+	
+	<select id="query" parameterType="employeeVo" resultType="employee">
+		select * from demo_employee where 1 = 1
+		<if test="searchValue != null and searchValue !=''">
+			and (name like #{searchValue} or title like #{searchValue} or base like #{searchValue} or age like #{searchValue} or hire_date like binary #{searchValue} or salary like #{searchValue})
+		</if>
+		<if test="orderColumn != null and orderColumn !=''">
+			order by ${orderColumn}
+		</if>
+		<if test="orderDir != null and orderDir !=''">
+			${orderDir}
+		</if>
+		<if test="start != null and length != null">
+		limit #{start}, #{length}
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,47 @@
+{
+    "success": true,
+    "page": 1,
+    "maxPage": 5,
+    "msgList": [
+        {
+            "messageId": 1,
+            "title": "角色被修改",
+            "content": "系统管理员修改您的角色为“普通管理员”",
+            "type": "SYSTEM",
+            "sendTime": "2017-01-02 18:40:12",
+            "readFlag": false
+        },
+        {
+            "messageId": 2,
+            "title": "角色被修改",
+            "content": "系统管理员修改您的角色为“普通管理员”",
+            "type": "TASK",
+            "sendTime": "2017-01-01 12:14:12",
+            "readFlag": true
+        },
+        {
+            "messageId": 3,
+            "title": "角色被修改",
+            "content": "系统管理员修改您的角色为“普通管理员”",
+            "type": "SETTING",
+            "sendTime": "2017-01-01 12:14:12",
+            "readFlag": true
+        },
+        {
+            "messageId": 4,
+            "title": "角色被修改",
+            "content": "系统管理员修改您的角色为“普通管理员”",
+            "type": "EVENT",
+            "sendTime": "2017-01-01 12:14:12",
+            "readFlag": false
+        },
+        {
+            "messageId": 5,
+            "title": "角色被修改GWEG",
+            "content": "系统管理员修改您的角色为“普通管理员”",
+            "type": "OTHER",
+            "sendTime": "2017-01-01 12:14:12",
+            "readFlag": false
+        }
+    ]
+}

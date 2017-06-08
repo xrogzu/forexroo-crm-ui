@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="cn.ermei.admui.entity.Blacklist" alias="blacklist"/>
+		<typeAlias type="cn.ermei.admui.entity.Display" alias="display"/>
+		<typeAlias type="cn.ermei.admui.entity.Employee" alias="employee"/>
+		<typeAlias type="cn.ermei.admui.entity.Log" alias="log"/>
+		<typeAlias type="cn.ermei.admui.entity.LogConfig" alias="logConfig"/>
+		<typeAlias type="cn.ermei.admui.entity.Menu" alias="menu"/>
+		<typeAlias type="cn.ermei.admui.entity.MenuRole" alias="menuRole"/>
+		<typeAlias type="cn.ermei.admui.entity.Message" alias="message"/>
+		<typeAlias type="cn.ermei.admui.entity.Role" alias="role"/>
+		<typeAlias type="cn.ermei.admui.entity.User" alias="user"/>
+		<typeAlias type="cn.ermei.admui.entity.UserRole" alias="userRole"/>
+		
+		<typeAlias type="cn.ermei.admui.vo.LogVo" alias="logVo"/>
+		<typeAlias type="cn.ermei.admui.vo.EmployeeVo" alias="employeeVo"/>
+		<typeAlias type="cn.ermei.admui.vo.MessageVo" alias="messageVo"/>
+	</typeAliases>
+	
+</configuration>

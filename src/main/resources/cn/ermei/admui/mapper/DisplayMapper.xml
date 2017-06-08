@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.DisplayMapper" >
+	
+	<!-- 保存 -->
+	<insert id="save" parameterType="display" useGeneratedKeys="true" keyProperty="displayId">
+		insert into sys_setting_display (navigation_color, across_flag, menu_theme, menu_display, menu_txt_icon, theme_color, tab_flag, user_id, update_time)
+			values (#{navigationColor}, #{acrossFlag}, #{menuTheme}, #{menuDisplay}, #{menuTxtIcon}, #{themeColor}, #{tabFlag}, #{user.userId}, now())
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="display">
+		update sys_setting_display set update_time = now(),
+			navigation_color = #{navigationColor},
+			across_flag = #{acrossFlag},
+			menu_theme = #{menuTheme},
+			menu_display = #{menuDisplay},
+			menu_txt_icon = #{menuTxtIcon},
+			theme_color = #{themeColor},
+			tab_flag = #{tabFlag}
+		where user_id = #{user.userId}
+	</update>
+	
+	
+	<!-- 重置全局设置 -->
+	<update id="updateGlobal" parameterType="display">
+		update sys_setting_display set update_time = now(),
+			navigation_color = #{navigationColor},
+			across_flag = #{acrossFlag},
+			menu_theme = #{menuTheme},
+			menu_display = #{menuDisplay},
+			menu_txt_icon = #{menuTxtIcon},
+			theme_color = #{themeColor},
+			tab_flag = #{tabFlag}
+		where global_flag = 1
+	</update>
+	
+	<!-- 根据用户删除 -->
+	<delete id="delete" parameterType="long">
+		delete from sys_setting_display where user_id = #{userId}
+	</delete>
+	
+	<!-- 查询默认 -->
+	<select id="queryDefault" resultType="display">
+		select * from sys_setting_display where default_flag = 1
+	</select>
+	
+	<!-- 查询全局 -->
+	<select id="queryGlobal" resultType="display">
+		select * from sys_setting_display where global_flag = 1
+	</select>
+	
+	<!-- 根据用户查询 -->
+	<select id="queryByUser" parameterType="long" resultType="display">
+		select * from sys_setting_display where user_id = #{userId}
+	</select>
+	
+</mapper>

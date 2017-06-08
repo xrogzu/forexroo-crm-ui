@@ -1,0 +1,99 @@
+[
+	{
+		"id": 1,
+		"text": "系统管理",
+		"icon": "wb-settings",
+		"layer": "x",
+		"children": [
+			{
+				"id": 2,
+				"text": "系统信息",
+				"icon": null,
+				"children": [
+					{
+						"id": 4,
+						"text": "菜单管理",
+						"icon": "fa-bars",
+						"url": "/system/children"
+					},
+					{
+						"id": 5,
+						"text": "用户管理",
+						"icon": "fa-street-view",
+						"url": "/system/user"
+					},
+					{
+						"id": 6,
+						"text": "日志信息",
+						"icon": "fa-file-text-o",
+						"url": "/system/log"
+					},
+					{
+						"id": 7,
+						"text": "黑名单",
+						"icon": "fa-shield",
+						"url": "/system/blacklist"
+					},
+					{
+						"id": 8,
+						"text": "系统设置",
+						"icon": "fa-gear",
+						"children": [
+							{
+								"id": 9,
+								"text": "基本设置",
+								"icon": null,
+								"url": "/system/settings/index"
+							},
+							{
+								"id": 10,
+								"text": "显示设置",
+								"icon": null,
+								"url": "/system/settings/display"
+							},
+							{
+								"id": 11,
+								"text": "日志设置",
+								"icon": null,
+								"url": "/system/settings/log"
+							}
+						]
+					}
+				]
+			},
+			{
+				"id": 3,
+				"text": "我的账户",
+				"icon": null,
+				"children": [
+					{
+						"id": 12,
+						"text": "账户信息",
+						"icon": "fa-key",
+						"url": "/system/account"
+					}
+				]
+			}
+		]
+	},
+	{
+		"id": 13,
+		"text": "UI示例",
+		"icon": "wb-layout",
+		"layer": "y",
+		"children": [
+			{
+				"id": 2,
+				"text": "系统信息",
+				"icon": null
+			}
+		]
+	},
+	{
+		"id": 14,
+		"text": "表格示例",
+		"icon": "wb-table",
+		"layer": "z",
+		"children": null
+	}
+]

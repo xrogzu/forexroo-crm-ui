@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.MenuMapper" >
+	
+	<!-- 根据用户查询授权菜单 -->
+	<select id="queryByUser" parameterType="user" resultType="menu">
+		select distinct m.* from sys_menu m 
+			join sys_menu_role mr on m.menu_id = mr.menu_id
+			join sys_user_role ur on ur.role_id = mr.role_id
+		where ur.user_id = #{userId}
+		order by m.layer
+	</select>
+	
+	<!-- 根据角色查询授权菜单 -->
+	<select id="queryByRole" parameterType="role" resultType="menu">
+		select m.*, !isnull(mr.menu_id) permission from sys_menu m 
+			left join (select menu_id from sys_menu_role where role_id = #{roleId}) mr
+		on m.menu_id = mr.menu_id
+		order by m.layer
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="queryAll" resultType="menu">
+		select * from sys_menu order by layer
+	</select>
+	
+	<!-- 保存 -->
+	<insert id="save" parameterType="menu" useGeneratedKeys="true" keyProperty="menuId">
+		insert into sys_menu (name, parent_id, layer, icon, url, create_user, create_time)
+			values (#{name}, #{parentId}, #{layer}, #{icon}, #{url}, #{createUser.userId}, now())
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="menu">
+		update sys_menu set update_user = #{createUser.userId}, update_time = now()
+		<if test="name!=null and name!=''">
+		    ,name = #{name}  
+		</if>
+		<if test="parentId!=null">
+		    ,parent_id = #{parentId}  
+		</if>
+		<if test="layer!=null and layer!=''">
+		    ,layer = #{layer}  
+		</if>
+		    ,icon = #{icon}  
+		    ,url = #{url}  
+		where menu_id = #{menuId}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="long">
+		delete from sys_menu where menu_id = #{menuId}
+	</delete>
+	
+	<!-- 保存菜单授权 -->
+	<insert id="saveMenuRole" parameterType="map">
+		insert into sys_menu_role (menu_id, role_id) values (#{menuId}, #{roleId})
+	</insert>
+	
+	<!-- 删除菜单授权 -->
+	<delete id="deleteMenuRole" parameterType="menu">
+		delete from sys_menu_role where menu_id = #{menuId}
+	</delete>
+	
+	<!-- 生成顶部菜单的layer -->
+	<select id="generateFirstLayer" resultType="string">
+		select max(substr(layer, 1 , 2)) + 1 from sys_menu
+	</select>
+	
+	<!-- 根据menu_id删除菜单及其所有子菜单 -->
+	<delete id="deleteMenu" parameterType="menu">
+		delete from sys_menu where menu_id in (
+			select menu_id from (
+				select menu_id from sys_menu where layer like
+				(select concat(layer, '%') from sys_menu where menu_id = #{menuId})
+			) a
+		)
+	</delete>
+	
+	<!-- 查询所有顶部菜单 -->
+	<select id="queryTop" resultType="menu">
+		select * from sys_menu where parent_id = 0
+	</select>
+	
+	<!-- 根据顶部菜单查询它及其子菜单id集合 -->
+	<select id="queryTopChildrenIds" parameterType="menu" resultType="long">
+		select menu_id from sys_menu where layer like #{originalOrderNo}
+	</select>
+	
+	<!-- 更新顶部菜单及其子菜单的layer -->
+	<update id="updateTopOrder" parameterType="menu">
+		update sys_menu set layer = concat(#{orderNo}, substr(layer, 3, length(layer))) where menu_id in
+		<foreach collection="ids" item="menuId" index="index" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+	</update>
+	
+</mapper>

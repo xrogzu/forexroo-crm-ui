@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.UserMapper" >
+	
+	<resultMap type="user" id="userResult">
+		<id property="userId" column="user_id"/>
+		<collection property="roles" ofType="role" column="user_id" select="cn.ermei.admui.mapper.RoleMapper.queryByUserId" />
+	</resultMap>
+	
+	<!-- 根据login_name查询 -->
+	<select id="findByLoginName" parameterType="string" resultMap="userResult">
+		select * from sys_user where login_name = #{loginName} and state != 'DELETED'
+	</select>
+	
+	<!-- 根据user_id查询 -->
+	<select id="find" parameterType="long" resultType="user">
+		select * from sys_user where user_id = #{userId} and state != 'DELETED'
+	</select>
+	
+	<!-- 根据user_id更新登录信息 -->
+	<update id="updateLoginInfo" parameterType="user">
+		update sys_user set login_count = login_count + 1,
+			last_login_time = now(),
+			last_login_ip = #{lastLoginIp}
+		where user_id = #{userId}
+	</update>
+	
+	<!-- 查询用户总数 -->
+	<select id="getTotal" resultType="int">
+		select count(*) from sys_user where state != 'DELETED'
+	</select>
+	
+	<!-- 查询全部用户 -->
+	<select id="queryAll" resultType="user">
+		select * from sys_user where state != 'DELETED'
+	</select>
+	
+	<!-- 保存用户 -->
+	<insert id="save" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user (login_name, password, state, create_user, create_time)
+			values (#{loginName}, #{password}, #{state}, #{createUser.userId}, now())
+	</insert>
+	
+	<!-- 更新用户 -->
+	<update id="update" parameterType="user">
+		update sys_user set update_user = #{updateUser.userId}
+			,update_time = now()
+		<if test="loginName!=null and loginName!=''">
+			,login_name = #{loginName}
+		</if>
+		<if test="password!=null and password!=''">
+			,password = #{password}
+		</if>
+		<if test="state!=null and state!=''">
+			,state = #{state}
+		</if>
+		where user_id = #{userId}
+	</update>
+	
+	<!-- 保存用户角色关联信息 -->
+	<insert id="saveUserRole" parameterType="userRole">
+		insert into sys_user_role (user_id, role_id) values (#{userId}, #{roleId})
+	</insert>
+	
+	<!-- 根据user_id删除用户角色关联信息 -->
+	<delete id="deleteUserRole" parameterType="long">
+		delete from sys_user_role where user_id = #{userId}
+	</delete>
+	
+	<!-- 逻辑删除用户 -->
+	<update id="delete" parameterType="long">
+		update sys_user set state = 'DELETED' where user_id = #{userId}
+	</update>
+	
+	<!-- 禁用用户 -->
+	<update id="forbid" parameterType="long">
+		update sys_user set state = 'FORBIDDEN' where user_id = #{userId}
+	</update>
+	
+	<!-- 根据user_id查询角色授权 -->
+	<select id="queryRole" parameterType="long" resultType="role">
+		select r.*, !isnull(ur.role_id) permission from sys_role r
+			left join (select role_id from sys_user_role where user_id = #{userId}) ur
+		on r.role_id = ur.role_id
+	</select>
+	
+</mapper>

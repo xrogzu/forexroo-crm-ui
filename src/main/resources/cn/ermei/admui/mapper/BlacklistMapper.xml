@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.BlacklistMapper" >
+	
+	<!-- 查询全部 -->
+	<select id="queryAll" resultType="blacklist">
+		select * from sys_blacklist
+	</select>
+	
+	<!-- 保存 -->
+	<insert id="save" parameterType="blacklist" useGeneratedKeys="true" keyProperty="blId">
+		insert into sys_blacklist (ip, comment, create_user, create_time)
+			values (#{ip}, #{comment}, #{createUser.userId}, now())
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="long">
+		delete from sys_blacklist where bl_id = #{blId}
+	</delete>
+	
+	<!-- 根据ip查询 -->
+	<select id="queryByIp" parameterType="string" resultType="blacklist">
+		select * from sys_blacklist where ip = #{ip}
+	</select>
+	
+</mapper>

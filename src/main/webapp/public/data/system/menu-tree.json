@@ -1,0 +1,44 @@
+[
+	{
+		"id": 1,
+		"text": "Root node",
+		"state": {
+			"opened": true
+		},
+		"children": [
+			{
+				"id": 232,
+				"icon": "fa-bars",
+				"state": {
+					"selected": true
+				},
+				"text": "Child node 1"
+			},
+			{
+				"id": 2,
+				"icon": "fa-bars",
+				"text": "Child node 1",
+				"children": [
+					{
+						"id": 21,
+						"icon": "fa-bars",
+						"text": "Child node 1"
+					},
+					{
+						"id": 42,
+						"icon": "fa-bars",
+						"text": "Child node 1"
+					}
+				]
+			},
+			{
+				"id": 3,
+				"text": "Child node 2"
+			},
+			{
+				"id": 4,
+				"text": "Child node 3"
+			}
+		]
+	}
+]

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ermei.admui.mapper.LogMapper" >
+	
+	<resultMap type="log" id="logResult">
+		<id property="logId" column="log_id"/>
+		<association property="user" column="user_id" select="cn.ermei.admui.mapper.UserMapper.find" />
+	</resultMap>
+	
+	<resultMap type="logConfig" id="logConfigResult">
+		<id property="configId" column="config_id"/>
+		<association property="createUser" column="create_user" select="cn.ermei.admui.mapper.UserMapper.find" />
+	</resultMap>
+	
+	<!-- 保存日志配置 -->
+	<insert id="saveConfig" parameterType="logConfig" useGeneratedKeys="true" keyProperty="configId">
+		insert into sys_log_config (url, type, create_time, create_user)
+			values (#{url}, #{type}, now(), #{createUser.userId})
+	</insert>
+	
+	<!-- 删除日志配置 -->
+	<delete id="deleteConfig" parameterType="long">
+		delete from sys_log_config where config_id = #{configId}
+	</delete> 
+	
+	<!-- 更新日志配置 -->
+	<update id="updateConfig" parameterType="logConfig">
+		update sys_log_config set url = #{url}, type = #{type} where config_id = #{configId}
+	</update>
+	
+	<!-- 查询全部日志配置 -->
+	<select id="queryAllConfig" resultMap="logConfigResult">
+		select * from sys_log_config
+	</select>
+	
+	<!-- 保存日志-->
+	<insert id="save" parameterType="log">
+		insert into sys_log (url, type, params, user_id, log_time, user_ip)
+			values (#{url}, #{type}, #{params}, #{user.userId}, now(), #{userIp})
+	</insert>
+	
+	<!-- 根据参数查询日志 -->
+	<select id="query" parameterType="logVo" resultMap="logResult">
+		select l.* from sys_log l left join sys_user u on l.user_id = u.user_id where 1 = 1
+		<if test="url != null and url != ''">
+			and url = #{url}
+		</if>
+		<if test="user != null and user.userId != null">
+			and l.user_id = #{user.userId}
+		</if> 
+		<if test="startDate != null">
+			<![CDATA[and log_time >= #{startDate}]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[and log_time <= #{endDate}]]>
+		</if>
+		<if test="columnName != null and columnName !='' and dir != null and dir != ''">
+			order by ${columnName} ${dir}
+		</if>
+		<if test="start != null and limit != null">
+		limit #{start}, #{limit}
+		</if>
+	</select>
+	
+	<!-- 根据参数查询日志条数 -->
+	<select id="getCount" parameterType="logVo" resultType="int">
+		select count(1) from sys_log where 1 = 1
+		<if test="url != null and url != ''">
+			and url = #{url}
+		</if>
+		<if test="user != null and user.userId != null">
+			and user_id = #{user.userId}
+		</if> 
+		<if test="startDate != null">
+			<![CDATA[and log_time >= #{startDate}]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[and log_time <= #{endDate}]]>
+		</if>
+	</select>
+	
+</mapper>
