@@ -6,8 +6,8 @@
 # https://github.com/sequelpro/sequelpro
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
-# Database: forexroo-crm-ui
-# Generation Time: 2017-06-13 05:59:44 +0000
+# Database: forexroo
+# Generation Time: 2017-06-13 07:03:24 +0000
 # ************************************************************
 
 
@@ -100,6 +100,195 @@ VALUES
 	(57,'李岸白','客户服务','南京',27,'2011-01-25',112000);
 
 /*!40000 ALTER TABLE `demo_employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table deposit_and_withdraw
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `deposit_and_withdraw`;
+
+CREATE TABLE `deposit_and_withdraw` (
+  `raw_request` text COMMENT '原始请求',
+  `mt4_raw_request` text COMMENT 'MT4-原始请求',
+  `mt4_raw_response` text COMMENT 'MT4-原始响应',
+  `mt4_request_time` bigint(20) DEFAULT NULL COMMENT 'MT4-发送请求时间戳',
+  `mt4_response_time` bigint(20) DEFAULT NULL COMMENT 'MT4-收到响应时间戳',
+  `type` int(11) DEFAULT NULL COMMENT '类型',
+  `order_id` varchar(255) DEFAULT NULL COMMENT '订单ID',
+  `amount` varchar(255) DEFAULT NULL COMMENT '金额',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `deposit_and_withdraw` WRITE;
+/*!40000 ALTER TABLE `deposit_and_withdraw` DISABLE KEYS */;
+
+INSERT INTO `deposit_and_withdraw` (`raw_request`, `mt4_raw_request`, `mt4_raw_response`, `mt4_request_time`, `mt4_response_time`, `type`, `order_id`, `amount`, `comment`, `user_id`, `time`, `id`)
+VALUES
+	('{\"amount\":\"01\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497263032411,\"sendToEngineTimestamp\":0,\"token\":\"88ab9909-bbca-4325-bd15-ca174b1aa88f\",\"uuid\":\"662b81fe-9003-4114-87ed-3a796b61c49d\"}','{\"amount\":1.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626349,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"933ea9f6-bbb3-4ce1-9b66-5d177a72ca30\"}',1497263032421,1497263032536,1,'46626349','1.0',NULL,1,1497263032536,1),
+	('{\"amount\":\"02\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497263049306,\"sendToEngineTimestamp\":0,\"token\":\"88ab9909-bbca-4325-bd15-ca174b1aa88f\",\"uuid\":\"7f69773c-c177-4e89-966d-d866b060f470\"}','{\"amount\":2.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626350,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"efe2756a-3fc0-49e4-b2da-494e7d9f5b1c\"}',1497263049314,1497263049431,1,'46626350','2.0',NULL,1,1497263049431,2),
+	('{\"amount\":\"0002\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497263732556,\"sendToEngineTimestamp\":0,\"token\":\"88ab9909-bbca-4325-bd15-ca174b1aa88f\",\"uuid\":\"b643844c-2cd3-42ae-8d12-667455df3ae6\"}','{\"amount\":2.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626351,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"5f309c72-49ff-46b0-8114-d742156293ad\"}',1497263732565,1497263732675,1,'46626351','2.0',NULL,1,1497263732675,3),
+	('{\"amount\":\"0000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497320881261,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"5f50d457-a2c3-4389-8a32-eeb0be42613e\"}','{\"amount\":0.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626352,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"7356af13-dd76-4c6f-8b2d-f7f24a8edeb1\"}',1497320881269,1497320893880,1,'46626352','0.0',NULL,1,1497320893880,4),
+	('{\"amount\":\"0000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497320888947,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"c4a4eb18-6194-413e-b5e7-31cca88ac514\"}','{\"amount\":0.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626353,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"7735e824-ae7c-4a83-a226-98629511b30f\"}',1497320888955,1497320941749,1,'46626353','0.0',NULL,1,1497320941749,5),
+	('{\"amount\":\"889\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497320907498,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"26fdea06-d092-4e1c-9708-d711a7e83f67\"}','{\"amount\":889.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626354,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"fba11412-5650-4cf8-b530-65570e63a741\"}',1497320907507,1497320943416,1,'46626354','889.0',NULL,1,1497320943416,6),
+	('{\"amount\":\"889\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497320926916,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"60dbb93a-b437-46e3-9e79-c11a28bb8798\"}','{\"amount\":889.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626355,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"04e718b6-934c-45f3-9687-134bd9f84585\"}',1497320926926,1497320945717,1,'46626355','889.0',NULL,1,1497320945717,7),
+	('{\"amount\":\"0000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497321119522,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"2ff890cd-3170-467e-9466-f23a5b1cb8ad\"}','{\"amount\":0.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626356,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"da6aeacc-34d2-4082-9674-1e0d1a22c9ae\"}',1497321119536,1497321120798,1,'46626356','0.0',NULL,1,1497321120798,8),
+	('{\"amount\":\"000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497321272029,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"4d805060-f59c-4b6d-8ba9-ed7f9b75244b\"}','{\"amount\":0.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626357,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"1e092b3b-eff8-449e-aff6-94812204e900\"}',1497321272040,1497321283840,1,'46626357','0.0',NULL,1,1497321283840,9),
+	('{\"amount\":\"500.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497321680341,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"3a5ea91b-72d2-4f15-9c04-42077dad2d38\"}','{\"amount\":500.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626358,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"156d899a-9993-460c-a1d9-fab8e9a050cf\"}',1497321680350,1497321686569,1,'46626358','500.0',NULL,1,1497321686569,10),
+	('{\"amount\":\"8000\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497321706275,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"0ba06eb5-bb32-47e2-bad4-0fe747fb7f42\"}','{\"amount\":8000.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626359,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"7762f819-a9e2-4b1f-8612-05efc95a5b20\"}',1497321706283,1497321715940,1,'46626359','8000.0',NULL,1,1497321715940,11),
+	('{\"amount\":\"2000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497323277931,\"sendToEngineTimestamp\":0,\"token\":\"0164b441-c220-421f-bc6a-53b81765bf93\",\"uuid\":\"c5633fc8-3e25-4f2c-87bc-c79e65567c29\"}','{\"amount\":2000.0,\"operationtype\":1,\"login\":996000494}','{\"orderid\":46626360,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000494,\"reqid\":\"3942733b-6a4c-40e1-9986-ac675c3376c7\"}',1497323277941,1497323278344,1,'46626360','2000.0',NULL,1,1497323278344,12),
+	('{\"amount\":\"500\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497323415898,\"sendToEngineTimestamp\":0,\"token\":\"19ee4e7c-f99a-47bb-864f-0a8a6c5f47bd\",\"uuid\":\"4bc497ca-087c-4882-8e5e-30006caecf09\"}','{\"amount\":500.0,\"operationtype\":1,\"login\":996000495}','{\"orderid\":46626361,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":996000495,\"reqid\":\"b17bbde5-e825-4332-b215-37b38bce43f8\"}',1497323415906,1497323417372,1,'46626361','500.0',NULL,2,1497323417372,13),
+	('{\"amount\":\"100\",\"apiName\":\"Withdraw_SubmitAmount_Api\",\"executeByEngineTimestamp\":1497327811392,\"sendToEngineTimestamp\":0,\"token\":\"8e0708cc-1e66-4f65-800f-39e01518ea8d\",\"uuid\":\"d72b4794-978d-4c5a-bda2-220cdeed7cbb\"}','{\"amount\":100.0,\"operationtype\":2,\"login\":996000495}','{\"orderid\":46626376,\"comment\":\"\",\"operationtype\":2,\"error\":\"\",\"login\":996000495,\"reqid\":\"25976777-b0ab-4427-85b9-52067060f97f\"}',1497327811400,1497327813137,2,'46626376','100.0',NULL,2,1497327813137,14);
+
+/*!40000 ALTER TABLE `deposit_and_withdraw` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table feedback
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `feedback`;
+
+CREATE TABLE `feedback` (
+  `content` text COMMENT '意见反馈详细描述',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `picture_urls` varchar(255) DEFAULT NULL COMMENT '截图照片URL',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table master_trader_rankings_history
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `master_trader_rankings_history`;
+
+CREATE TABLE `master_trader_rankings_history` (
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  `total_profit` varchar(255) DEFAULT NULL COMMENT '总盈利',
+  `single_profit` varchar(255) DEFAULT NULL COMMENT '均单盈利',
+  `success_rate` varchar(255) DEFAULT NULL COMMENT '成功率',
+  `time` varchar(255) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_bank_card
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_bank_card`;
+
+CREATE TABLE `my_bank_card` (
+  `bank_card_number` varchar(255) DEFAULT NULL COMMENT '银行卡号',
+  `reserved_phone` varchar(255) DEFAULT NULL COMMENT '预留手机号',
+  `bank_image` varchar(255) DEFAULT NULL COMMENT '银行LOGO',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `card_name` varchar(255) DEFAULT NULL COMMENT '卡名称',
+  `card_type` varchar(255) DEFAULT NULL COMMENT '卡类型',
+  `service_phone` varchar(255) DEFAULT NULL COMMENT '服务热线',
+  `apistore_raw_response` text COMMENT '寻程-银行卡四要素认证v3-原始响应',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_master_trader
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_master_trader`;
+
+CREATE TABLE `my_master_trader` (
+  `master_trader_user_id` bigint(20) DEFAULT NULL COMMENT '大师ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_symbol
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_symbol`;
+
+CREATE TABLE `my_symbol` (
+  `symbol` varchar(255) DEFAULT NULL COMMENT '品种',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `my_symbol` WRITE;
+/*!40000 ALTER TABLE `my_symbol` DISABLE KEYS */;
+
+INSERT INTO `my_symbol` (`symbol`, `user_id`, `time`, `id`)
+VALUES
+	('EURUSD',1,1497261106944,1),
+	('USDJPY',1,1497261106944,2),
+	('AUDUSD',1,1497261106944,3),
+	('XAUUSD',1,1497261106944,4),
+	('UKOUSD',1,1497261106944,5),
+	('EURUSD',2,1497261229159,6),
+	('USDJPY',2,1497261229159,7),
+	('AUDUSD',2,1497261229159,8),
+	('XAUUSD',2,1497261229159,9),
+	('UKOUSD',2,1497261229159,10),
+	('100GBP',1,1497262209183,11);
+
+/*!40000 ALTER TABLE `my_symbol` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table schema_version
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `schema_version`;
+
+CREATE TABLE `schema_version` (
+  `installed_rank` int(11) NOT NULL,
+  `version` varchar(50) DEFAULT NULL,
+  `description` varchar(200) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `script` varchar(1000) NOT NULL,
+  `checksum` int(11) DEFAULT NULL,
+  `installed_by` varchar(100) NOT NULL,
+  `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `execution_time` int(11) NOT NULL,
+  `success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`installed_rank`),
+  KEY `schema_version_s_idx` (`success`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `schema_version` WRITE;
+/*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
+
+INSERT INTO `schema_version` (`installed_rank`, `version`, `description`, `type`, `script`, `checksum`, `installed_by`, `installed_on`, `execution_time`, `success`)
+VALUES
+	(1,'1.0','CreateTableUser','JDBC','com.github.xuzw.forexroo.database.migration.V1_0__CreateTableUser',NULL,'forexroo','2017-06-12 17:37:35',111,1),
+	(2,'1.1','CreateTableMasterTraderRankingsHistory','JDBC','com.github.xuzw.forexroo.database.migration.V1_1__CreateTableMasterTraderRankingsHistory',NULL,'forexroo','2017-06-12 17:37:36',96,1),
+	(3,'1.2','CreateTableFeedback','JDBC','com.github.xuzw.forexroo.database.migration.V1_2__CreateTableFeedback',NULL,'forexroo','2017-06-12 17:37:36',95,1),
+	(4,'1.3','CreateTableMySymbol','JDBC','com.github.xuzw.forexroo.database.migration.V1_3__CreateTableMySymbol',NULL,'forexroo','2017-06-12 17:37:37',94,1),
+	(5,'1.4','CreateTableMyMasterTrader','JDBC','com.github.xuzw.forexroo.database.migration.V1_4__CreateTableMyMasterTrader',NULL,'forexroo','2017-06-12 17:37:38',92,1),
+	(6,'1.5','CreateTableMyBankCard','JDBC','com.github.xuzw.forexroo.database.migration.V1_5__CreateTableMyBankCard',NULL,'forexroo','2017-06-12 17:37:39',94,1),
+	(7,'1.6','CreateTableDepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_6__CreateTableDepositAndWithdraw',NULL,'forexroo','2017-06-12 17:37:39',100,1);
+
+/*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -230,7 +419,8 @@ VALUES
 	(302,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=mqbv remember=on ]',1,'2017-04-25 01:16:13','127.0.0.1'),
 	(303,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=vcyr ]',1,'2017-06-13 13:53:00','0:0:0:0:0:0:0:1'),
 	(304,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=7cdg ]',1,'2017-06-13 13:57:10','0:0:0:0:0:0:0:1'),
-	(305,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=7xbw ]',1,'2017-06-13 13:59:09','0:0:0:0:0:0:0:1');
+	(305,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=7xbw ]',1,'2017-06-13 13:59:09','0:0:0:0:0:0:0:1'),
+	(306,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ag6w ]',1,'2017-06-13 14:59:03','0:0:0:0:0:0:0:1');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -473,7 +663,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',686,'NORMAL','2017-06-13 13:59:05','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',687,'NORMAL','2017-06-13 14:59:02','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -503,6 +693,51 @@ VALUES
 	(64,1,1);
 
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `phone` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `password` varchar(255) DEFAULT NULL COMMENT '登录密码',
+  `token` varchar(255) DEFAULT NULL COMMENT '用户唯一标识码',
+  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  `sex` varchar(255) DEFAULT NULL COMMENT '性别',
+  `country` varchar(255) DEFAULT NULL COMMENT '国家',
+  `open_account_realname` varchar(255) DEFAULT NULL COMMENT '开户-姓名',
+  `open_account_identity_card_number` varchar(255) DEFAULT NULL COMMENT '开户-身份证号',
+  `open_account_picture_url` varchar(255) DEFAULT NULL COMMENT '开户-手持身份证正面照URL',
+  `open_account_agreements` varchar(255) DEFAULT NULL COMMENT '开户-签订协议',
+  `open_account_sign_url` varchar(255) DEFAULT NULL COMMENT '开户-签名图片URL',
+  `open_account_status` int(11) DEFAULT NULL COMMENT '开户-状态',
+  `broker_request_agreements` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签订协议',
+  `broker_request_sign_url` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签名图片URL',
+  `broker_request_status` int(11) DEFAULT NULL COMMENT '经纪人申请-状态',
+  `master_trader_total_profit` varchar(255) DEFAULT NULL COMMENT '交易大师-总盈利',
+  `master_trader_single_profit` varchar(255) DEFAULT NULL COMMENT '交易大师-均单盈利',
+  `master_trader_success_rate` varchar(255) DEFAULT NULL COMMENT '交易大师-成功率',
+  `mt4_real_account` varchar(255) DEFAULT NULL COMMENT 'MT4-真实账号',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone` (`phone`),
+  UNIQUE KEY `token` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`phone`, `password`, `token`, `register_time`, `avatar`, `nickname`, `sex`, `country`, `open_account_realname`, `open_account_identity_card_number`, `open_account_picture_url`, `open_account_agreements`, `open_account_sign_url`, `open_account_status`, `broker_request_agreements`, `broker_request_sign_url`, `broker_request_status`, `master_trader_total_profit`, `master_trader_single_profit`, `master_trader_success_rate`, `mt4_real_account`, `id`)
+VALUES
+	('13550311857',NULL,'de1014b3-0bdb-4e0c-a6e2-651efccdc226',1497261106889,'2fe050a9a2a63419dce2d390e90f9530','特朗普TTis','0','阿富汗','特朗普','635848809635845866','2999b6958fa270118e1df73ca92f0ab6','[\"1\",\"2\",\"3\",\"4\"]','6fa1c6a93e1919cf05db1fe87f154e34',2,NULL,NULL,NULL,NULL,NULL,NULL,'996000494',1),
+	('13641122206',NULL,'e471577f-6f03-45f4-8632-dd12fcb49479',1497261229124,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'996000495',2);
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
