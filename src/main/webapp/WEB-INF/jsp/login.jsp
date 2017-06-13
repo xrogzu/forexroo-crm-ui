@@ -22,23 +22,7 @@
     <div class="page-content height-full">
         <div class="page-brand-info vertical-align animation-slide-left hidden-xs">
             <div class="page-brand vertical-align-middle">
-                <div class="brand">
-                    <img class="brand-img" src="${ctx}/public/images/logo-white.svg" height="50" alt="Admui">
-                </div>
-                <h3>Admui 通用管理系统快速开发框架</h3>
-                <ul class="list-icons">
-                    <li>
-                        <i class="wb-check" aria-hidden="true"></i> Admui 是一个基于最新 Web
-                        技术的企业级通用管理系统快速开发框架，可以帮助企业极大的提高工作效率，节省开发成本，提升品牌形象。
-                    </li>
-                    <li><i class="wb-check" aria-hidden="true"></i> 您可以 Admui 为基础，快速开发各种MIS系统，如CMS、OA、CRM、ERP、POS等。</li>
-                    <li><i class="wb-check" aria-hidden="true"></i> Admui 紧贴业务特性，涵盖了大量的常用组件和基础功能，最大程度上帮助企业节省时间成本和费用开支。
-                    </li>
-                </ul>
-                <div>
-                    <a href="http://www.admui.com/?form=sources" class="btn btn-primary btn-outline"><i class="icon wb-home"></i> 返回官网</a>
-                    <a href="" class="btn btn-primary btn-outline margin-left-5">联系客服</a>
-                </div>
+                <h3>Forexroo CRM</h3>
             </div>
         </div>
         <div class="page-login-main animation-fade">
@@ -52,8 +36,8 @@
                     <div class="brand visible-xs text-center">
                         <img class="brand-img" src="${ctx}/public/images/logo.svg" height="50" alt="Admui">
                     </div>
-                    <h3 class="hidden-xs">登录 Admui</h3>
-                    <p class="hidden-xs">Admui 在线演示系统</p>
+                    <h3 class="hidden-xs">登录</h3>
+                    <p class="hidden-xs">CRM后台管理系统</p>
                     <form action="${ctx}/system/loginValidate" class="login-form" method="post" id="loginForm">
                         <div class="form-group">
                             <label class="sr-only" for="username">用户名</label>
@@ -91,9 +75,7 @@
                 </div>
             </div>
             <footer class="page-copyright">
-                <p>&copy; 2016
-                    <a href="http://www.admui.com/?form=sources" target="_blank">Admui</a>
-                </p>
+                <p>&copy; 2017</p>
             </footer>
         </div>
     </div>
