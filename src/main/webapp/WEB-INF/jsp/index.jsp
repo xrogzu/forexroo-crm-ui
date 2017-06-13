@@ -43,8 +43,8 @@
             <i class="icon wb-more-horizontal" aria-hidden="true"></i>
         </button>
         <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
-            <img class="navbar-brand-logo visible-lg visible-xs navbar-logo" src="${ctx}/public/images/logo-white.svg" title="Admui">
-            <img class="navbar-brand-logo hidden-xs hidden-lg navbar-logo-mini" src="${ctx}/public/images/logo-white-min.svg" title="Admui">
+            <img class="navbar-brand-logo visible-lg visible-xs navbar-logo" src="${ctx}/public/images/forexroo-crm-ui-logo.svg" title="Forexroo CRM">
+            <img class="navbar-brand-logo hidden-xs hidden-lg navbar-logo-mini" src="${ctx}/public/images/forexroo-crm-ui-logo-min.svg" title="Forexroo CRM">
         </div>
     </div>
     <div class="navbar-container container-fluid">
@@ -266,9 +266,7 @@
 </main>
 
 <footer class="site-footer">
-    <div class="site-footer-legal">&copy; 2016
-        <a href="http://www.admui.com/?form=sources" target="_blank">Admui</a>
-    </div>
+    <div class="site-footer-legal">&copy; 2017</div>
     <div class="site-footer-right">
         当前版本：v1.0.0
         <a class="margin-left-5" data-toggle="tooltip" title="升级" href="#" target="_blank">
