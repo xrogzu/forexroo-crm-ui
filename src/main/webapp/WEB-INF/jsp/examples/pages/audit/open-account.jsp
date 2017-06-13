@@ -38,9 +38,18 @@
 		    <script type="text/javascript">
 		    $(function () {
 				$('#table').DataTable($.po('dataTable', {
+				    "ordering": false,
 				    "processing": true,
 				    "serverSide": true,
-				    "ajax": "${ctx}/employee/all"
+				    "ajax": "${ctx}/dealer/all",
+					"columns": [
+					    {"data": "name"},
+					    {"data": "title"},
+					    {"data": "base"},
+					    {"data": "age"},
+					    {"data": "hireDate"},
+					    {"data": "salary"}
+					]
 				}));
 			});
 		    </script>
