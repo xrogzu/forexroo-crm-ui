@@ -4,7 +4,7 @@
 <html lang="zh-cn">
 
 <head>
-    <title>登录到 Admui</title>
+    <title>登录到 Forexroo CRM</title>
     <%@ include file="./includes/head.jsp"%>
     <!-- 自定义 -->
     <link rel="stylesheet" href="${ctx}/public/css/login.css">
