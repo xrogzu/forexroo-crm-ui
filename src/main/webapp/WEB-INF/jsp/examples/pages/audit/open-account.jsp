@@ -80,7 +80,7 @@
 		    </div>
 		    <script type="text/javascript">
 		    $(function () {
-				var table = $('#table').DataTable($.po('dataTable', {
+				$('#table').DataTable($.po('dataTable', {
 				    "dom": 'rtip',
 				    "ordering": false,
 				    "processing": true,
@@ -126,52 +126,85 @@
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
-			                	return '<div class="dropdown">\n\
-			                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" id="exampleLeftDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">\n\
-			                                审核 <span class="caret"></span>\n\
-			                            	</button>\n\
-			                            	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="exampleLeftDropdownSubMenu" role="menu">\n\
-	                                            <li role="presentation">\n\
-	                                                <a href="javascript:;" role="menuitem" tabindex="-1">通过</a>\n\
-	                                            </li>\n\
-	                                            <li class="divider" role="presentation"></li>\n\
-	                                            <li class="dropdown-submenu dropdown-menu-left">\n\
-	                                                <a href="javascript:;" tabindex="-1">拒绝</a>\n\
-	                                                <ul class="dropdown-menu" role="menu">\n\
-	                                                    <li role="presentation">\n\
-	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
-	                                                            手持身份证照不清晰\n\
-	                                                        </a>\n\
-	                                                    </li>\n\
-	                                                    <li role="presentation">\n\
-	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
-	                                                            签名不清晰\n\
-	                                                        </a>\n\
-	                                                    </li>\n\
-	                                                </ul>\n\
-	                                            </li>\n\
-                                            </ul>\n\
-			                            </div>';
+			                	if (row.openAccountStatus == '2') {
+				                	return '<div class="dropdown">\n\
+				                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" id="exampleLeftDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">\n\
+				                                审核 <span class="caret"></span>\n\
+				                            	</button>\n\
+				                            	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="exampleLeftDropdownSubMenu" role="menu">\n\
+		                                            <li role="presentation" class="audit-success-menu">\n\
+		                                                <a href="javascript:;" role="menuitem" tabindex="-1">通过</a>\n\
+		                                            </li>\n\
+		                                            <li class="divider" role="presentation"></li>\n\
+		                                            <li class="dropdown-submenu dropdown-menu-left">\n\
+		                                                <a href="javascript:;" tabindex="-1">拒绝</a>\n\
+		                                                <ul class="dropdown-menu" role="menu">\n\
+		                                                    <li role="presentation">\n\
+		                                                        <a href="javascript:;" role="menuitem" tabindex="-1" onclick="auditFail(1);">\n\
+		                                                            手持身份证照不清晰\n\
+		                                                        </a>\n\
+		                                                    </li>\n\
+		                                                    <li role="presentation">\n\
+		                                                        <a href="javascript:;" role="menuitem" tabindex="-1" onclick="auditFail(2);">\n\
+		                                                            签名不清晰\n\
+		                                                        </a>\n\
+		                                                    </li>\n\
+		                                                </ul>\n\
+		                                            </li>\n\
+	                                            </ul>\n\
+				                            </div>';
+			                	} else {
+			                		return '';
+			                	}
 			                },
 			                "targets": 9
 			            }
-			        ]
-				}));
-				$('#table tbody').on('click', 'td.details-control', function () {
-			        var tr = $(this).closest('tr');
-			        var row = table.row(tr);
-			        if (row.child.isShown()) {
-			            row.child.hide();
-			            tr.removeClass('shown');
-			        } else {
-			            row.child(format(row.data())).show();
-			            tr.addClass('shown');
+			        ],
+			        "initComplete": function () {
+			        	$('#table tbody').on('click', 'td.details-control', function() {
+					        var tr = $(this).closest('tr');
+					        var row = $('#table').DataTable().row(tr);
+					        if (row.child.isShown()) {
+					            row.child.hide();
+					            tr.removeClass('shown');
+					        } else {
+					            row.child(format(row.data())).show();
+					            tr.addClass('shown');
+					        }
+					    });
+			        	$('#table li.audit-success-menu').click(function() {
+					        var tr = $(this).closest('tr');
+					        var row = $('#table').DataTable().row(tr);
+					        var rowData = row.data();
+					        $.get('${ctx}/dealer/auditSuccess', {
+					        	"id": rowData.id
+					        }, function(data) {
+								if (data.code != 0) {
+									alert('Error: ' + data.message);
+									return;
+								}
+								console.dir(data);
+						        rowData.mt4RealAccount = data.mt4RealAccount;
+						        rowData.openAccountStatus = data.openAccountStatus;
+						        rowData.openAccountAuditTimestamp = data.openAccountAuditTimestamp;
+						        row.data(rowData);
+							});
+					    });
 			        }
-			    });
+				}));
 			});
 		    function format(d) {
+		    	// 照片
+		    	var openAccountPictureHtml = '';
+		    	if (d.openAccountPictureUrl) {
+		    		openAccountPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div><div class="col-sm-12">手持身份证正面照</div></div></div></div>';
+		    	}
+		    	if (d.openAccountSignUrl) {
+		    		openAccountPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountSignUrl+'"/></div><div class="col-sm-12">签名图片</div></div></div></div>';
+		    	}
+		    	// 协议
+		    	var openAccountAgreementsHtml = '';
 		    	var openAccountAgreements = eval(d.openAccountAgreements);
-		    	var openAccountAgreementsHtml = '<div class="list-group bg-blue-grey-100 bg-inherit">';
 		    	if (openAccountAgreements) {
 			    	for (var i = 0; i < openAccountAgreements.length; i++) {
 			    		switch (openAccountAgreements[i]) {
@@ -182,31 +215,14 @@
 						}
 					}
 		    	}
-		    	openAccountAgreementsHtml += '</div>';
+		    	// 拼接
 		    	return '<div class="page-content container-fluid" style="background-color:rgb(243,247,249);">\n\
 					    	<div class="row">\n\
 				                <div class="col-sm-6">姓名：'+d.openAccountRealname+'</div>\n\
 				                <div class="col-sm-6">身份证号：'+d.openAccountIdentityCardNumber+'</div>\n\
 				            </div>\n\
-					        <div class="row">\n\
-					            <div class="col-xlg-4 col-md-6">\n\
-					                <div class="panel panel-bordered">\n\
-					                    <div class="panel-body">\n\
-						                    <div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div>\n\
-						                    <div class="col-sm-12">手持身份证正面照</div>\n\
-					                    </div>\n\
-					                </div>\n\
-				                </div>\n\
-				                <div class="col-xlg-4 col-md-6">\n\
-					                <div class="panel panel-bordered">\n\
-					                    <div class="panel-body">\n\
-						                    <div class="col-sm-12"><img height="150" src="'+d.openAccountSignUrl+'"/></div>\n\
-						                    <div class="col-sm-12">签名图片</div>\n\
-					                    </div>\n\
-					                </div>\n\
-				                </div>\n\
-			                </div>\n\
-			                <div class="row">'+openAccountAgreementsHtml+'</div>\n\
+					        <div class="row">'+openAccountPictureHtml+'</div>\n\
+			                <div class="row"><div class="list-group bg-blue-grey-100 bg-inherit">'+openAccountAgreementsHtml+'</div></div>\n\
 			            </div>';
 		    }
 		    </script>
