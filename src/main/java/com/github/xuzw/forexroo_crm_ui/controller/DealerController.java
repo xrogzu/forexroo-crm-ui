@@ -1,6 +1,6 @@
 package com.github.xuzw.forexroo_crm_ui.controller;
 
-import static com.github.xuzw.forexroo.entity.Tables.DEMO_EMPLOYEE;
+import static com.github.xuzw.forexroo.entity.Tables.USER;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,7 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-import com.github.xuzw.forexroo.entity.tables.pojos.DemoEmployee;
+import com.github.xuzw.forexroo.entity.tables.pojos.User;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 
 import cn.ermei.admui.controller.BaseController;
@@ -38,12 +38,12 @@ public class DealerController extends BaseController {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
-        String search = "%" + criterias.getSearch() + "%";
+        String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
-        Condition condition = DEMO_EMPLOYEE.NAME.like(search).or(DEMO_EMPLOYEE.TITLE.like(search)).or(DEMO_EMPLOYEE.BASE.like(search));
-        List<DemoEmployee> rows = db.selectFrom(DEMO_EMPLOYEE).where(condition).limit(offset, numberOfRows).fetchInto(DemoEmployee.class);
-        long totalRecords = db.fetchCount(DEMO_EMPLOYEE);
-        long totalDisplayRecords = db.fetchCount(DEMO_EMPLOYEE, condition);
+        Condition condition = USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
+        List<User> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(User.class);
+        long totalRecords = db.fetchCount(USER);
+        long totalDisplayRecords = db.fetchCount(USER, condition);
         return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
     }
 }

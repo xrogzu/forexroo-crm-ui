@@ -10,15 +10,15 @@
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/highlight.css">
 <link rel="stylesheet" href="${ctx}/public/css/examples/tables/data-tables/examples.css">
+<link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
+<link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-select/bootstrap-select.css">
 
 <script src="${ctx}/public/vendor/datatables/jquery.dataTables.min.js" data-name="dataTables"></script>
 <script src="${ctx}/public/vendor/datatables-bootstrap/dataTables.bootstrap.min.js" data-deps="dataTables"></script>
 <script src="${ctx}/public/vendor/datatables-responsive/dataTables.responsive.min.js" data-deps="dataTables"></script>
-
-<link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
-
 <script src="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" data-name="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" data-deps="datepicker"></script>
+<script src="${ctx}/public/vendor/bootstrap-select/bootstrap-select.min.js"></script>
 
 <div class="page animation-fade page-blank">
     <div class="page-content">
@@ -39,7 +39,7 @@
 	                        </div>
 	                    </div>
 	                    <div class="form-group">
-	                    	<select class="form-control" id="auditStatus">
+	                    	<select class="form-control" data-plugin="selectpicker" id="auditStatus">
                                 <option value="0">审核状态</option>
                                 <option value="1">未审核</option>
                                 <option value="2">已审核</option>
@@ -61,15 +61,19 @@
 		        </h3>
 		    </div>
 		    <div class="panel-body">
-		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap" id="table">
+		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <th>姓名</th>
-		                <th>职位</th>
-		                <th>工作地点</th>
-		                <th>年龄</th>
-		                <th>入职时间</th>
-		                <th>年薪</th>
+		                <td>姓名</td>
+		                <td>手机号</td>
+		                <td>MT4账号</td>
+		                <td>审核状态</td>
+		                <td>审核时间</td>
+		                <td>审核人</td>
+		                <td>所属经纪人</td>
+		                <td>所属代理商</td>
+		                <td>开户资料</td>
+		                <td>操作</td>
 		            </tr>
 		            </thead>
 		        </table>
@@ -91,13 +95,76 @@
 					    }
 					},
 					"columns": [
-					    {"data": "name"},
-					    {"data": "title"},
-					    {"data": "base"},
-					    {"data": "age"},
-					    {"data": "hireDate"},
-					    {"data": "salary"}
-					]
+					    {"data": "nickname"},
+					    {"data": "phone"},
+					    {"data": "mt4RealAccount"},
+					    {"data": "openAccountStatus"},
+					    {"data": "openAccountAuditTimestamp"},
+					    {"data": "openAccountAuditUserId"},
+					    {"data": "myBroker"},
+					    {"data": "myAgent"}
+					],
+					"columnDefs": [
+			            {
+			                "render": function (data, type, row, meta) {
+			                	switch (data) {
+			                	case 0: return '未开户';
+			                	case 1: return '开户中';
+			                	case 2: return '<span style="color:#ff7000;">审核中</span>';
+			                	case 3: return '<span style="color:#00c69a;">审核成功</span>';
+			                	case 4: return '<span style="color:#9b9b9b;">审核失败</span>';
+			                	}
+			                },
+			                "targets": 3
+			            },
+			            {
+			                "render": function (data, type, row, meta) {
+			                	return '<button type="button" class="btn btn-sm btn-block btn-default">查看</button>';
+			                },
+			                "targets": 8
+			            },
+			            {
+			                "render": function (data, type, row, meta) {
+			                	return '<div class="dropdown">\n\
+			                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" id="exampleLeftDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">\n\
+			                                审核 <span class="caret"></span>\n\
+			                            	</button>\n\
+			                            	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="exampleLeftDropdownSubMenu" role="menu">\n\
+	                                            <li role="presentation">\n\
+	                                                <a href="javascript:;" role="menuitem" tabindex="-1">通过</a>\n\
+	                                            </li>\n\
+	                                            <li class="divider" role="presentation"></li>\n\
+	                                            <li class="dropdown-submenu dropdown-menu-left">\n\
+	                                                <a href="javascript:;" tabindex="-1">拒绝</a>\n\
+	                                                <ul class="dropdown-menu" role="menu">\n\
+	                                                    <li role="presentation">\n\
+	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
+	                                                            身份证正面照不清晰\n\
+	                                                        </a>\n\
+	                                                    </li>\n\
+	                                                    <li role="presentation">\n\
+	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
+	                                                            身份证反面照不清晰\n\
+	                                                        </a>\n\
+	                                                    </li>\n\
+	                                                    <li role="presentation">\n\
+	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
+	                                                            手持身份证照不清晰\n\
+	                                                        </a>\n\
+	                                                    </li>\n\
+	                                                    <li role="presentation">\n\
+	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
+	                                                            签名不清晰\n\
+	                                                        </a>\n\
+	                                                    </li>\n\
+	                                                </ul>\n\
+	                                            </li>\n\
+                                            </ul>\n\
+			                            </div>';
+			                },
+			                "targets": 9
+			            }
+			        ]
 				}));
 			});
 		    </script>
