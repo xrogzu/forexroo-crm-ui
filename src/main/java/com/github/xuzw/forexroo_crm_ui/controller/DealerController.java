@@ -21,6 +21,8 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import com.github.xuzw.forexroo.entity.tables.pojos.User;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
+import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
 
 import cn.ermei.admui.controller.BaseController;
 
@@ -40,10 +42,45 @@ public class DealerController extends BaseController {
         Integer numberOfRows = criterias.getLength();
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
-        Condition condition = USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        List<User> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(User.class);
+        Condition condition = USER.OPEN_ACCOUNT_STATUS.eq(OpenAccountStatusEnum.auditing.getValue()).and(USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search)));
+        List<ExtUser> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
+        for (ExtUser extUser : rows) {
+            extUser.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountPictureUrl()));
+            extUser.setOpenAccountSignUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountSignUrl()));
+        }
         long totalRecords = db.fetchCount(USER);
         long totalDisplayRecords = db.fetchCount(USER, condition);
         return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
+    }
+
+    public static class ExtUser extends User {
+        private static final long serialVersionUID = 1L;
+        private String myBrokerNickname;
+        private String myAgentName;
+        private Integer openAccountAuditUserName;
+
+        public String getMyBrokerNickname() {
+            return myBrokerNickname;
+        }
+
+        public void setMyBrokerNickname(String myBrokerNickname) {
+            this.myBrokerNickname = myBrokerNickname;
+        }
+
+        public String getMyAgentName() {
+            return myAgentName;
+        }
+
+        public void setMyAgentName(String myAgentName) {
+            this.myAgentName = myAgentName;
+        }
+
+        public Integer getOpenAccountAuditUserName() {
+            return openAccountAuditUserName;
+        }
+
+        public void setOpenAccountAuditUserName(Integer openAccountAuditUserName) {
+            this.openAccountAuditUserName = openAccountAuditUserName;
+        }
     }
 }

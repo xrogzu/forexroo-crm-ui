@@ -170,15 +170,44 @@
 			    });
 			});
 		    function format(d) {
-		        return '<table class="table table-bordered text-nowrap padding-left-50 margin-bottom-0" cellpadding="5">\n\
-			        <tbody>\n\
-			        <tr><td>姓名：</td><td>'+d.openAccountRealname+'</td></tr>\n\
-			        <tr><td>身份证号：</td><td>'+d.openAccountIdentityCardNumber+'</td></tr>\n\
-			        <tr><td>手持身份证正面照：</td><td>'+d.openAccountPictureUrl+'</td></tr>\n\
-			        <tr><td>签订协议：</td><td>'+d.openAccountAgreements+'</td></tr>\n\
-			        <tr><td>签名图片：</td><td>'+d.openAccountSignUrl+'</td></tr>\n\
-			        </tbody>\n\
-			        </table>';
+		    	var openAccountAgreements = eval(d.openAccountAgreements);
+		    	var openAccountAgreementsHtml = '<div class="list-group bg-blue-grey-100 bg-inherit">';
+		    	if (openAccountAgreements) {
+			    	for (var i = 0; i < openAccountAgreements.length; i++) {
+			    		switch (openAccountAgreements[i]) {
+						case "1": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《交易商告知书》</a>'; break;
+						case "2": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《交易商协议书》</a>'; break;
+						case "3": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《入市交易协议书》</a>'; break;
+						case "4": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《本人是该账户的最终且唯一受益拥有人》</a>'; break;
+						}
+					}
+		    	}
+		    	openAccountAgreementsHtml += '</div>';
+		    	return '<div class="page-content container-fluid" style="background-color:rgb(243,247,249);">\n\
+					    	<div class="row">\n\
+				                <div class="col-sm-6">姓名：'+d.openAccountRealname+'</div>\n\
+				                <div class="col-sm-6">身份证号：'+d.openAccountIdentityCardNumber+'</div>\n\
+				            </div>\n\
+					        <div class="row">\n\
+					            <div class="col-xlg-4 col-md-6">\n\
+					                <div class="panel panel-bordered">\n\
+					                    <div class="panel-body">\n\
+						                    <div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div>\n\
+						                    <div class="col-sm-12">手持身份证正面照</div>\n\
+					                    </div>\n\
+					                </div>\n\
+				                </div>\n\
+				                <div class="col-xlg-4 col-md-6">\n\
+					                <div class="panel panel-bordered">\n\
+					                    <div class="panel-body">\n\
+						                    <div class="col-sm-12"><img height="150" src="'+d.openAccountSignUrl+'"/></div>\n\
+						                    <div class="col-sm-12">签名图片</div>\n\
+					                    </div>\n\
+					                </div>\n\
+				                </div>\n\
+			                </div>\n\
+			                <div class="row">'+openAccountAgreementsHtml+'</div>\n\
+			            </div>';
 		    }
 		    </script>
 		</div>
