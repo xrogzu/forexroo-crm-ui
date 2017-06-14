@@ -80,7 +80,7 @@
 		    </div>
 		    <script type="text/javascript">
 		    $(function () {
-				$('#table').DataTable($.po('dataTable', {
+				var table = $('#table').DataTable($.po('dataTable', {
 				    "dom": 'rtip',
 				    "ordering": false,
 				    "processing": true,
@@ -102,7 +102,8 @@
 					    {"data": "openAccountAuditTimestamp", "defaultContent": "暂未审核"},
 					    {"data": "openAccountAuditUserId", "defaultContent": "暂无数据"},
 					    {"data": "myBroker", "defaultContent": "暂无数据"},
-					    {"data": "myAgent", "defaultContent": "暂无数据"}
+					    {"data": "myAgent", "defaultContent": "暂无数据"},
+					    {"data": null, "defaultContent": "", "class": 'details-control'}
 					],
 					"columnDefs": [
 			            {
@@ -139,16 +140,6 @@
 	                                                <ul class="dropdown-menu" role="menu">\n\
 	                                                    <li role="presentation">\n\
 	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
-	                                                            身份证正面照不清晰\n\
-	                                                        </a>\n\
-	                                                    </li>\n\
-	                                                    <li role="presentation">\n\
-	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
-	                                                            身份证反面照不清晰\n\
-	                                                        </a>\n\
-	                                                    </li>\n\
-	                                                    <li role="presentation">\n\
-	                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
 	                                                            手持身份证照不清晰\n\
 	                                                        </a>\n\
 	                                                    </li>\n\
@@ -166,7 +157,29 @@
 			            }
 			        ]
 				}));
+				$('#table tbody').on('click', 'td.details-control', function () {
+			        var tr = $(this).closest('tr');
+			        var row = table.row(tr);
+			        if (row.child.isShown()) {
+			            row.child.hide();
+			            tr.removeClass('shown');
+			        } else {
+			            row.child(format(row.data())).show();
+			            tr.addClass('shown');
+			        }
+			    });
 			});
+		    function format(d) {
+		        return '<table class="table table-bordered text-nowrap padding-left-50 margin-bottom-0" cellpadding="5">\n\
+			        <tbody>\n\
+			        <tr><td>姓名：</td><td>'+d.openAccountRealname+'</td></tr>\n\
+			        <tr><td>身份证号：</td><td>'+d.openAccountIdentityCardNumber+'</td></tr>\n\
+			        <tr><td>手持身份证正面照：</td><td>'+d.openAccountPictureUrl+'</td></tr>\n\
+			        <tr><td>签订协议：</td><td>'+d.openAccountAgreements+'</td></tr>\n\
+			        <tr><td>签名图片：</td><td>'+d.openAccountSignUrl+'</td></tr>\n\
+			        </tbody>\n\
+			        </table>';
+		    }
 		    </script>
 		</div>
     </div>
