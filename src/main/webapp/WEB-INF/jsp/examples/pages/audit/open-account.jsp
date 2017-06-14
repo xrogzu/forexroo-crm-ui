@@ -95,14 +95,14 @@
 					    }
 					},
 					"columns": [
-					    {"data": "nickname"},
-					    {"data": "phone"},
-					    {"data": "mt4RealAccount"},
-					    {"data": "openAccountStatus"},
-					    {"data": "openAccountAuditTimestamp"},
-					    {"data": "openAccountAuditUserId"},
-					    {"data": "myBroker"},
-					    {"data": "myAgent"}
+					    {"data": "nickname", "defaultContent": "暂无数据"},
+					    {"data": "phone", "defaultContent": "暂无数据"},
+					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
+					    {"data": "openAccountStatus", "defaultContent": "暂无数据"},
+					    {"data": "openAccountAuditTimestamp", "defaultContent": "暂未审核"},
+					    {"data": "openAccountAuditUserId", "defaultContent": "暂无数据"},
+					    {"data": "myBroker", "defaultContent": "暂无数据"},
+					    {"data": "myAgent", "defaultContent": "暂无数据"}
 					],
 					"columnDefs": [
 			            {
