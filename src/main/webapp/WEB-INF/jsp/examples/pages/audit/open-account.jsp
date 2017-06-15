@@ -36,10 +36,9 @@
 	                    	<select class="form-control" data-plugin="selectpicker" id="auditStatus">
                                 <option value="">审核状态</option>
                                 <option value="0">未开户</option>
-								<option value="1">开户中</option>
-								<option value="2">审核中</option>
-								<option value="3">审核成功</option>
-								<option value="4">审核失败</option>
+								<option value="1">审核中</option>
+								<option value="2">审核成功</option>
+								<option value="3">审核失败</option>
                             </select>
 	                    </div>
 	                    <div class="form-group">
@@ -106,10 +105,9 @@
 			                "render": function (data, type, row, meta) {
 			                	switch (data) {
 			                	case 0: return '未开户';
-			                	case 1: return '开户中';
-			                	case 2: return '<span style="color:#ff7000;">审核中</span>';
-			                	case 3: return '<span style="color:#00c69a;">审核成功</span>';
-			                	case 4: return '<span style="color:#9b9b9b;">审核失败</span>';
+			                	case 1: return '<span style="color:#ff7000;">审核中</span>';
+			                	case 2: return '<span style="color:#00c69a;">审核成功</span>';
+			                	case 3: return '<span style="color:#9b9b9b;">审核失败</span>';
 			                	}
 			                },
 			                "targets": 3
