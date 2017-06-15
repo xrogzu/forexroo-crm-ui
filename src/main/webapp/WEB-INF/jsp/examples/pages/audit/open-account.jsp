@@ -19,6 +19,7 @@
 <script src="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" data-name="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" data-deps="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="${ctx}/public/vendor/timeformatter/timeformatter.js"></script>
 
 <div class="page animation-fade page-blank">
     <div class="page-content">
@@ -117,6 +118,14 @@
 			                	}
 			                },
 			                "targets": 3
+			            },
+			            {
+			                "render": function (data, type, row, meta) {
+			                	if (data) {
+				                	return getTime('$Y-$m-$d $h:$i:$s', new Date(data));
+			                	}
+			                },
+			                "targets": 4
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
