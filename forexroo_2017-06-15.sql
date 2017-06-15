@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-15 04:12:25 +0000
+# Generation Time: 2017-06-15 09:42:07 +0000
 # ************************************************************
 
 
@@ -151,6 +151,29 @@ CREATE TABLE `my_symbol` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `my_symbol` WRITE;
+/*!40000 ALTER TABLE `my_symbol` DISABLE KEYS */;
+
+INSERT INTO `my_symbol` (`symbol`, `user_id`, `time`, `id`)
+VALUES
+	('EURUSD',1,1497515982065,1),
+	('USDJPY',1,1497515982065,2),
+	('AUDUSD',1,1497515982065,3),
+	('XAUUSD',1,1497515982065,4),
+	('UKOUSD',1,1497515982065,5),
+	('EURUSD',2,1497516805582,6),
+	('USDJPY',2,1497516805582,7),
+	('AUDUSD',2,1497516805582,8),
+	('XAUUSD',2,1497516805582,9),
+	('UKOUSD',2,1497516805582,10),
+	('EURUSD',3,1497517217878,11),
+	('USDJPY',3,1497517217878,12),
+	('AUDUSD',3,1497517217878,13),
+	('XAUUSD',3,1497517217878,14),
+	('UKOUSD',3,1497517217878,15);
+
+/*!40000 ALTER TABLE `my_symbol` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table schema_version
@@ -178,15 +201,15 @@ LOCK TABLES `schema_version` WRITE;
 
 INSERT INTO `schema_version` (`installed_rank`, `version`, `description`, `type`, `script`, `checksum`, `installed_by`, `installed_on`, `execution_time`, `success`)
 VALUES
-	(1,'1','<< Flyway Baseline >>','BASELINE','<< Flyway Baseline >>',NULL,'forexroo','2017-06-15 11:47:26',0,1),
-	(2,'1.1','CreateTable User','JDBC','com.github.xuzw.forexroo.database.migration.V1_1__CreateTable_User',NULL,'forexroo','2017-06-15 11:47:27',115,1),
-	(3,'1.2','CreateTable Feedback','JDBC','com.github.xuzw.forexroo.database.migration.V1_2__CreateTable_Feedback',NULL,'forexroo','2017-06-15 11:47:28',97,1),
-	(4,'1.3','CreateTable MasterTraderRankingsHistory','JDBC','com.github.xuzw.forexroo.database.migration.V1_3__CreateTable_MasterTraderRankingsHistory',NULL,'forexroo','2017-06-15 11:47:28',97,1),
-	(5,'1.4','CreateTable MySymbol','JDBC','com.github.xuzw.forexroo.database.migration.V1_4__CreateTable_MySymbol',NULL,'forexroo','2017-06-15 11:47:29',97,1),
-	(6,'1.5','CreateTable MyMasterTrader','JDBC','com.github.xuzw.forexroo.database.migration.V1_5__CreateTable_MyMasterTrader',NULL,'forexroo','2017-06-15 11:47:30',95,1),
-	(7,'1.6','CreateTable MyBankCard','JDBC','com.github.xuzw.forexroo.database.migration.V1_6__CreateTable_MyBankCard',NULL,'forexroo','2017-06-15 11:47:31',101,1),
-	(8,'1.7','CreateTable DepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_7__CreateTable_DepositAndWithdraw',NULL,'forexroo','2017-06-15 11:47:31',110,1),
-	(9,'1.8','CreateTable Agent','JDBC','com.github.xuzw.forexroo.database.migration.V1_8__CreateTable_Agent',NULL,'forexroo','2017-06-15 11:47:32',101,1);
+	(1,'1','<< Flyway Baseline >>','BASELINE','<< Flyway Baseline >>',NULL,'forexroo','2017-06-15 16:36:20',0,1),
+	(2,'1.1','CreateTable User','JDBC','com.github.xuzw.forexroo.database.migration.V1_1__CreateTable_User',NULL,'forexroo','2017-06-15 16:36:21',120,1),
+	(3,'1.2','CreateTable Feedback','JDBC','com.github.xuzw.forexroo.database.migration.V1_2__CreateTable_Feedback',NULL,'forexroo','2017-06-15 16:36:22',95,1),
+	(4,'1.3','CreateTable MasterTraderRankingsHistory','JDBC','com.github.xuzw.forexroo.database.migration.V1_3__CreateTable_MasterTraderRankingsHistory',NULL,'forexroo','2017-06-15 16:36:22',97,1),
+	(5,'1.4','CreateTable MySymbol','JDBC','com.github.xuzw.forexroo.database.migration.V1_4__CreateTable_MySymbol',NULL,'forexroo','2017-06-15 16:36:23',98,1),
+	(6,'1.5','CreateTable MyMasterTrader','JDBC','com.github.xuzw.forexroo.database.migration.V1_5__CreateTable_MyMasterTrader',NULL,'forexroo','2017-06-15 16:36:24',95,1),
+	(7,'1.6','CreateTable MyBankCard','JDBC','com.github.xuzw.forexroo.database.migration.V1_6__CreateTable_MyBankCard',NULL,'forexroo','2017-06-15 16:36:25',100,1),
+	(8,'1.7','CreateTable DepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_7__CreateTable_DepositAndWithdraw',NULL,'forexroo','2017-06-15 16:36:25',94,1),
+	(9,'1.8','CreateTable Agent','JDBC','com.github.xuzw.forexroo.database.migration.V1_8__CreateTable_Agent',NULL,'forexroo','2017-06-15 16:36:26',95,1);
 
 /*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -339,7 +362,40 @@ VALUES
 	(322,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ussh ]',1,'2017-06-15 10:02:22','0:0:0:0:0:0:0:1'),
 	(323,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=xrz7 ]',1,'2017-06-15 10:34:02','0:0:0:0:0:0:0:1'),
 	(324,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zrdw ]',1,'2017-06-15 10:44:15','0:0:0:0:0:0:0:1'),
-	(325,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=3mgv ]',1,'2017-06-15 10:52:49','0:0:0:0:0:0:0:1');
+	(325,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=3mgv ]',1,'2017-06-15 10:52:49','0:0:0:0:0:0:0:1'),
+	(326,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 12:13:13','221.218.171.107'),
+	(327,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=jymv ]',1,'2017-06-15 12:14:24','221.218.171.107'),
+	(328,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=inz8 remember=on ]',1,'2017-06-15 12:15:05','221.218.171.107'),
+	(329,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=U55F remember=on ]',1,'2017-06-15 12:15:15','117.114.192.50'),
+	(330,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=6mah ]',1,'2017-06-15 12:17:27','221.218.171.107'),
+	(331,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=jctv ]',1,'2017-06-15 12:23:07','0:0:0:0:0:0:0:1'),
+	(332,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=EVDE ]',1,'2017-06-15 12:25:29','117.114.192.50'),
+	(333,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=2W54 ]',1,'2017-06-15 12:25:53','117.114.192.50'),
+	(334,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=6upr ]',1,'2017-06-15 12:27:12','0:0:0:0:0:0:0:1'),
+	(335,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=e229 ]',1,'2017-06-15 12:28:45','0:0:0:0:0:0:0:1'),
+	(336,'/system/login','登录','[loginName=admui password=072507e3fbb422ce93a1318a49206797 validCode=tt6m ]',NULL,'2017-06-15 12:29:22',NULL),
+	(337,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=g6fz ]',1,'2017-06-15 12:29:42','117.114.192.50'),
+	(338,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=kcde ]',1,'2017-06-15 12:39:41','0:0:0:0:0:0:0:1'),
+	(339,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=dqcm ]',1,'2017-06-15 12:41:03','117.114.192.50'),
+	(340,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=3RGv ]',1,'2017-06-15 12:41:29','117.114.192.50'),
+	(341,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=2aa5 ]',1,'2017-06-15 13:31:54','0:0:0:0:0:0:0:1'),
+	(342,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=shc9 ]',NULL,'2017-06-15 13:33:33',NULL),
+	(343,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=dugr ]',1,'2017-06-15 13:33:57','0:0:0:0:0:0:0:1'),
+	(344,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=C3XZ remember=on ]',1,'2017-06-15 13:41:03','117.114.192.50'),
+	(345,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rxd2 ]',1,'2017-06-15 14:07:26','0:0:0:0:0:0:0:1'),
+	(346,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=t8x9 ]',1,'2017-06-15 14:27:18','0:0:0:0:0:0:0:1'),
+	(347,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=er6q ]',1,'2017-06-15 14:40:44','221.218.171.107'),
+	(348,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 14:42:07','117.114.192.50'),
+	(349,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 15:43:43','221.218.171.107'),
+	(350,'/system/login','登录','[]',NULL,'2017-06-15 15:58:51',NULL),
+	(351,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=migr ]',NULL,'2017-06-15 15:59:10',NULL),
+	(352,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ivcu ]',1,'2017-06-15 15:59:29','0:0:0:0:0:0:0:1'),
+	(353,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 16:00:21','117.114.192.50'),
+	(354,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=6mhc ]',1,'2017-06-15 16:17:41','0:0:0:0:0:0:0:1'),
+	(355,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 16:39:36','117.114.192.50'),
+	(356,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 17:00:25','221.218.171.107'),
+	(357,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=qz48 ]',1,'2017-06-15 17:20:35','0:0:0:0:0:0:0:1'),
+	(358,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-15 17:36:29','117.114.192.50');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -403,18 +459,21 @@ INSERT INTO `sys_menu` (`menu_id`, `name`, `parent_id`, `layer`, `icon`, `url`, 
 VALUES
 	(1,'系统管理',0,'07','wb-settings','#',NULL,NULL,1,'2017-01-08 15:59:18'),
 	(2,'系统信息',1,'0701','','',NULL,NULL,1,'2016-12-18 14:46:18'),
-	(3,'我的账户',1,'0702','','',NULL,NULL,1,'2016-12-18 14:46:18'),
+	(3,'我的账户',1,'0702','','',NULL,NULL,1,'2017-06-15 15:02:27'),
 	(4,'菜单管理',2,'070101','fa-bars','/system/menu',NULL,NULL,1,'2016-12-18 14:46:18'),
-	(5,'用户管理',2,'070102','fa-street-view','/system/user',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(6,'日志信息',2,'070103','fa-file-text-o','/system/log',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(7,'黑名单',2,'070104','fa-shield','/system/blacklist',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(8,'系统设置',2,'070105','fa-gear','',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(10,'显示设置',8,'07010501','','/system/settings/display',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(11,'日志设置',8,'07010502','','/system/settings/log',NULL,NULL,1,'2017-03-24 11:29:23'),
-	(12,'账户信息',3,'070201','fa-key','/system/account',NULL,NULL,1,'2016-12-18 14:46:18'),
+	(5,'用户管理',2,'070102','fa-street-view','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(6,'日志信息',2,'070103','fa-file-text-o','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(7,'黑名单',2,'070104','fa-shield','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(8,'系统设置',2,'070105','fa-gear','',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(10,'显示设置',8,'07010501','','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(11,'日志设置',8,'07010502','','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(12,'账户信息',3,'070201','fa-key','/system/account',NULL,NULL,1,'2017-06-15 15:03:21'),
 	(11309,'审核管理',0,'08','fa-bars',NULL,1,'2017-06-13 13:57:39',NULL,NULL),
 	(11310,'审核管理',11309,'0801','','',1,'2017-06-13 13:58:46',NULL,NULL),
-	(11311,'交易商开户申请审核',11310,'080101','fa-bars','/pages/audit/open-account',1,'2017-06-13 13:58:47',NULL,NULL);
+	(11311,'交易商开户申请审核',11310,'080101','fa-bars','/pages/audit/open-account',1,'2017-06-13 13:58:47',NULL,NULL),
+	(11312,'用户管理',0,'09','fa-bars',NULL,1,'2017-06-15 16:00:06',NULL,NULL),
+	(11313,'用户管理',11312,'0901','','',1,'2017-06-15 16:02:19',NULL,NULL),
+	(11314,'交易商',11313,'090101','fa-bars','/pages/user/dealer',1,'2017-06-15 16:02:19',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -450,11 +509,14 @@ VALUES
 	(830,8,1),
 	(831,10,1),
 	(832,11,1),
-	(833,3,1),
 	(834,12,1),
 	(836,11309,1),
 	(837,11310,1),
-	(838,11311,1);
+	(838,11311,1),
+	(839,3,1),
+	(840,11312,1),
+	(841,11313,1),
+	(842,11314,1);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -484,8 +546,8 @@ LOCK TABLES `sys_message` WRITE;
 
 INSERT INTO `sys_message` (`message_id`, `user_id`, `title`, `content`, `type`, `send_time`, `read_flag`, `read_time`)
 VALUES
-	(7,1,'您的账户信息已修改。','管理员修改了您的账户信息。','SYSTEM','2017-04-08 11:14:30',b'0',NULL),
-	(8,1,'您的账户信息已修改。','管理员修改了您的账户信息。','SYSTEM','2017-04-18 22:55:54',b'0',NULL);
+	(7,1,'您的账户信息已修改。','管理员修改了您的账户信息。','SYSTEM','2017-04-08 11:14:30',b'1','2017-06-15 14:43:44'),
+	(8,1,'您的账户信息已修改。','管理员修改了您的账户信息。','SYSTEM','2017-04-18 22:55:54',b'1','2017-06-15 14:43:42');
 
 /*!40000 ALTER TABLE `sys_message` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -550,7 +612,7 @@ LOCK TABLES `sys_setting_display` WRITE;
 INSERT INTO `sys_setting_display` (`display_id`, `navigation_color`, `across_flag`, `menu_theme`, `menu_display`, `menu_txt_icon`, `theme_color`, `tab_flag`, `global_flag`, `default_flag`, `user_id`, `update_time`)
 VALUES
 	(1,'','navbar-inverse','site-menubar-dark','site-menubar-unfold','site-menubar-keep','primary','site-contabs-open',b'0',b'1',NULL,NULL),
-	(2,'','navbar-inverse','site-menubar-dark','site-menubar-unfold','site-menubar-keep','primary','site-contabs-open',b'1',b'0',NULL,'2017-04-01 13:12:26');
+	(2,'','navbar-inverse','site-menubar-light','site-menubar-unfold','site-menubar-keep','primary','site-contabs-open',b'1',b'0',NULL,'2017-06-15 12:24:54');
 
 /*!40000 ALTER TABLE `sys_setting_display` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -582,7 +644,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',706,'NORMAL','2017-06-15 10:52:47','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',735,'NORMAL','2017-06-15 17:36:29','117.114.192.50',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -624,7 +686,9 @@ CREATE TABLE `user` (
   `phone` varchar(255) DEFAULT NULL COMMENT '手机号',
   `password` varchar(255) DEFAULT NULL COMMENT '登录密码',
   `token` varchar(255) DEFAULT NULL COMMENT '用户唯一标识码',
-  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间',
+  `is_disable` int(11) NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `is_closing` int(11) NOT NULL DEFAULT '0' COMMENT '是否销户',
+  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间戳',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
   `sex` varchar(255) DEFAULT NULL COMMENT '性别',
@@ -639,18 +703,22 @@ CREATE TABLE `user` (
   `open_account_picture_url` varchar(255) DEFAULT NULL COMMENT '开户-手持身份证正面照URL',
   `open_account_agreements` varchar(255) DEFAULT NULL COMMENT '开户-签订协议',
   `open_account_sign_url` varchar(255) DEFAULT NULL COMMENT '开户-签名图片URL',
-  `open_account_status` int(11) DEFAULT NULL COMMENT '开户-状态',
+  `open_account_status` int(11) NOT NULL DEFAULT '0' COMMENT '开户-状态',
   `open_account_audit_user_id` bigint(20) DEFAULT NULL COMMENT '开户-审核人-ID',
   `open_account_audit_user_name` varchar(255) DEFAULT NULL COMMENT '开户-审核人-姓名',
   `open_account_audit_timestamp` bigint(20) DEFAULT NULL COMMENT '开户-审核时间戳',
-  `open_account_audit_fail_reason` int(11) DEFAULT NULL COMMENT '开户-审核失败-原因',
+  `open_account_audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '开户-审核失败-原因',
+  `open_account_time` bigint(20) DEFAULT NULL COMMENT '开户-申请时间戳',
+  `open_account_audit_success_time` bigint(20) DEFAULT NULL COMMENT '开户-审核通过时间戳',
   `broker_request_agreements` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签订协议',
   `broker_request_sign_url` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签名图片URL',
-  `broker_request_status` int(11) DEFAULT NULL COMMENT '经纪人申请-状态',
+  `broker_request_status` int(11) NOT NULL DEFAULT '0' COMMENT '经纪人申请-状态',
   `broker_request_audit_user_id` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核人-ID',
   `broker_request_audit_user_name` varchar(255) DEFAULT NULL COMMENT '经纪人申请-审核人-姓名',
   `broker_request_audit_timestamp` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核时间戳',
-  `broker_request_audit_fail_reason` int(11) DEFAULT NULL COMMENT '经纪人申请-审核失败-原因',
+  `broker_request_audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '经纪人申请-审核失败-原因',
+  `broker_request_time` bigint(20) DEFAULT NULL COMMENT '经纪人申请-申请时间戳',
+  `broker_request_audit_success_time` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核通过时间戳',
   `master_trader_total_profit` varchar(255) DEFAULT NULL COMMENT '交易大师-总盈利',
   `master_trader_single_profit` varchar(255) DEFAULT NULL COMMENT '交易大师-均单盈利',
   `master_trader_success_rate` varchar(255) DEFAULT NULL COMMENT '交易大师-成功率',
@@ -660,6 +728,17 @@ CREATE TABLE `user` (
   UNIQUE KEY `token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`phone`, `password`, `token`, `is_disable`, `is_closing`, `register_time`, `avatar`, `nickname`, `sex`, `country`, `mt4_real_account`, `my_broker_id`, `my_broker_name`, `my_agent_id`, `my_agent_name`, `open_account_realname`, `open_account_identity_card_number`, `open_account_picture_url`, `open_account_agreements`, `open_account_sign_url`, `open_account_status`, `open_account_audit_user_id`, `open_account_audit_user_name`, `open_account_audit_timestamp`, `open_account_audit_fail_reason`, `open_account_time`, `open_account_audit_success_time`, `broker_request_agreements`, `broker_request_sign_url`, `broker_request_status`, `broker_request_audit_user_id`, `broker_request_audit_user_name`, `broker_request_audit_timestamp`, `broker_request_audit_fail_reason`, `broker_request_time`, `broker_request_audit_success_time`, `master_trader_total_profit`, `master_trader_single_profit`, `master_trader_success_rate`, `id`)
+VALUES
+	('13641122206',NULL,'7d9e5608-c911-4ba2-9605-a104c3e2c7b2',0,0,1497515982036,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'大哥哥','222222 2233 3233 3225','32a44529bbc18043562398ec78c27965','[\"1\",\"2\",\"3\",\"4\"]','7d9e5608-c911-4ba2-9605-a104c3e2c7b2',3,1,'admui',1497519516324,1,1497519466633,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,1),
+	('13051165888',NULL,'cbb33cf1-7f6e-48ec-b689-906e60c003ec',0,0,1497516805551,NULL,NULL,NULL,NULL,'996000521',NULL,NULL,NULL,NULL,'林俊杰','522283 8383 8883 5383','6d2e3e6bdf12f70b6f2e2c98671e78be','[\"1\",\"2\",\"3\",\"4\"]','cbb33cf1-7f6e-48ec-b689-906e60c003ec',2,1,'admui',1497519618134,1,1497519601566,1497519618134,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,2),
+	('13550311857',NULL,'f933c0ce-9007-4710-af0d-0f337df43c32',0,0,1497517217848,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,3);
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
