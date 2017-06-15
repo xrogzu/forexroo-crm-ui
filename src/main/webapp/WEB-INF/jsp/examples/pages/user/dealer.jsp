@@ -94,7 +94,7 @@
 					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
 					    {"data": "myAgentName", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": "", "class": 'details-control'},
-					    {"data": null, "defaultContent": ""}
+					    {"data": null, "defaultContent": "", "class": 'settings-control'}
 					],
 					"columnDefs": [
 			            {
@@ -129,17 +129,38 @@
 			                	return '<button type="button" class="btn btn-sm btn-block btn-default">查看</button>';
 			                },
 			                "targets": 10
+			            },
+			            {
+			                "render": function (data, type, row, meta) {
+			                	return '<button type="button" class="btn btn-sm btn-block btn-default">设置</button>';
+			                },
+			                "targets": 11
 			            }
 			        ],
 			        "initComplete": function () {
 			        	$('#table tbody').on('click', 'td.details-control', function() {
 					        var tr = $(this).closest('tr');
 					        var row = $('#table').DataTable().row(tr);
-					        if (row.child.isShown()) {
+					        if (row.child.isShown() && tr.data('shownChildName') == 'details-control') {
+					        	tr.data('shownChildName', '');
 					            row.child.hide();
 					            tr.removeClass('shown');
 					        } else {
-					            row.child(format(row.data())).show();
+					        	tr.data('shownChildName', 'details-control');
+					            row.child('详情').show();
+					            tr.addClass('shown');
+					        }
+					    });
+			        	$('#table tbody').on('click', 'td.settings-control', function() {
+					        var tr = $(this).closest('tr');
+					        var row = $('#table').DataTable().row(tr);
+					        if (row.child.isShown() && tr.data('shownChildName') == 'settings-control') {
+					        	tr.data('shownChildName', '');
+					            row.child.hide();
+					            tr.removeClass('shown');
+					        } else {
+					        	tr.data('shownChildName', 'settings-control');
+					            row.child('设置').show();
 					            tr.addClass('shown');
 					        }
 					    });
