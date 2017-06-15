@@ -79,6 +79,34 @@ public class DealerController extends BaseController {
         return jsonResponse.toJSONString();
     }
 
+    @RequestMapping(value = "/auditFail", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String auditFail(Long id, Integer reason) {
+        JSONObject jsonResponse = new JSONObject();
+        try {
+            UserDao userDao = new UserDao(Jooq.buildConfiguration());
+            User user = userDao.fetchOneById(id);
+            if (user.getOpenAccountStatus() != OpenAccountStatusEnum.auditing.getValue()) {
+                throw new Exception("状态异常");
+            }
+            int openAccountStatus = OpenAccountStatusEnum.auditing_fail.getValue();
+            long openAccountAuditTimestamp = System.currentTimeMillis();
+            Map<Field<?>, Object> map = new HashMap<>();
+            map.put(USER.OPEN_ACCOUNT_AUDIT_FAIL_REASON, reason);
+            map.put(USER.OPEN_ACCOUNT_STATUS, openAccountStatus);
+            map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
+            DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
+            jsonResponse.put("code", 0);
+            jsonResponse.put("openAccountAuditFailReason", reason);
+            jsonResponse.put("openAccountStatus", openAccountStatus);
+            jsonResponse.put("openAccountAuditTimestamp", openAccountAuditTimestamp);
+        } catch (Exception e) {
+            jsonResponse.put("code", 1);
+            jsonResponse.put("message", ExceptionUtils.getMessage(e));
+        }
+        return jsonResponse.toJSONString();
+    }
+
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String all(String dateStart, String dateEnd, String auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException {

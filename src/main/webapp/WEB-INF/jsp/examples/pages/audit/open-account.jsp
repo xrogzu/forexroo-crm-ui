@@ -148,13 +148,13 @@
 		                                            <li class="dropdown-submenu dropdown-menu-left">\n\
 		                                                <a href="javascript:;" tabindex="-1">拒绝</a>\n\
 		                                                <ul class="dropdown-menu" role="menu">\n\
-		                                                    <li role="presentation">\n\
-		                                                        <a href="javascript:;" role="menuitem" tabindex="-1" onclick="auditFail(1);">\n\
+		                                                    <li role="presentation" class="audit-fail-menu" data-reason="1">\n\
+		                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
 		                                                            手持身份证照不清晰\n\
 		                                                        </a>\n\
 		                                                    </li>\n\
-		                                                    <li role="presentation">\n\
-		                                                        <a href="javascript:;" role="menuitem" tabindex="-1" onclick="auditFail(2);">\n\
+		                                                    <li role="presentation" class="audit-fail-menu" data-reason="2">\n\
+		                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
 		                                                            签名不清晰\n\
 		                                                        </a>\n\
 		                                                    </li>\n\
@@ -183,17 +183,28 @@
 					    });
 			        	$('#table li.audit-success-menu').click(function() {
 					        var tr = $(this).closest('tr');
-					        var row = $('#table').DataTable().row(tr);
-					        var rowData = row.data();
-					        $.get('${ctx}/dealer/auditSuccess', {
-					        	"id": rowData.id
-					        }, function(data) {
+					        var rowData = $('#table').DataTable().row(tr).data();
+					        $.get('${ctx}/dealer/auditSuccess', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
 									return;
 								}
-								console.dir(data);
 						        rowData.mt4RealAccount = data.mt4RealAccount;
+						        rowData.openAccountStatus = data.openAccountStatus;
+						        rowData.openAccountAuditTimestamp = data.openAccountAuditTimestamp;
+						        row.data(rowData);
+							});
+					    });
+			        	$('#table li.audit-fail-menu').click(function() {
+			        		var li = $(this);
+			        		var reason = li.data('reason');
+					        var tr = li.closest('tr');
+					        var rowData = $('#table').DataTable().row(tr).data();
+					        $.get('${ctx}/dealer/auditFail', { "id": rowData.id, "reason": reason }, function(data) {
+								if (data.code != 0) {
+									alert('Error: ' + data.message);
+									return;
+								}
 						        rowData.openAccountStatus = data.openAccountStatus;
 						        rowData.openAccountAuditTimestamp = data.openAccountAuditTimestamp;
 						        row.data(rowData);
