@@ -3,6 +3,7 @@ package com.github.xuzw.forexroo_crm_ui.utils;
 import java.util.Date;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
@@ -20,8 +21,14 @@ public class OssUtils {
     }
 
     public static String generatePresignedUrl(String key) {
-        Date expiration = new Date(new Date().getTime() + 3600 * 1000);
-        return client.generatePresignedUrl(bucketName, key, expiration).toString();
+        return client.generatePresignedUrl(bucketName, key, new Date(new Date().getTime() + 3600 * 1000)).toString();
+    }
+
+    public static String generatePresignedUrl(String key, String process) {
+        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucketName, key);
+        req.setExpiration(new Date(new Date().getTime() + 3600 * 1000));
+        req.setProcess(process);
+        return client.generatePresignedUrl(req).toString();
     }
 
     public static void shutdown() {

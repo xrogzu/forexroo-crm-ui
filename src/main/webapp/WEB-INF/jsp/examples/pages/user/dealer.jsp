@@ -83,14 +83,14 @@
 					    }
 					},
 					"columns": [
-					    {"data": null, "defaultContent": ""},
+					    {"data": "avatar", "defaultContent": "暂无数据"},
 					    {"data": "nickname", "defaultContent": "暂无数据"},
 					    {"data": "openAccountRealname", "defaultContent": "暂无数据"},
 					    {"data": "phone", "defaultContent": "暂无数据"},
 					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
 					    {"data": "registerTime", "defaultContent": "暂无数据"},
 					    {"data": "openAccountAuditSuccessTime", "defaultContent": "暂未审核"},
-					    {"data": null, "defaultContent": ""},
+					    {"data": "status", "defaultContent": ""},
 					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
 					    {"data": "myAgentName", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": "", "class": 'details-control'},
@@ -100,7 +100,7 @@
 			            {
 			                "render": function (data, type, row, meta) {
 			                	if (data) {
-				                	return '<img height="39" src="'+data+'"/>';
+				                	return '<img height="25" src="'+data+'"/>';
 			                	}
 			                },
 			                "targets": 0
@@ -116,10 +116,10 @@
 			            {
 			                "render": function (data, type, row, meta) {
 			                	switch (data) {
-			                	case 0: return '未开户';
-			                	case 1: return '<span style="color:#ff7000;">审核中</span>';
-			                	case 2: return '<span style="color:#00c69a;">审核成功</span>';
-			                	case 3: return '<span style="color:#9b9b9b;">审核失败</span>';
+			                	case 0: return '<span style="color:#ff7000;">注册</span>';
+			                	case 1: return '<span style="color:#00c69a;">正常</span>';
+			                	case 2: return '<span style="color:#9b9b9b;">销户</span>';
+			                	case 3: return '<span style="color:#ff6350;">禁用</span>';
 			                	}
 			                },
 			                "targets": 7
