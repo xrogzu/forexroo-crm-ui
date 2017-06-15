@@ -101,9 +101,9 @@
 					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
 					    {"data": "openAccountStatus", "defaultContent": "暂无数据"},
 					    {"data": "openAccountAuditTimestamp", "defaultContent": "暂未审核"},
-					    {"data": "openAccountAuditUserId", "defaultContent": "暂无数据"},
-					    {"data": "myBroker", "defaultContent": "暂无数据"},
-					    {"data": "myAgent", "defaultContent": "暂无数据"},
+					    {"data": "openAccountAuditUserName", "defaultContent": "暂无数据"},
+					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
+					    {"data": "myAgentName", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": "", "class": 'details-control'}
 					],
 					"columnDefs": [
@@ -193,6 +193,7 @@
 						        rowData.mt4RealAccount = data.mt4RealAccount;
 						        rowData.openAccountStatus = data.openAccountStatus;
 						        rowData.openAccountAuditTimestamp = data.openAccountAuditTimestamp;
+						        rowData.openAccountAuditUserName = data.openAccountAuditUserName;
 						        row.data(rowData);
 							});
 					    });
@@ -209,6 +210,7 @@
 								}
 						        rowData.openAccountStatus = data.openAccountStatus;
 						        rowData.openAccountAuditTimestamp = data.openAccountAuditTimestamp;
+						        rowData.openAccountAuditUserName = data.openAccountAuditUserName;
 						        row.data(rowData);
 							});
 					    });

@@ -65,17 +65,19 @@ public class DealerController extends BaseController {
             String mt4RealAccount = resp.getString("login");
             int openAccountStatus = OpenAccountStatusEnum.auditing_success.getValue();
             long openAccountAuditTimestamp = System.currentTimeMillis();
+            String openAccountAuditUserName = loginUser.getLoginName();
             Map<Field<?>, Object> map = new HashMap<>();
             map.put(USER.MT4_REAL_ACCOUNT, mt4RealAccount);
             map.put(USER.OPEN_ACCOUNT_STATUS, openAccountStatus);
             map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
             map.put(USER.OPEN_ACCOUNT_AUDIT_USER_ID, loginUser.getUserId());
-            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, loginUser.getLoginName());
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, openAccountAuditUserName);
             DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
             jsonResponse.put("code", 0);
             jsonResponse.put("mt4RealAccount", mt4RealAccount);
             jsonResponse.put("openAccountStatus", openAccountStatus);
             jsonResponse.put("openAccountAuditTimestamp", openAccountAuditTimestamp);
+            jsonResponse.put("openAccountAuditUserName", openAccountAuditUserName);
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -96,17 +98,19 @@ public class DealerController extends BaseController {
             }
             int openAccountStatus = OpenAccountStatusEnum.auditing_fail.getValue();
             long openAccountAuditTimestamp = System.currentTimeMillis();
+            String openAccountAuditUserName = loginUser.getLoginName();
             Map<Field<?>, Object> map = new HashMap<>();
             map.put(USER.OPEN_ACCOUNT_AUDIT_FAIL_REASON, reason);
             map.put(USER.OPEN_ACCOUNT_STATUS, openAccountStatus);
             map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
             map.put(USER.OPEN_ACCOUNT_AUDIT_USER_ID, loginUser.getUserId());
-            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, loginUser.getLoginName());
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, openAccountAuditUserName);
             DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
             jsonResponse.put("code", 0);
             jsonResponse.put("openAccountAuditFailReason", reason);
             jsonResponse.put("openAccountStatus", openAccountStatus);
             jsonResponse.put("openAccountAuditTimestamp", openAccountAuditTimestamp);
+            jsonResponse.put("openAccountAuditUserName", openAccountAuditUserName);
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
