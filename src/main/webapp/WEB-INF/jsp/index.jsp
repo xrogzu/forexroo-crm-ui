@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="${ctx}/public/vendor/animsition/animsition.css">
     <link rel="stylesheet" href="${ctx}/public/vendor/toastr/toastr.css">
     
+    <!-- dataTables CSS -->
+	<link rel="stylesheet" href="${ctx}/public/vendor/datatables-bootstrap/dataTables.bootstrap.css">
+	<link rel="stylesheet" href="${ctx}/public/vendor/datatables-fixedheader/dataTables.fixedHeader.css">
+	<link rel="stylesheet" href="${ctx}/public/vendor/datatables-responsive/dataTables.responsive.css">
+	
     <script src="${ctx}/public/vendor/jquery/jquery.min.js"></script>
     <script src="${ctx}/public/vendor/bootstrap/bootstrap.min.js"></script>
     
@@ -288,6 +293,11 @@
 <script src="${ctx}/public/vendor/screenfull/screenfull.min.js"></script>
 
 <script src="${ctx}/public/js/notify-msg.js"></script>
+
+<!-- dataTables -->
+<script src="${ctx}/public/vendor/datatables/jquery.dataTables.min.js" data-name="dataTables"></script>
+<script src="${ctx}/public/vendor/datatables-bootstrap/dataTables.bootstrap.min.js" data-deps="dataTables"></script>
+<script src="${ctx}/public/vendor/datatables-responsive/dataTables.responsive.min.js" data-deps="dataTables"></script>
 </body>
 </html>
 

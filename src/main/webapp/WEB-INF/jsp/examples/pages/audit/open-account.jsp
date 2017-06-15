@@ -3,19 +3,12 @@
 
 <title>交易商开户申请审核</title>
 
-<link rel="stylesheet" href="${ctx}/public/vendor/datatables-bootstrap/dataTables.bootstrap.css">
-<link rel="stylesheet" href="${ctx}/public/vendor/datatables-fixedheader/dataTables.fixedHeader.css">
-<link rel="stylesheet" href="${ctx}/public/vendor/datatables-responsive/dataTables.responsive.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/highlight.css">
-<link rel="stylesheet" href="${ctx}/public/css/examples/tables/data-tables/examples.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-select/bootstrap-select.css">
 
-<script src="${ctx}/public/vendor/datatables/jquery.dataTables.min.js" data-name="dataTables"></script>
-<script src="${ctx}/public/vendor/datatables-bootstrap/dataTables.bootstrap.min.js" data-deps="dataTables"></script>
-<script src="${ctx}/public/vendor/datatables-responsive/dataTables.responsive.min.js" data-deps="dataTables"></script>
 <script src="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" data-name="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" data-deps="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-select/bootstrap-select.min.js"></script>
