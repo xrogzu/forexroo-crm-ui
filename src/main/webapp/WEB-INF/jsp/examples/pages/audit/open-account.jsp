@@ -183,7 +183,8 @@
 					    });
 			        	$('#table li.audit-success-menu').click(function() {
 					        var tr = $(this).closest('tr');
-					        var rowData = $('#table').DataTable().row(tr).data();
+					        var row = $('#table').DataTable().row(tr);
+					        var rowData = row.data();
 					        $.get('${ctx}/dealer/auditSuccess', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
@@ -199,7 +200,8 @@
 			        		var li = $(this);
 			        		var reason = li.data('reason');
 					        var tr = li.closest('tr');
-					        var rowData = $('#table').DataTable().row(tr).data();
+					        var row = $('#table').DataTable().row(tr);
+					        var rowData = row.data();
 					        $.get('${ctx}/dealer/auditFail', { "id": rowData.id, "reason": reason }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
