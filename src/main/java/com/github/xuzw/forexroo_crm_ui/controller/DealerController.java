@@ -33,6 +33,7 @@ import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
 
 import cn.ermei.admui.controller.BaseController;
+import cn.ermei.admui.vo.UserVo;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
@@ -45,6 +46,7 @@ public class DealerController extends BaseController {
     @RequestMapping(value = "/auditSuccess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String auditSuccess(Long id) {
+        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
         JSONObject jsonResponse = new JSONObject();
         try {
             UserDao userDao = new UserDao(Jooq.buildConfiguration());
@@ -67,6 +69,8 @@ public class DealerController extends BaseController {
             map.put(USER.MT4_REAL_ACCOUNT, mt4RealAccount);
             map.put(USER.OPEN_ACCOUNT_STATUS, openAccountStatus);
             map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_ID, loginUser.getUserId());
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, loginUser.getLoginName());
             DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
             jsonResponse.put("code", 0);
             jsonResponse.put("mt4RealAccount", mt4RealAccount);
@@ -82,6 +86,7 @@ public class DealerController extends BaseController {
     @RequestMapping(value = "/auditFail", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String auditFail(Long id, Integer reason) {
+        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
         JSONObject jsonResponse = new JSONObject();
         try {
             UserDao userDao = new UserDao(Jooq.buildConfiguration());
@@ -95,6 +100,8 @@ public class DealerController extends BaseController {
             map.put(USER.OPEN_ACCOUNT_AUDIT_FAIL_REASON, reason);
             map.put(USER.OPEN_ACCOUNT_STATUS, openAccountStatus);
             map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_ID, loginUser.getUserId());
+            map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, loginUser.getLoginName());
             DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
             jsonResponse.put("code", 0);
             jsonResponse.put("openAccountAuditFailReason", reason);
