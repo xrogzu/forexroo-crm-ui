@@ -2,15 +2,15 @@ package com.github.xuzw.forexroo_crm_ui.database.model;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
- * @time 2017年6月6日 上午10:56:49
+ * @time 2017年6月15日 上午10:37:02
  */
-public enum BrokerRequestStatusEnum implements NamedValue {
-    not(0, "未申请"), auditing(1, "审核中"), auditing_success(2, "审核成功"), auditing_fail(3, "审核失败");
+public enum OpenAccountAuditFailReasonEnum implements NamedValue {
+    unknown(0, "未知"), picture_not_clear(1, "手持身份证照不清晰"), sign_not_clear(2, "签名不清晰");
 
     private int value;
     private String comment;
 
-    private BrokerRequestStatusEnum(int value, String comment) {
+    private OpenAccountAuditFailReasonEnum(int value, String comment) {
         this.value = value;
         this.comment = comment;
     }

@@ -121,6 +121,33 @@ public class DealerController extends BaseController {
         return jsonResponse.toJSONString();
     }
 
+    @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        Integer offset = criterias.getStart();
+        Integer numberOfRows = criterias.getLength();
+        String search = "%" + searchKeyword + "%";
+        DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
+        Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
+        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
+        Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
+        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
+        for (User user : rows) {
+            if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
+                user.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(user.getOpenAccountPictureUrl()));
+            }
+            if (StringUtils.isNoneBlank(user.getOpenAccountSignUrl())) {
+                user.setOpenAccountSignUrl(OssUtils.generatePresignedUrl(user.getOpenAccountSignUrl()));
+            }
+        }
+        long totalRecords = db.fetchCount(USER);
+        long totalDisplayRecords = db.fetchCount(USER, finalCondition);
+        return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
+    }
+
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String all(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
@@ -135,12 +162,15 @@ public class DealerController extends BaseController {
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
         List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
-        for (User extUser : rows) {
-            if (StringUtils.isNoneBlank(extUser.getOpenAccountPictureUrl())) {
-                extUser.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountPictureUrl()));
+        for (User user : rows) {
+            if (StringUtils.isNoneBlank(user.getAvatar())) {
+                user.setAvatar(OssUtils.generatePresignedUrl(user.getAvatar()));
             }
-            if (StringUtils.isNoneBlank(extUser.getOpenAccountSignUrl())) {
-                extUser.setOpenAccountSignUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountSignUrl()));
+            if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
+                user.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(user.getOpenAccountPictureUrl()));
+            }
+            if (StringUtils.isNoneBlank(user.getOpenAccountSignUrl())) {
+                user.setOpenAccountSignUrl(OssUtils.generatePresignedUrl(user.getOpenAccountSignUrl()));
             }
         }
         long totalRecords = db.fetchCount(USER);

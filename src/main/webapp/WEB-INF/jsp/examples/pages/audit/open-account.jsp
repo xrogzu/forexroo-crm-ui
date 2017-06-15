@@ -81,7 +81,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/dealer/all",
+					    "url": "${ctx}/dealer/auditList",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -128,7 +128,7 @@
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
-			                	if (row.openAccountStatus == '2') {
+			                	if (row.openAccountStatus == '1') {
 				                	return '<div class="dropdown">\n\
 				                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" id="exampleLeftDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">\n\
 				                                审核 <span class="caret"></span>\n\

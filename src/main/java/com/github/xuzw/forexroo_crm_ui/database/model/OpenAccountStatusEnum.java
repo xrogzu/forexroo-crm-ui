@@ -5,7 +5,7 @@ package com.github.xuzw.forexroo_crm_ui.database.model;
  * @time 2017年6月6日 上午10:39:12
  */
 public enum OpenAccountStatusEnum implements NamedValue {
-    not(0, "未开户"), opening(1, "开户中"), auditing(2, "审核中"), auditing_success(3, "审核成功"), auditing_fail(4, "审核失败");
+    not(0, "未开户"), auditing(1, "审核中"), auditing_success(2, "审核成功"), auditing_fail(3, "审核失败");
 
     private int value;
     private String comment;
