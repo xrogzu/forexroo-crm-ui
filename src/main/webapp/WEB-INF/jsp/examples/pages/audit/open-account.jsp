@@ -122,7 +122,7 @@
 			            {
 			                "render": function (data, type, row, meta) {
 			                	if (data) {
-				                	return getTime('$Y-$m-$d $h:$i:$s', new Date(data));
+				                	return getTime('$Y-$m-$d', new Date(data));
 			                	}
 			                },
 			                "targets": 4
