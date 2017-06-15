@@ -3,6 +3,7 @@ package com.github.xuzw.forexroo_crm_ui.controller;
 import static com.github.xuzw.forexroo.entity.Tables.USER;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import com.github.xuzw.forexroo.entity.tables.pojos.User;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
+import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
 import cn.ermei.admui.controller.BaseController;
 import cn.ermei.admui.vo.UserVo;
@@ -120,14 +122,18 @@ public class DealerController extends BaseController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String all(String dateStart, String dateEnd, String auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException {
+    public String all(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
-        Condition condition = USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        List<User> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(User.class);
+        Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
+        Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
+        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
+        Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
+        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
         for (User extUser : rows) {
             if (StringUtils.isNoneBlank(extUser.getOpenAccountPictureUrl())) {
                 extUser.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountPictureUrl()));
@@ -137,7 +143,7 @@ public class DealerController extends BaseController {
             }
         }
         long totalRecords = db.fetchCount(USER);
-        long totalDisplayRecords = db.fetchCount(USER, condition);
+        long totalDisplayRecords = db.fetchCount(USER, finalCondition);
         return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
     }
 }

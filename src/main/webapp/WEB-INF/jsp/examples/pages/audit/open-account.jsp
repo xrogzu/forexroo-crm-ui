@@ -34,20 +34,22 @@
 	                    </div>
 	                    <div class="form-group">
 	                    	<select class="form-control" data-plugin="selectpicker" id="auditStatus">
-                                <option value="0">审核状态</option>
-                                <option value="1">未审核</option>
-                                <option value="2">已审核</option>
-                                <option value="3">已拒绝</option>
+                                <option value="">审核状态</option>
+                                <option value="0">未开户</option>
+								<option value="1">开户中</option>
+								<option value="2">审核中</option>
+								<option value="3">审核成功</option>
+								<option value="4">审核失败</option>
                             </select>
 	                    </div>
 	                    <div class="form-group">
-	                        <button type="button" class="btn btn-primary btn-outline" onclick="window.location.reload();">重置</button>
+	                        <button id="resetButton" type="button" class="btn btn-primary btn-outline">重置</button>
 	                    </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="searchKeyword" placeholder="请输入关键词...">
                                 <span class="input-group-btn">
-                  					<button type="button" class="btn btn-primary"><i class="icon wb-search" aria-hidden="true"></i></button>
+                  					<button id="searchButton" type="button" class="btn btn-primary"><i class="icon wb-search" aria-hidden="true"></i></button>
                 				</span>
                             </div>
                         </div>
@@ -206,6 +208,13 @@
 						        rowData.openAccountAuditUserName = data.openAccountAuditUserName;
 						        row.data(rowData);
 							});
+					    });
+			        	$('#resetButton').click(function() {
+			        		window.location.reload();
+					    });
+			        	$('#searchButton').click(function() {
+					        var table = $('#table').DataTable();
+					        table.ajax.reload(null, false);
 					    });
 			        }
 				}));

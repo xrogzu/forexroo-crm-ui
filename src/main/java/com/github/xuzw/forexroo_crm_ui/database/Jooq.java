@@ -1,11 +1,16 @@
 package com.github.xuzw.forexroo_crm_ui.database;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.jooq.Condition;
 import org.jooq.Configuration;
+import org.jooq.Operator;
 import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -25,5 +30,23 @@ public class Jooq {
 
     public static Configuration buildConfiguration() throws SQLException {
         return buildConfiguration(ApplicationContextHolder.get().getBean(DruidDataSource.class));
+    }
+
+    public static Condition and(Condition... conditions) {
+        return condition(Operator.AND, conditions);
+    }
+
+    public static Condition or(Condition... conditions) {
+        return condition(Operator.OR, conditions);
+    }
+
+    public static Condition condition(Operator operator, Condition... conditions) {
+        List<Condition> list = new ArrayList<>();
+        for (Condition x : conditions) {
+            if (x != null) {
+                list.add(x);
+            }
+        }
+        return DSL.condition(operator, list);
     }
 }
