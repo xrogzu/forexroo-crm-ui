@@ -74,6 +74,7 @@ public class DealerController extends BaseController {
             map.put(USER.OPEN_ACCOUNT_AUDIT_TIMESTAMP, openAccountAuditTimestamp);
             map.put(USER.OPEN_ACCOUNT_AUDIT_USER_ID, loginUser.getUserId());
             map.put(USER.OPEN_ACCOUNT_AUDIT_USER_NAME, openAccountAuditUserName);
+            map.put(USER.OPEN_ACCOUNT_AUDIT_SUCCESS_TIME, openAccountAuditTimestamp);
             DSL.using(Jooq.buildConfiguration()).update(USER).set(map).where(USER.ID.equal(user.getId())).execute();
             jsonResponse.put("code", 0);
             jsonResponse.put("mt4RealAccount", mt4RealAccount);
