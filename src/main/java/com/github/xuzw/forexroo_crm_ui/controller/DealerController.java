@@ -116,8 +116,8 @@ public class DealerController extends BaseController {
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
         Condition condition = USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        List<ExtUser> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
-        for (ExtUser extUser : rows) {
+        List<User> rows = db.selectFrom(USER).where(condition).limit(offset, numberOfRows).fetchInto(User.class);
+        for (User extUser : rows) {
             if (StringUtils.isNoneBlank(extUser.getOpenAccountPictureUrl())) {
                 extUser.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(extUser.getOpenAccountPictureUrl()));
             }
@@ -128,36 +128,5 @@ public class DealerController extends BaseController {
         long totalRecords = db.fetchCount(USER);
         long totalDisplayRecords = db.fetchCount(USER, condition);
         return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
-    }
-
-    public static class ExtUser extends User {
-        private static final long serialVersionUID = 1L;
-        private String myBrokerNickname;
-        private String myAgentName;
-        private Integer openAccountAuditUserName;
-
-        public String getMyBrokerNickname() {
-            return myBrokerNickname;
-        }
-
-        public void setMyBrokerNickname(String myBrokerNickname) {
-            this.myBrokerNickname = myBrokerNickname;
-        }
-
-        public String getMyAgentName() {
-            return myAgentName;
-        }
-
-        public void setMyAgentName(String myAgentName) {
-            this.myAgentName = myAgentName;
-        }
-
-        public Integer getOpenAccountAuditUserName() {
-            return openAccountAuditUserName;
-        }
-
-        public void setOpenAccountAuditUserName(Integer openAccountAuditUserName) {
-            this.openAccountAuditUserName = openAccountAuditUserName;
-        }
     }
 }
