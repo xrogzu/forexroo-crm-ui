@@ -8,12 +8,15 @@
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/highlight.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/bootstrap-select/bootstrap-select.css">
+<link rel="stylesheet" href="${ctx}/public/vendor/formvalidation/formValidation.css">
 
 <script src="${ctx}/public/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" data-name="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" data-deps="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-select/bootstrap-select.min.js"></script>
 <script src="${ctx}/public/vendor/timeformatter/timeformatter.js"></script>
 <script src="${ctx}/public/vendor/bootbox/bootbox.min.js"></script>
+<script src="${ctx}/public/vendor/formvalidation/formValidation.min.js" data-name="formValidation"></script>
+<script src="${ctx}/public/vendor/formvalidation/framework/bootstrap.min.js" data-deps="formValidation"></script>
 
 <div class="page animation-fade page-blank">
     <div class="page-content">
@@ -169,66 +172,82 @@
 			        	$('#createAgentButton').click(function() {
 			        		bootbox.dialog({
 		                        title: "创建代理商",
-		                        message: '<form class="form-horizontal">\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="name">代理商名称</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="name" name="name" placeholder="请输入代理商名称"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="bankDetailOpeningBank">开户银行</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="bankDetailOpeningBank" name="bankDetailOpeningBank" placeholder="请输入开户银行"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="bankDetailOpeningBankAddress">开户地</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="bankDetailOpeningBankAddress" name="bankDetailOpeningBankAddress" placeholder="请输入开户地"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="bankDetailAccountNumber"银行账号</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="bankDetailAccountNumber" name="bankDetailAccountNumber" placeholder="请输入银行账号"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="account">登录账号</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="account" name="account" placeholder="请输入登录账号"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-				                        <div class="form-group">\n\
-				                        	<label class="col-md-4 control-label" for="password">登录密码</label>\n\
-					                        <div class="col-md-6">\n\
-					                        	<input type="text" class="form-control input-md" id="password" name="password" placeholder="请输入登录密码"/>\n\
-					                        </div>\n\
-				                        </div>\n\
-			                        </form>',
+		                        message: '<form class="form-horizontal" id="createAgentForm" autocomplete="off">\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">代理商名称</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="name" name="name" placeholder="请输入代理商名称" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">开户银行</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="bankDetailOpeningBank" name="bankDetailOpeningBank" placeholder="请输入开户银行" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">开户地</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="bankDetailOpeningBankAddress" name="bankDetailOpeningBankAddress" placeholder="请输入开户地" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">银行账号</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="bankDetailAccountNumber" name="bankDetailAccountNumber" placeholder="请输入银行账号" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">登录账号</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="account" name="account" placeholder="请输入登录账号" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                            <div class="form-group">\n\
+		                                <label class="col-sm-3 control-label">登录密码</label>\n\
+		                                <div class="col-sm-9">\n\
+		                                    <input type="text" class="form-control" id="password" name="password" placeholder="请输入登录密码" data-fv-notempty="true" data-fv-notempty-message="必填项">\n\
+		                                </div>\n\
+		                            </div>\n\
+		                        </form>',
 		                        buttons: {
-		                            success: {
-		                                label: "保存",
-		                                className: "btn-success",
-		                                callback: function () {
-		                                	var args = {
-		                                		"name": $('#name').val(),
-		                                		"bankDetailOpeningBank": $('#bankDetailOpeningBank').val(),
-		                                		"bankDetailOpeningBankAddress": $('#bankDetailOpeningBankAddress').val(),
-		                                		"bankDetailAccountNumber": $('#bankDetailAccountNumber').val(),
-		                                		"account": $('#account').val(),
-		                                		"password": $('#password').val()
-		                                	};
-		                                	$.get('${ctx}/agent/create', args, function(data) {
-		        								if (data.code != 0) {
-		        									alert('Error: ' + data.message);
-		        									return;
-		        								}
-			                                    toastr.info('创建成功');
-		        							});
+		                            confirm: {
+		                                label: '确定',
+		                                className: 'btn-success create-agent-submit-button',
+		                                callback: function() {
+		                                	var closeDialog = true;
+		                                	$('#createAgentForm').formValidation({
+		                    	                button: {
+		                    	                    selector: '.create-agent-submit-button',
+		                    	                    disabled: 'disabled'
+		                    	                }
+		                    	            });
+		                    		    	var form = $('#createAgentForm').data('formValidation');
+		                    		    	form.validate();
+		                    		    	if (form.isValid()) {
+		                    	            	var args = {
+		                    	            		"name": $('#name').val(),
+		                    	            		"bankDetailOpeningBank": $('#bankDetailOpeningBank').val(),
+		                    	            		"bankDetailOpeningBankAddress": $('#bankDetailOpeningBankAddress').val(),
+		                    	            		"bankDetailAccountNumber": $('#bankDetailAccountNumber').val(),
+		                    	            		"account": $('#account').val(),
+		                    	            		"password": $('#password').val()
+		                    	            	};
+		                    	            	$.get('${ctx}/agent/create', args, function(data) {
+		                    						if (data.code != 0) {
+		                    							alert('Error: ' + data.message);
+		                    						} else {
+			                    	                    toastr.info('创建成功');
+			                    	                    window.location.reload();
+		                    						}
+		                    					});
+		                    		    	} else {
+			                    		    	closeDialog = false;
+		                    		    	}
+		                                	return closeDialog;
 		                                }
-		                            }
+		                            },
+		                            cancel: { label: '取消', className: 'btn-danger' }
 		                        }
 		                    });
 					    });

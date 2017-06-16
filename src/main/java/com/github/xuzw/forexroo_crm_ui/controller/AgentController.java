@@ -48,6 +48,9 @@ public class AgentController extends BaseController {
         UserVo loginUser = (UserVo) session.getAttribute("loginUser");
         JSONObject jsonResponse = new JSONObject();
         try {
+            if (StringUtils.isBlank(name)) {
+                throw new Exception("缺失必填项");
+            }
             AgentDao agentDao = new AgentDao(Jooq.buildConfiguration());
             Agent agent = new Agent();
             agent.setName(name);
@@ -60,6 +63,7 @@ public class AgentController extends BaseController {
             agent.setCreatorUserId(loginUser.getUserId());
             agent.setCreatorUserName(loginUser.getLoginName());
             agentDao.insert(agent);
+            jsonResponse.put("code", 0);
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
