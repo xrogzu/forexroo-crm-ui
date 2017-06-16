@@ -13,6 +13,7 @@
 <script src="${ctx}/public/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" data-deps="datepicker"></script>
 <script src="${ctx}/public/vendor/bootstrap-select/bootstrap-select.min.js"></script>
 <script src="${ctx}/public/vendor/timeformatter/timeformatter.js"></script>
+<script src="${ctx}/public/vendor/bootbox/bootbox.min.js"></script>
 
 <div class="page animation-fade page-blank">
     <div class="page-content">
@@ -43,6 +44,9 @@
                 				</span>
                             </div>
                         </div>
+	                    <div class="form-group">
+	                        <button id="createAgentButton" type="button" class="btn btn-primary btn-outline">创建代理商</button>
+	                    </div>
 	                </form>
 		        </h3>
 		    </div>
@@ -161,6 +165,72 @@
 			        	$('#searchButton').click(function() {
 					        var table = $('#table').DataTable();
 					        table.ajax.reload(null, false);
+					    });
+			        	$('#createAgentButton').click(function() {
+			        		bootbox.dialog({
+		                        title: "创建代理商",
+		                        message: '<form class="form-horizontal">\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="name">代理商名称</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="name" name="name" placeholder="请输入代理商名称"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="bankDetailOpeningBank">开户银行</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="bankDetailOpeningBank" name="bankDetailOpeningBank" placeholder="请输入开户银行"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="bankDetailOpeningBankAddress">开户地</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="bankDetailOpeningBankAddress" name="bankDetailOpeningBankAddress" placeholder="请输入开户地"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="bankDetailAccountNumber"银行账号</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="bankDetailAccountNumber" name="bankDetailAccountNumber" placeholder="请输入银行账号"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="account">登录账号</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="account" name="account" placeholder="请输入登录账号"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+				                        <div class="form-group">\n\
+				                        	<label class="col-md-4 control-label" for="password">登录密码</label>\n\
+					                        <div class="col-md-6">\n\
+					                        	<input type="text" class="form-control input-md" id="password" name="password" placeholder="请输入登录密码"/>\n\
+					                        </div>\n\
+				                        </div>\n\
+			                        </form>',
+		                        buttons: {
+		                            success: {
+		                                label: "保存",
+		                                className: "btn-success",
+		                                callback: function () {
+		                                	var args = {
+		                                		"name": $('#name').val(),
+		                                		"bankDetailOpeningBank": $('#bankDetailOpeningBank').val(),
+		                                		"bankDetailOpeningBankAddress": $('#bankDetailOpeningBankAddress').val(),
+		                                		"bankDetailAccountNumber": $('#bankDetailAccountNumber').val(),
+		                                		"account": $('#account').val(),
+		                                		"password": $('#password').val()
+		                                	};
+		                                	$.get('${ctx}/agent/create', args, function(data) {
+		        								if (data.code != 0) {
+		        									alert('Error: ' + data.message);
+		        									return;
+		        								}
+			                                    toastr.info('创建成功');
+		        							});
+		                                }
+		                            }
+		                        }
+		                    });
 					    });
 			        }
 				}));

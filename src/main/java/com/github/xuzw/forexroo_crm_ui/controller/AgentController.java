@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+import com.github.xuzw.forexroo.entity.tables.daos.AgentDao;
+import com.github.xuzw.forexroo.entity.tables.pojos.Agent;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 import com.github.xuzw.forexroo_crm_ui.database.model.AgentStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.BooleanEnum;
@@ -28,6 +32,7 @@ import com.github.xuzw.forexroo_crm_ui.database.model.ExtAgent;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
 import cn.ermei.admui.controller.BaseController;
+import cn.ermei.admui.vo.UserVo;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
@@ -36,6 +41,31 @@ import cn.ermei.admui.controller.BaseController;
 @Controller
 @RequestMapping("/agent")
 public class AgentController extends BaseController {
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String create(String name, String bankDetailOpeningBank, String bankDetailOpeningBankAddress, String bankDetailAccountNumber, String account, String password, HttpServletRequest request) throws SQLException, ParseException {
+        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+        JSONObject jsonResponse = new JSONObject();
+        try {
+            AgentDao agentDao = new AgentDao(Jooq.buildConfiguration());
+            Agent agent = new Agent();
+            agent.setName(name);
+            agent.setBankDetailOpeningBank(bankDetailOpeningBankAddress);
+            agent.setBankDetailOpeningBankAddress(bankDetailOpeningBankAddress);
+            agent.setBankDetailAccountNumber(bankDetailAccountNumber);
+            agent.setAccount(account);
+            agent.setPassword(password);
+            agent.setRegisterTime(System.currentTimeMillis());
+            agent.setCreatorUserId(loginUser.getUserId());
+            agent.setCreatorUserName(loginUser.getLoginName());
+            agentDao.insert(agent);
+        } catch (Exception e) {
+            jsonResponse.put("code", 1);
+            jsonResponse.put("message", ExceptionUtils.getMessage(e));
+        }
+        return jsonResponse.toJSONString();
+    }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
