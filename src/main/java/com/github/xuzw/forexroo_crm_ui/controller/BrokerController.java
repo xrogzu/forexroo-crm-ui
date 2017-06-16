@@ -29,8 +29,11 @@ import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import com.github.xuzw.forexroo.entity.tables.daos.UserDao;
 import com.github.xuzw.forexroo.entity.tables.pojos.User;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
+import com.github.xuzw.forexroo_crm_ui.database.model.BooleanEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.BrokerRequestStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.database.model.ExtUser;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.database.model.UserStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
@@ -125,6 +128,42 @@ public class BrokerController extends BaseController {
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
         List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
         for (User user : rows) {
+            if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
+                user.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(user.getOpenAccountPictureUrl(), "image/resize,h_150"));
+            }
+            if (StringUtils.isNoneBlank(user.getBrokerRequestSignUrl())) {
+                user.setBrokerRequestSignUrl(OssUtils.generatePresignedUrl(user.getBrokerRequestSignUrl(), "image/resize,h_150/rotate,270"));
+            }
+        }
+        long totalRecords = db.fetchCount(USER);
+        long totalDisplayRecords = db.fetchCount(USER, finalCondition);
+        return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String all(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        Integer offset = criterias.getStart();
+        Integer numberOfRows = criterias.getLength();
+        String search = "%" + searchKeyword + "%";
+        DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
+        Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
+        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
+        Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
+        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        List<ExtUser> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
+        for (ExtUser user : rows) {
+            if (user.getIsDisable() == BooleanEnum.yes.getValue()) {
+                user.setStatus(UserStatusEnum.disable.getValue());
+            } else if (user.getIsClosing() == BooleanEnum.yes.getValue()) {
+                user.setStatus(UserStatusEnum.closing.getValue());
+            } else if (user.getOpenAccountStatus() == OpenAccountStatusEnum.auditing_success.getValue()) {
+                user.setStatus(UserStatusEnum.normal.getValue());
+            } else {
+                user.setStatus(UserStatusEnum.register.getValue());
+            }
             if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
                 user.setOpenAccountPictureUrl(OssUtils.generatePresignedUrl(user.getOpenAccountPictureUrl(), "image/resize,h_150"));
             }

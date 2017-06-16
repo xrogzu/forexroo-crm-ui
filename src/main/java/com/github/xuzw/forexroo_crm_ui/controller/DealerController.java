@@ -31,6 +31,7 @@ import com.github.xuzw.forexroo.entity.tables.daos.UserDao;
 import com.github.xuzw.forexroo.entity.tables.pojos.User;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 import com.github.xuzw.forexroo_crm_ui.database.model.BooleanEnum;
+import com.github.xuzw.forexroo_crm_ui.database.model.ExtUser;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.UserStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
@@ -187,18 +188,5 @@ public class DealerController extends BaseController {
         long totalRecords = db.fetchCount(USER);
         long totalDisplayRecords = db.fetchCount(USER, finalCondition);
         return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
-    }
-
-    public static class ExtUser extends User {
-        private static final long serialVersionUID = 1L;
-        private int status;
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
     }
 }

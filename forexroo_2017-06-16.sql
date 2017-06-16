@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-16 08:42:30 +0000
+# Generation Time: 2017-06-16 09:09:02 +0000
 # ************************************************************
 
 
@@ -215,6 +215,19 @@ CREATE TABLE `my_symbol` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `my_symbol` WRITE;
+/*!40000 ALTER TABLE `my_symbol` DISABLE KEYS */;
+
+INSERT INTO `my_symbol` (`symbol`, `user_id`, `time`, `id`)
+VALUES
+	('EURUSD',18000100,1497602693377,1),
+	('USDJPY',18000100,1497602693377,2),
+	('AUDUSD',18000100,1497602693377,3),
+	('XAUUSD',18000100,1497602693377,4),
+	('UKOUSD',18000100,1497602693377,5);
+
+/*!40000 ALTER TABLE `my_symbol` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table schema_version
@@ -458,7 +471,9 @@ VALUES
 	(375,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=dbab ]',1,'2017-06-16 14:24:27','0:0:0:0:0:0:0:1'),
 	(376,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 15:10:50','117.114.192.50'),
 	(377,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 15:24:45','117.114.192.50'),
-	(378,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 16:11:37','117.114.192.50');
+	(378,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 16:11:37','117.114.192.50'),
+	(379,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zn8r ]',1,'2017-06-16 16:55:24','0:0:0:0:0:0:0:1'),
+	(380,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=aaw5 ]',1,'2017-06-16 16:56:29','0:0:0:0:0:0:0:1');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -544,7 +559,8 @@ VALUES
 	(11322,'风险监控',11321,'1101','','',1,'2017-06-16 13:22:19',NULL,NULL),
 	(11323,'交易商监控',11322,'110101','fa-bars','/pages/risk/dealer',1,'2017-06-16 13:22:19',NULL,NULL),
 	(11324,'持仓监控',11322,'110102','fa-bars','/pages/risk/order',1,'2017-06-16 13:29:19',NULL,NULL),
-	(11325,'经纪人申请审核',11310,'080102','fa-bars','/pages/audit/broker-request',1,'2017-06-16 14:23:46',NULL,NULL);
+	(11325,'经纪人申请审核',11310,'080102','fa-bars','/pages/audit/broker-request',1,'2017-06-16 14:23:46',NULL,NULL),
+	(11326,'经纪人',11313,'090102','fa-bars','/pages/user/broker',1,'2017-06-16 16:56:12',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -595,7 +611,8 @@ VALUES
 	(849,11322,1),
 	(850,11323,1),
 	(851,11324,1),
-	(852,11325,1);
+	(852,11325,1),
+	(853,11326,1);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -723,7 +740,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',754,'NORMAL','2017-06-16 16:11:37','117.114.192.50',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',756,'NORMAL','2017-06-16 16:56:28','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -808,6 +825,15 @@ CREATE TABLE `user` (
   UNIQUE KEY `token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`phone`, `password`, `token`, `is_disable`, `is_closing`, `register_time`, `avatar`, `nickname`, `sex`, `country`, `mt4_real_account`, `mt4_history_order_last_sync_time`, `my_broker_id`, `my_broker_name`, `my_agent_id`, `my_agent_name`, `open_account_realname`, `open_account_identity_card_number`, `open_account_picture_url`, `open_account_agreements`, `open_account_sign_url`, `open_account_status`, `open_account_audit_user_id`, `open_account_audit_user_name`, `open_account_audit_timestamp`, `open_account_audit_fail_reason`, `open_account_time`, `open_account_audit_success_time`, `broker_request_agreements`, `broker_request_sign_url`, `broker_request_status`, `broker_request_audit_user_id`, `broker_request_audit_user_name`, `broker_request_audit_timestamp`, `broker_request_audit_fail_reason`, `broker_request_time`, `broker_request_audit_success_time`, `master_trader_total_profit`, `master_trader_single_profit`, `master_trader_success_rate`, `id`)
+VALUES
+	('13550311857',NULL,'9fb849cc-5790-4a9f-a273-b5f758730853',0,0,1497602693321,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000100);
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
