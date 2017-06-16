@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-16 05:27:35 +0000
+# Generation Time: 2017-06-16 05:38:58 +0000
 # ************************************************************
 
 
@@ -474,7 +474,9 @@ VALUES
 	(368,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=uynn ]',1,'2017-06-16 13:08:22','0:0:0:0:0:0:0:1'),
 	(369,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=p3pi ]',1,'2017-06-16 13:10:38','0:0:0:0:0:0:0:1'),
 	(370,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rfny ]',1,'2017-06-16 13:13:18','0:0:0:0:0:0:0:1'),
-	(371,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=f4rk ]',1,'2017-06-16 13:22:41','0:0:0:0:0:0:0:1');
+	(371,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=f4rk ]',1,'2017-06-16 13:22:41','0:0:0:0:0:0:0:1'),
+	(372,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=7fmw ]',1,'2017-06-16 13:34:06','0:0:0:0:0:0:0:1'),
+	(373,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 13:37:03','117.114.192.50');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -558,7 +560,8 @@ VALUES
 	(11320,'订单管理',11319,'100101','fa-bars','/pages/history-order',1,'2017-06-16 13:13:01',NULL,NULL),
 	(11321,'风险监控',0,'11','fa-bars',NULL,1,'2017-06-16 13:21:47',NULL,NULL),
 	(11322,'风险监控',11321,'1101','','',1,'2017-06-16 13:22:19',NULL,NULL),
-	(11323,'交易商监控',11322,'110101','fa-bars','/pages/risk/dealer',1,'2017-06-16 13:22:19',NULL,NULL);
+	(11323,'交易商监控',11322,'110101','fa-bars','/pages/risk/dealer',1,'2017-06-16 13:22:19',NULL,NULL),
+	(11324,'持仓监控',11322,'110102','fa-bars','/pages/risk/order',1,'2017-06-16 13:29:19',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -607,7 +610,8 @@ VALUES
 	(847,11320,1),
 	(848,11321,1),
 	(849,11322,1),
-	(850,11323,1);
+	(850,11323,1),
+	(851,11324,1);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -735,7 +739,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',747,'NORMAL','2017-06-16 13:22:40','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',749,'NORMAL','2017-06-16 13:37:03','117.114.192.50',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
