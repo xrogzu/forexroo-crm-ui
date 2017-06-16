@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-16 05:03:56 +0000
+# Generation Time: 2017-06-16 05:14:07 +0000
 # ************************************************************
 
 
@@ -469,7 +469,11 @@ VALUES
 	(363,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=Zr2g remember=on ]',1,'2017-06-16 11:28:00','117.114.192.50'),
 	(364,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 12:18:00','117.114.192.50'),
 	(365,'/system/login','登录','[]',NULL,'2017-06-16 13:01:48',NULL),
-	(366,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zhvh ]',1,'2017-06-16 13:02:02','0:0:0:0:0:0:0:1');
+	(366,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zhvh ]',1,'2017-06-16 13:02:02','0:0:0:0:0:0:0:1'),
+	(367,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=z2xu ]',1,'2017-06-16 13:06:07','0:0:0:0:0:0:0:1'),
+	(368,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=uynn ]',1,'2017-06-16 13:08:22','0:0:0:0:0:0:0:1'),
+	(369,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=p3pi ]',1,'2017-06-16 13:10:38','0:0:0:0:0:0:0:1'),
+	(370,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rfny ]',1,'2017-06-16 13:13:18','0:0:0:0:0:0:0:1');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -547,7 +551,10 @@ VALUES
 	(11311,'交易商开户申请审核',11310,'080101','fa-bars','/pages/audit/open-account',1,'2017-06-13 13:58:47',NULL,NULL),
 	(11312,'用户管理',0,'09','fa-bars',NULL,1,'2017-06-15 16:00:06',NULL,NULL),
 	(11313,'用户管理',11312,'0901','','',1,'2017-06-15 16:02:19',NULL,NULL),
-	(11314,'交易商',11313,'090101','fa-child','/pages/user/dealer',1,'2017-06-15 16:02:19',1,'2017-06-15 18:39:20');
+	(11314,'交易商',11313,'090101','fa-child','/pages/user/dealer',1,'2017-06-15 16:02:19',1,'2017-06-15 18:39:20'),
+	(11318,'订单管理',0,'10','fa-bars',NULL,1,'2017-06-16 13:12:38',NULL,NULL),
+	(11319,'订单管理',11318,'1001','','',1,'2017-06-16 13:13:01',NULL,NULL),
+	(11320,'订单管理',11319,'100101','fa-bars','/pages/history-order',1,'2017-06-16 13:13:01',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -590,7 +597,10 @@ VALUES
 	(839,3,1),
 	(840,11312,1),
 	(841,11313,1),
-	(842,11314,1);
+	(842,11314,1),
+	(845,11318,1),
+	(846,11319,1),
+	(847,11320,1);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -718,7 +728,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',742,'NORMAL','2017-06-16 13:02:01','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',746,'NORMAL','2017-06-16 13:13:17','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
