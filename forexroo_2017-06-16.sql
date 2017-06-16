@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-16 09:09:02 +0000
+# Generation Time: 2017-06-16 12:13:02 +0000
 # ************************************************************
 
 
@@ -27,19 +27,36 @@ DROP TABLE IF EXISTS `agent`;
 
 CREATE TABLE `agent` (
   `name` varchar(255) DEFAULT NULL COMMENT '代理商名称',
-  `code` varchar(255) DEFAULT NULL COMMENT '代理商代码',
+  `account` varchar(255) DEFAULT NULL COMMENT '代理商帐号',
   `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `region` varchar(255) DEFAULT NULL COMMENT '地区',
+  `is_disable` int(11) NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `is_closing` int(11) NOT NULL DEFAULT '0' COMMENT '是否销户',
+  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间戳',
   `bank_detail_account_name` varchar(255) DEFAULT NULL COMMENT '银行资料-开户名称',
-  `bank_detail_account_number` bigint(20) DEFAULT NULL COMMENT '银行资料-银行账号',
+  `bank_detail_account_number` varchar(255) DEFAULT NULL COMMENT '银行资料-银行账号',
   `bank_detail_opening_bank` varchar(255) DEFAULT NULL COMMENT '银行资料-开户银行',
   `bank_detail_opening_bank_address` varchar(255) DEFAULT NULL COMMENT '银行资料-开户地',
-  `status` varchar(255) DEFAULT NULL COMMENT '状态',
+  `creator_user_id` bigint(20) DEFAULT NULL COMMENT '创建人-ID',
+  `creator_user_name` varchar(255) DEFAULT NULL COMMENT '创建人-姓名',
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `code` (`code`)
+  UNIQUE KEY `account` (`account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `agent` WRITE;
+/*!40000 ALTER TABLE `agent` DISABLE KEYS */;
+
+INSERT INTO `agent` (`name`, `account`, `password`, `region`, `is_disable`, `is_closing`, `register_time`, `bank_detail_account_name`, `bank_detail_account_number`, `bank_detail_opening_bank`, `bank_detail_opening_bank_address`, `creator_user_id`, `creator_user_name`, `id`)
+VALUES
+	('终于','难','啊',NULL,0,0,1497613712539,NULL,'真是','哎','哎',1,'admui',51500),
+	('这','长了','点',NULL,0,0,1497613868437,NULL,'太','耗时','耗时',1,'admui',51501),
+	('啊','好了','啊',NULL,0,0,1497614914171,NULL,'终于','啊','啊',1,'admui',51503),
+	('哎','不','弄了',NULL,0,0,1497615086028,NULL,'好了','好了','好了',1,'admui',51504);
+
+/*!40000 ALTER TABLE `agent` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table deposit_and_withdraw
@@ -224,7 +241,12 @@ VALUES
 	('USDJPY',18000100,1497602693377,2),
 	('AUDUSD',18000100,1497602693377,3),
 	('XAUUSD',18000100,1497602693377,4),
-	('UKOUSD',18000100,1497602693377,5);
+	('UKOUSD',18000100,1497602693377,5),
+	('EURUSD',18000101,1497608297958,6),
+	('USDJPY',18000101,1497608297958,7),
+	('AUDUSD',18000101,1497608297958,8),
+	('XAUUSD',18000101,1497608297958,9),
+	('UKOUSD',18000101,1497608297958,10);
 
 /*!40000 ALTER TABLE `my_symbol` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -263,9 +285,9 @@ VALUES
 	(6,'1.5','CreateTable MyMasterTrader','JDBC','com.github.xuzw.forexroo.database.migration.V1_5__CreateTable_MyMasterTrader',NULL,'forexroo','2017-06-16 16:39:17',94,1),
 	(7,'1.6','CreateTable MyBankCard','JDBC','com.github.xuzw.forexroo.database.migration.V1_6__CreateTable_MyBankCard',NULL,'forexroo','2017-06-16 16:39:18',93,1),
 	(8,'1.7','CreateTable DepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_7__CreateTable_DepositAndWithdraw',NULL,'forexroo','2017-06-16 16:39:19',94,1),
-	(9,'1.8','CreateTable Agent','JDBC','com.github.xuzw.forexroo.database.migration.V1_8__CreateTable_Agent',NULL,'forexroo','2017-06-16 16:39:19',95,1),
-	(10,'1.9','CreateTable Mt4HistoryOrder','JDBC','com.github.xuzw.forexroo.database.migration.V1_9__CreateTable_Mt4HistoryOrder',NULL,'forexroo','2017-06-16 16:39:20',93,1),
-	(11,'1.10','CreateTable Mt4HistoryOrderSyncLog','JDBC','com.github.xuzw.forexroo.database.migration.V1_10__CreateTable_Mt4HistoryOrderSyncLog',NULL,'forexroo','2017-06-16 16:39:21',93,1);
+	(9,'1.8','CreateTable Agent','JDBC','com.github.xuzw.forexroo.database.migration.V1_8__CreateTable_Agent',NULL,'forexroo','2017-06-16 18:18:57',108,1),
+	(10,'1.9','CreateTable Mt4HistoryOrder','JDBC','com.github.xuzw.forexroo.database.migration.V1_9__CreateTable_Mt4HistoryOrder',NULL,'forexroo','2017-06-16 18:18:57',95,1),
+	(11,'1.10','CreateTable Mt4HistoryOrderSyncLog','JDBC','com.github.xuzw.forexroo.database.migration.V1_10__CreateTable_Mt4HistoryOrderSyncLog',NULL,'forexroo','2017-06-16 18:18:58',91,1);
 
 /*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -473,7 +495,15 @@ VALUES
 	(377,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 15:24:45','117.114.192.50'),
 	(378,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 16:11:37','117.114.192.50'),
 	(379,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zn8r ]',1,'2017-06-16 16:55:24','0:0:0:0:0:0:0:1'),
-	(380,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=aaw5 ]',1,'2017-06-16 16:56:29','0:0:0:0:0:0:0:1');
+	(380,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=aaw5 ]',1,'2017-06-16 16:56:29','0:0:0:0:0:0:0:1'),
+	(381,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 17:10:59','117.114.192.50'),
+	(382,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rcex ]',1,'2017-06-16 17:17:51','0:0:0:0:0:0:0:1'),
+	(383,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=umem ]',1,'2017-06-16 17:46:05','0:0:0:0:0:0:0:1'),
+	(384,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 18:12:02','117.114.192.50'),
+	(385,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=pukb ]',NULL,'2017-06-16 19:46:47',NULL),
+	(386,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=4tgd ]',1,'2017-06-16 19:47:00','0:0:0:0:0:0:0:1'),
+	(387,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=m3t5 ]',1,'2017-06-16 19:50:21','0:0:0:0:0:0:0:1'),
+	(388,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-16 20:08:53','117.114.192.50');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -554,13 +584,14 @@ VALUES
 	(11314,'交易商',11313,'090101','fa-child','/pages/user/dealer',1,'2017-06-15 16:02:19',1,'2017-06-15 18:39:20'),
 	(11318,'订单管理',0,'10','fa-bars',NULL,1,'2017-06-16 13:12:38',NULL,NULL),
 	(11319,'订单管理',11318,'1001','','',1,'2017-06-16 13:13:01',NULL,NULL),
-	(11320,'订单管理',11319,'100101','fa-bars','/pages/history-order',1,'2017-06-16 13:13:01',NULL,NULL),
+	(11320,'订单管理',11319,'100101','fa-server','/pages/history-order',1,'2017-06-16 13:13:01',1,'2017-06-16 20:11:34'),
 	(11321,'风险监控',0,'11','fa-bars',NULL,1,'2017-06-16 13:21:47',NULL,NULL),
 	(11322,'风险监控',11321,'1101','','',1,'2017-06-16 13:22:19',NULL,NULL),
-	(11323,'交易商监控',11322,'110101','fa-bars','/pages/risk/dealer',1,'2017-06-16 13:22:19',NULL,NULL),
-	(11324,'持仓监控',11322,'110102','fa-bars','/pages/risk/order',1,'2017-06-16 13:29:19',NULL,NULL),
+	(11323,'交易商监控',11322,'110101','fa-binoculars','/pages/risk/dealer',1,'2017-06-16 13:22:19',1,'2017-06-16 20:10:35'),
+	(11324,'持仓监控',11322,'110102','fa-bar-chart','/pages/risk/order',1,'2017-06-16 13:29:19',1,'2017-06-16 20:10:35'),
 	(11325,'经纪人申请审核',11310,'080102','fa-bars','/pages/audit/broker-request',1,'2017-06-16 14:23:46',NULL,NULL),
-	(11326,'经纪人',11313,'090102','fa-bars','/pages/user/broker',1,'2017-06-16 16:56:12',NULL,NULL);
+	(11326,'经纪人',11313,'090102','fa-bars','/pages/user/broker',1,'2017-06-16 16:56:12',NULL,NULL),
+	(11327,'代理商',11313,'090103','fa-bars','/pages/user/agent',1,'2017-06-16 17:16:18',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -612,7 +643,8 @@ VALUES
 	(850,11323,1),
 	(851,11324,1),
 	(852,11325,1),
-	(853,11326,1);
+	(853,11326,1),
+	(854,11327,1);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -740,7 +772,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',756,'NORMAL','2017-06-16 16:56:28','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',763,'NORMAL','2017-06-16 20:08:53','117.114.192.50',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -830,7 +862,8 @@ LOCK TABLES `user` WRITE;
 
 INSERT INTO `user` (`phone`, `password`, `token`, `is_disable`, `is_closing`, `register_time`, `avatar`, `nickname`, `sex`, `country`, `mt4_real_account`, `mt4_history_order_last_sync_time`, `my_broker_id`, `my_broker_name`, `my_agent_id`, `my_agent_name`, `open_account_realname`, `open_account_identity_card_number`, `open_account_picture_url`, `open_account_agreements`, `open_account_sign_url`, `open_account_status`, `open_account_audit_user_id`, `open_account_audit_user_name`, `open_account_audit_timestamp`, `open_account_audit_fail_reason`, `open_account_time`, `open_account_audit_success_time`, `broker_request_agreements`, `broker_request_sign_url`, `broker_request_status`, `broker_request_audit_user_id`, `broker_request_audit_user_name`, `broker_request_audit_timestamp`, `broker_request_audit_fail_reason`, `broker_request_time`, `broker_request_audit_success_time`, `master_trader_total_profit`, `master_trader_single_profit`, `master_trader_success_rate`, `id`)
 VALUES
-	('13550311857',NULL,'9fb849cc-5790-4a9f-a273-b5f758730853',0,0,1497602693321,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000100);
+	('13550311857',NULL,'dfe54e1f-ae5d-4833-b041-7979b2e0b7c5',0,0,1497602693321,'bff6221117f9ede6b68e7d5abe445de6','特朗普','男','美国','996000522',NULL,NULL,NULL,NULL,NULL,'特朗普','101012196812051588','033f48dd9ffa788f9590052c51651b3f','[\"1\",\"2\",\"3\",\"4\"]','19cde2d1553527daf9cab25086fc7dd7',2,1,'admui',1497604287695,0,1497604240173,1497604287695,'[\"1\",\"2\",\"3\"]','c09d0e4e7445b42ed5cf847d7e61c43d',1,NULL,NULL,NULL,0,1497605133226,NULL,NULL,NULL,NULL,18000100),
+	('13051165888',NULL,'a80fc127-1b6a-47d3-afbe-2719cbbe1dfa',0,0,1497608297928,'ad2b0e184b973cccf6dc977a555b6ffa','我是神仙人民','男','马里','996000523',NULL,NULL,NULL,NULL,NULL,'哦婆婆','845755 7575 7575 7575','02c55586ea18f21ebd615c488a08c25a','[\"1\",\"2\",\"3\",\"4\"]','a80fc127-1b6a-47d3-afbe-2719cbbe1dfa',2,1,'admui',1497608785430,1,1497608757362,1497608785430,'[\"1\",\"2\",\"3\"]','a80fc127-1b6a-47d3-afbe-2719cbbe1dfaapply',2,1,'admui',1497608823302,0,1497608806184,1497608823302,NULL,NULL,NULL,18000101);
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
