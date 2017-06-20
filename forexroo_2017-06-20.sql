@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-20 06:45:13 +0000
+# Generation Time: 2017-06-20 06:53:27 +0000
 # ************************************************************
 
 
@@ -553,7 +553,9 @@ VALUES
 	(410,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=pgsq ]',1,'2017-06-20 11:26:18','0:0:0:0:0:0:0:1'),
 	(411,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rzwt ]',1,'2017-06-20 11:35:17','0:0:0:0:0:0:0:1'),
 	(412,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=e8cf ]',1,'2017-06-20 14:39:24','0:0:0:0:0:0:0:1'),
-	(413,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=nrix ]',1,'2017-06-20 14:43:26','0:0:0:0:0:0:0:1');
+	(413,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=nrix ]',1,'2017-06-20 14:43:26','0:0:0:0:0:0:0:1'),
+	(414,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=smxk ]',1,'2017-06-20 14:50:52','0:0:0:0:0:0:0:1'),
+	(415,'/system/login','登录','[loginName=test password=cc03e747a6afbbcbf8be7668acfebee5 validCode=hxsy ]',2,'2017-06-20 14:51:28','0:0:0:0:0:0:0:1');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -706,7 +708,27 @@ VALUES
 	(857,11330,1),
 	(858,11331,1),
 	(859,11332,1),
-	(860,11333,1);
+	(860,11333,1),
+	(861,1,2),
+	(862,11309,2),
+	(863,11310,2),
+	(864,11311,2),
+	(865,11325,2),
+	(866,11312,2),
+	(867,11313,2),
+	(868,11314,2),
+	(869,11326,2),
+	(870,11327,2),
+	(871,2,2),
+	(872,3,2),
+	(873,4,2),
+	(874,5,2),
+	(875,6,2),
+	(876,7,2),
+	(877,8,2),
+	(878,10,2),
+	(879,11,2),
+	(880,12,2);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -767,7 +789,8 @@ LOCK TABLES `sys_role` WRITE;
 
 INSERT INTO `sys_role` (`role_id`, `role_name`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'系统管理员',NULL,NULL,1,'2017-04-08 11:12:41');
+	(1,'系统管理员',NULL,NULL,1,'2017-04-08 11:12:41'),
+	(2,'内部测试角色',1,'2017-06-20 14:48:58',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -834,7 +857,8 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',783,'NORMAL','2017-06-20 14:43:24','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',784,'NORMAL','2017-06-20 14:50:50','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54'),
+	(2,'test','cc03e747a6afbbcbf8be7668acfebee5',1,'NORMAL','2017-06-20 14:51:27','0:0:0:0:0:0:0:1',1,'2017-06-20 14:50:19',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -861,7 +885,8 @@ LOCK TABLES `sys_user_role` WRITE;
 
 INSERT INTO `sys_user_role` (`ur_id`, `user_id`, `role_id`)
 VALUES
-	(64,1,1);
+	(64,1,1),
+	(65,2,2);
 
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
