@@ -33,6 +33,7 @@ import com.github.xuzw.forexroo.entity.tables.daos.AgentDepositAndWithdrawDao;
 import com.github.xuzw.forexroo.entity.tables.pojos.AgentDepositAndWithdraw;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 import com.github.xuzw.forexroo_crm_ui.database.model.AgentDepositAndWithdrawStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.database.model.AgentDepositAndWithdrawTypeEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.DepositAndWithdrawStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.ExtAgentDepositAndWithdraw;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
@@ -124,6 +125,28 @@ public class AgentWithdrawController extends BaseController {
         Condition auditStatusCondition = auditStatus == null ? null : AGENT_DEPOSIT_AND_WITHDRAW.STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : AGENT_DEPOSIT_AND_WITHDRAW.AGENT_ID.like(search);
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        List<Field<?>> fields = new ArrayList<>();
+        fields.addAll(Arrays.asList(AGENT_DEPOSIT_AND_WITHDRAW.fields()));
+        fields.add(AGENT.NAME.as("agentName"));
+        List<ExtAgentDepositAndWithdraw> rows = db.select(fields).from(AGENT_DEPOSIT_AND_WITHDRAW).leftJoin(AGENT).on(AGENT_DEPOSIT_AND_WITHDRAW.AGENT_ID.eq(AGENT.ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtAgentDepositAndWithdraw.class);
+        long totalRecords = db.fetchCount(AGENT_DEPOSIT_AND_WITHDRAW);
+        long totalDisplayRecords = db.fetchCount(AGENT_DEPOSIT_AND_WITHDRAW, finalCondition);
+        return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
+    }
+
+    @RequestMapping(value = "/commissionDepositList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String commissionDepositList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        Integer offset = criterias.getStart();
+        Integer numberOfRows = criterias.getLength();
+        String search = "%" + searchKeyword + "%";
+        DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition typeCondition = AGENT_DEPOSIT_AND_WITHDRAW.TYPE.eq(AgentDepositAndWithdrawTypeEnum.commission_deposit.getValue());
+        Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : AGENT_DEPOSIT_AND_WITHDRAW.TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
+        Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : AGENT_DEPOSIT_AND_WITHDRAW.TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
+        Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : AGENT_DEPOSIT_AND_WITHDRAW.AGENT_ID.like(search);
+        Condition finalCondition = Jooq.and(typeCondition, dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<Field<?>> fields = new ArrayList<>();
         fields.addAll(Arrays.asList(AGENT_DEPOSIT_AND_WITHDRAW.fields()));
         fields.add(AGENT.NAME.as("agentName"));
