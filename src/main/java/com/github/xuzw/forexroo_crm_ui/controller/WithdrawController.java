@@ -124,7 +124,7 @@ public class WithdrawController extends BaseController {
         return jsonResponse.toJSONString();
     }
 
-    @RequestMapping(value = "/auditListForDealer", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String auditListForDealer(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../../../includes/taglib.jsp"%>
 
-<title>交易商出金审核</title>
+<title>代理商出金审核</title>
 
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
@@ -58,17 +58,14 @@
 		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <td>交易商姓名</td>
-		                <td>交易账号</td>
-		                <td>MT4账号</td>
+		                <td>代理商名称</td>
+		                <td>代理商代码</td>
 		                <td>类别</td>
 		                <td>日期</td>
 		                <td>金额</td>
 		                <td>审核状态</td>
 		                <td>审核时间</td>
 		                <td>审核人</td>
-		                <td>所属经纪人</td>
-		                <td>所属代理商</td>
 		                <td>操作</td>
 		            </tr>
 		            </thead>
@@ -82,7 +79,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/withdraw/auditList",
+					    "url": "${ctx}/agentWithdraw/auditList",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -151,7 +148,7 @@
 					        var tr = $(this).closest('tr');
 					        var row = $('#table').DataTable().row(tr);
 					        var rowData = row.data();
-					        $.get('${ctx}/withdraw/auditSuccess', { "id": rowData.id }, function(data) {
+					        $.get('${ctx}/agentWithdraw/auditSuccess', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
 									return;
@@ -166,7 +163,7 @@
 					        var tr = $(this).closest('tr');
 					        var row = $('#table').DataTable().row(tr);
 					        var rowData = row.data();
-					        $.get('${ctx}/withdraw/auditFail', { "id": rowData.id }, function(data) {
+					        $.get('${ctx}/agentWithdraw/auditFail', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
 									return;
