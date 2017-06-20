@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-06-20 03:36:40 +0000
+# Generation Time: 2017-06-20 06:45:13 +0000
 # ************************************************************
 
 
@@ -551,7 +551,9 @@ VALUES
 	(408,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ijws ]',NULL,'2017-06-20 11:24:15',NULL),
 	(409,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=azhg ]',1,'2017-06-20 11:24:29','0:0:0:0:0:0:0:1'),
 	(410,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=pgsq ]',1,'2017-06-20 11:26:18','0:0:0:0:0:0:0:1'),
-	(411,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rzwt ]',1,'2017-06-20 11:35:17','0:0:0:0:0:0:0:1');
+	(411,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=rzwt ]',1,'2017-06-20 11:35:17','0:0:0:0:0:0:0:1'),
+	(412,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=e8cf ]',1,'2017-06-20 14:39:24','0:0:0:0:0:0:0:1'),
+	(413,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=nrix ]',1,'2017-06-20 14:43:26','0:0:0:0:0:0:0:1');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -617,12 +619,12 @@ VALUES
 	(2,'系统信息',1,'0701','','',NULL,NULL,1,'2016-12-18 14:46:18'),
 	(3,'我的账户',1,'0702','','',NULL,NULL,1,'2017-06-15 15:02:27'),
 	(4,'菜单管理',2,'070101','fa-bars','/system/menu',NULL,NULL,1,'2016-12-18 14:46:18'),
-	(5,'用户管理',2,'070102','fa-street-view','#',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(6,'日志信息',2,'070103','fa-file-text-o','#',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(7,'黑名单',2,'070104','fa-shield','#',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(8,'系统设置',2,'070105','fa-gear','',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(10,'显示设置',8,'07010501','','#',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(11,'日志设置',8,'07010502','','#',NULL,NULL,1,'2017-06-15 15:02:27'),
+	(5,'用户管理',2,'070102','fa-street-view','/system/user',NULL,NULL,1,'2017-06-20 14:43:10'),
+	(6,'日志信息',2,'070103','fa-file-text-o','/system/log',NULL,NULL,1,'2017-06-20 14:43:10'),
+	(7,'黑名单',2,'070104','fa-shield','/system/blacklist',NULL,NULL,1,'2017-06-20 14:43:10'),
+	(8,'系统设置',2,'070105','fa-gear','',NULL,NULL,1,'2017-06-20 14:43:10'),
+	(10,'显示设置',8,'07010501','','/system/settings/display',NULL,NULL,1,'2017-06-20 14:43:10'),
+	(11,'日志设置',8,'07010502','','/system/settings/log',NULL,NULL,1,'2017-06-20 14:43:10'),
 	(12,'账户信息',3,'070201','fa-key','/system/account',NULL,NULL,1,'2017-06-15 15:03:21'),
 	(11309,'审核管理',0,'08','fa-bars',NULL,1,'2017-06-13 13:57:39',NULL,NULL),
 	(11310,'审核管理',11309,'0801','','',1,'2017-06-13 13:58:46',NULL,NULL),
@@ -832,7 +834,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',781,'NORMAL','2017-06-20 11:35:16','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',783,'NORMAL','2017-06-20 14:43:24','0:0:0:0:0:0:0:1',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54');
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -924,7 +926,7 @@ INSERT INTO `user` (`phone`, `password`, `token`, `is_disable`, `is_closing`, `r
 VALUES
 	('13550311857',NULL,'bfb4874e-ef07-4c98-b8e2-15df976b4b17',0,0,1497602693321,'bff6221117f9ede6b68e7d5abe445de6','特朗普','男','美国','996000522',NULL,NULL,NULL,NULL,NULL,'特朗普','101012196812051588','033f48dd9ffa788f9590052c51651b3f','[\"1\",\"2\",\"3\",\"4\"]','19cde2d1553527daf9cab25086fc7dd7',2,1,'admui',1497604287695,0,1497604240173,1497604287695,'[\"1\",\"2\",\"3\"]','c09d0e4e7445b42ed5cf847d7e61c43d',1,NULL,NULL,NULL,0,1497605133226,NULL,NULL,NULL,NULL,18000100),
 	('13051165888',NULL,'a80fc127-1b6a-47d3-afbe-2719cbbe1dfa',0,0,1497608297928,'ad2b0e184b973cccf6dc977a555b6ffa','我是神仙人民','男','马里','996000523',NULL,NULL,NULL,NULL,NULL,'哦婆婆','845755 7575 7575 7575','02c55586ea18f21ebd615c488a08c25a','[\"1\",\"2\",\"3\",\"4\"]','a80fc127-1b6a-47d3-afbe-2719cbbe1dfa',2,1,'admui',1497608785430,1,1497608757362,1497608785430,'[\"1\",\"2\",\"3\"]','a80fc127-1b6a-47d3-afbe-2719cbbe1dfaapply',2,1,'admui',1497608823302,0,1497608806184,1497608823302,NULL,NULL,NULL,18000101),
-	('13641122206',NULL,'a0bd02b0-1c3f-4588-8eac-d8f36a5e815e',0,0,1497840614619,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000102);
+	('13641122206',NULL,'bde4167e-332f-4586-8c9f-d1091bc753f7',0,0,1497840614619,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000102);
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
