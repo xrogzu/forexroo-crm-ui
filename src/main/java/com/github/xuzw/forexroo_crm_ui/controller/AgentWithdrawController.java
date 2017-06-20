@@ -113,7 +113,7 @@ public class AgentWithdrawController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditListForAgent(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();

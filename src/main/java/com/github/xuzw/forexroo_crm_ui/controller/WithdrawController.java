@@ -32,6 +32,7 @@ import com.github.xuzw.forexroo.entity.tables.daos.DepositAndWithdrawDao;
 import com.github.xuzw.forexroo.entity.tables.pojos.DepositAndWithdraw;
 import com.github.xuzw.forexroo_crm_ui.database.Jooq;
 import com.github.xuzw.forexroo_crm_ui.database.model.DepositAndWithdrawStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.database.model.DepositAndWithdrawTypeEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.ExtDepositAndWithdraw;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
@@ -126,7 +127,7 @@ public class WithdrawController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditListForDealer(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
@@ -137,6 +138,25 @@ public class WithdrawController extends BaseController {
         Condition auditStatusCondition = auditStatus == null ? null : DEPOSIT_AND_WITHDRAW.STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : DEPOSIT_AND_WITHDRAW.USER_ID.like(search);
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        List<ExtDepositAndWithdraw> rows = db.select().from(DEPOSIT_AND_WITHDRAW).leftJoin(USER).on(DEPOSIT_AND_WITHDRAW.USER_ID.eq(USER.ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtDepositAndWithdraw.class);
+        long totalRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW);
+        long totalDisplayRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW, finalCondition);
+        return JSON.toJSONString(DatatablesResponse.build(new DataSet<>(rows, totalRecords, totalDisplayRecords), criterias));
+    }
+
+    @RequestMapping(value = "/commissionDepositList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String commissionDepositList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        Integer offset = criterias.getStart();
+        Integer numberOfRows = criterias.getLength();
+        String search = "%" + searchKeyword + "%";
+        DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition typeCondition = DEPOSIT_AND_WITHDRAW.TYPE.eq(DepositAndWithdrawTypeEnum.commission_deposit.getValue());
+        Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : DEPOSIT_AND_WITHDRAW.TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
+        Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : DEPOSIT_AND_WITHDRAW.TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
+        Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : DEPOSIT_AND_WITHDRAW.USER_ID.like(search);
+        Condition finalCondition = Jooq.and(typeCondition, dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<ExtDepositAndWithdraw> rows = db.select().from(DEPOSIT_AND_WITHDRAW).leftJoin(USER).on(DEPOSIT_AND_WITHDRAW.USER_ID.eq(USER.ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtDepositAndWithdraw.class);
         long totalRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW);
         long totalDisplayRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW, finalCondition);
