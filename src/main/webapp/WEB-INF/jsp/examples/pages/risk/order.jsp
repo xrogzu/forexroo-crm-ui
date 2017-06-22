@@ -79,7 +79,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/mt4-history-order/all",
+					    "url": "${ctx}/order/all",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -92,13 +92,12 @@
 					    {"data": "login", "defaultContent": "暂无数据"},
 					    {"data": "symbol", "defaultContent": "暂无数据"},
 					    {"data": "cmd", "defaultContent": "暂无数据"},
-					    {"data": "open_price", "defaultContent": "暂无数据"},
-					    {"data": "open_time", "defaultContent": "暂未审核"},
-					    {"data": "close_price", "defaultContent": ""},
-					    {"data": "close_time", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "暂无数据"},
+					    {"data": "openPrice", "defaultContent": "暂无数据"},
+					    {"data": "openTime", "defaultContent": "暂未审核"},
+					    {"data": "tp", "defaultContent": "暂无数据"},
+					    {"data": "sl", "defaultContent": "暂无数据"},
 					    {"data": "volume", "defaultContent": "暂无数据"},
-					    {"data": "order", "defaultContent": "暂无数据"},
+					    {"data": "orderId", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": "暂无数据"},
 					    {"data": "commission", "defaultContent": "暂无数据"},
 					    {"data": "taxes", "defaultContent": "暂无数据"},
@@ -107,7 +106,7 @@
 					    {"data": "myAgentName", "defaultContent": "暂无数据"}
 					],
 					"columnDefs": [
-			            {
+						{
 			                "render": function (data, type, row, meta) {
 			                	switch (data) {
 			                	case 0: return '<span style="color:#fe644a;">买入</span>';
@@ -122,7 +121,7 @@
 				                	return getTime('$Y-$m-$d $h:$i:$s', new Date(data));
 			                	}
 			                },
-			                "targets": [6, 8]
+			                "targets": 6
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
@@ -132,7 +131,7 @@
 			                		return '<span style="color:#00c69a;">'+data+'</span>';
 			                	}
 			                },
-			                "targets": 15
+			                "targets": 14
 			            }
 			        ],
 			        "initComplete": function () {
