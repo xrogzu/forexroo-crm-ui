@@ -62,12 +62,15 @@ public class DealerController extends BaseController {
             JSONObject json = new JSONObject();
             json.put("username", user.getPhone());
             json.put("leverage", 100);
-            json.put("groupname", "testssss");
+            json.put("groupname", "demoforexroo");
             json.put("password", "abc123456");
             json.put("investor", "abc123456");
             json.put("phonepwd", "abc123456");
             JSONObject resp = ActiveMq.sendRequestAndAwait("Register_User_Info_Topic", json);
             String mt4RealAccount = resp.getString("login");
+            if (StringUtils.isBlank(mt4RealAccount) || mt4RealAccount.equals("0")) {
+                throw new Exception("无效的mt4账号");
+            }
             int openAccountStatus = OpenAccountStatusEnum.auditing_success.getValue();
             long openAccountAuditTimestamp = System.currentTimeMillis();
             String openAccountAuditUserName = loginUser.getLoginName();
