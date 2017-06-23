@@ -16,6 +16,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +36,9 @@ import com.github.xuzw.forexroo_crm_ui.database.model.BrokerRequestStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.ExtUser;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.UserStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.utils.ApistoreService;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
+import com.github.xuzw.forexroo_crm_ui.utils.SmsTemplateEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
 import cn.ermei.admui.controller.BaseController;
@@ -47,6 +51,7 @@ import cn.ermei.admui.vo.UserVo;
 @Controller
 @RequestMapping("/broker")
 public class BrokerController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(BrokerController.class);
 
     @RequestMapping(value = "/auditSuccess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -73,6 +78,12 @@ public class BrokerController extends BaseController {
             jsonResponse.put("brokerRequestStatus", status);
             jsonResponse.put("brokerRequestAuditTimestamp", timestamp);
             jsonResponse.put("brokerRequestAuditUserName", auditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.broker_request_audit_success, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -106,6 +117,12 @@ public class BrokerController extends BaseController {
             jsonResponse.put("brokerRequestStatus", status);
             jsonResponse.put("brokerRequestAuditTimestamp", timestamp);
             jsonResponse.put("brokerRequestAuditUserName", auditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.broker_request_audit_fail, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
