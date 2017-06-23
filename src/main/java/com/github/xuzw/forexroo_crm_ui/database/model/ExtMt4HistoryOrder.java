@@ -8,10 +8,19 @@ import com.github.xuzw.forexroo.entity.tables.pojos.Mt4HistoryOrder;
  */
 public class ExtMt4HistoryOrder extends Mt4HistoryOrder {
     private static final long serialVersionUID = 1L;
+    private Long userId;
     private String phone;
     private String nickname;
     private String myBrokerName;
     private String myAgentName;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getPhone() {
         return phone;
