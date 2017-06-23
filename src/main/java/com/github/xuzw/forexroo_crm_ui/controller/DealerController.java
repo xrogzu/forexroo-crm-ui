@@ -64,6 +64,9 @@ public class DealerController extends BaseController {
             if (user.getOpenAccountStatus() != OpenAccountStatusEnum.auditing.getValue()) {
                 throw new Exception("状态异常");
             }
+            if (StringUtils.isBlank(user.getPassword())) {
+                throw new Exception("尚未设置密码");
+            }
             JSONObject json = new JSONObject();
             json.put("username", user.getPhone());
             json.put("leverage", 100);
