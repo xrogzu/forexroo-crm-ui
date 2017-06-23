@@ -80,7 +80,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/mt4-history-order/all",
+					    "url": "${ctx}/historyOrder/all",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();

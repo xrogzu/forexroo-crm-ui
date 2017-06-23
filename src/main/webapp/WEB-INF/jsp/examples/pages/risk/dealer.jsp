@@ -76,7 +76,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/historyOrder/all",
+					    "url": "${ctx}/order/allForDealer",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
