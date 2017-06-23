@@ -63,9 +63,9 @@ public class DealerController extends BaseController {
             json.put("username", user.getPhone());
             json.put("leverage", 100);
             json.put("groupname", "demoforexroo");
-            json.put("password", "abc123456");
-            json.put("investor", "abc123456");
-            json.put("phonepwd", "abc123456");
+            json.put("password", user.getPassword());
+            json.put("investor", user.getPassword());
+            json.put("phonepwd", user.getPassword());
             JSONObject resp = ActiveMq.sendRequestAndAwait("Register_User_Info_Topic", json);
             String mt4RealAccount = resp.getString("login");
             if (StringUtils.isBlank(mt4RealAccount) || mt4RealAccount.equals("0")) {
