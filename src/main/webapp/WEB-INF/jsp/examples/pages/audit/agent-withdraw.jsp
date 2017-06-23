@@ -88,27 +88,34 @@
 					    }
 					},
 					"columns": [
-					    {"data": "nickname", "defaultContent": "暂无数据"},
-					    {"data": "userId", "defaultContent": "暂无数据"},
-					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
-					    {"data": "", "defaultContent": "提现"},
+					    {"data": "agentName", "defaultContent": "暂无数据"},
+					    {"data": "id", "defaultContent": "暂无数据"},
+					    {"data": "type", "defaultContent": "暂无数据"},
 					    {"data": "time", "defaultContent": "暂无数据"},
 					    {"data": "amount", "defaultContent": "暂无数据"},
 					    {"data": "status", "defaultContent": "暂未审核"},
 					    {"data": "auditTimestamp", "defaultContent": "暂无数据"},
 					    {"data": "auditUserName", "defaultContent": "暂无数据"},
-					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
-					    {"data": "myAgentName", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": ""}
 					],
 					"columnDefs": [
+			            {
+			                "render": function (data, type, row, meta) {
+			                	switch (data) {
+			                	case 1: return '入金';
+			                	case 2: return '出金';
+			                	case 101: return '佣金入金';
+			                	}
+			                },
+			                "targets": 2
+			            },
 			            {
 			                "render": function (data, type, row, meta) {
 			                	if (data) {
 				                	return getTime('$Y-$m-$d', new Date(data));
 			                	}
 			                },
-			                "targets": 4
+			                "targets": 3
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
@@ -118,29 +125,7 @@
 			                	case 2: return '<span style="color:#9b9b9b;">审核失败</span>';
 			                	}
 			                },
-			                "targets": 6
-			            },
-			            {
-			                "render": function (data, type, row, meta) {
-			                	if (row.brokerRequestStatus == '1') {
-				                	return '<div class="dropdown">\n\
-				                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" id="exampleLeftDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">\n\
-				                                审核 <span class="caret"></span>\n\
-				                            	</button>\n\
-				                            	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="exampleLeftDropdownSubMenu" role="menu">\n\
-		                                            <li role="presentation" class="audit-success-menu">\n\
-		                                                <a href="javascript:;" role="menuitem" tabindex="-1">通过</a>\n\
-		                                            </li>\n\
-		                                            <li role="presentation" class="audit-fail-menu">\n\
-		                                                <a href="javascript:;" role="menuitem" tabindex="-1">拒绝</a>\n\
-		                                            </li>\n\
-	                                            </ul>\n\
-				                            </div>';
-			                	} else {
-			                		return '';
-			                	}
-			                },
-			                "targets": 11
+			                "targets": 5
 			            }
 			        ],
 			        "initComplete": function () {
