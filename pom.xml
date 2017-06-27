@@ -20,7 +20,7 @@
     </properties>
 
     <build>
-        <finalName>forexroo-crm-ui</finalName>
+        <finalName>crm</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
