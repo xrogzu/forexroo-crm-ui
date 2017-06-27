@@ -1,35 +1,18 @@
 package com.github.xuzw.forexroo_crm_ui.database.model;
 
-import com.github.xuzw.forexroo.entity.tables.pojos.Mt4HistoryOrder;
+import com.github.xuzw.forexroo.entity.tables.pojos.MasterTraderRankingsHistory;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
- * @time 2017年6月22日 下午6:03:02
+ * @time 2017年6月27日 下午5:26:35
  */
-public class ExtMt4HistoryOrder extends Mt4HistoryOrder {
+public class ExtMasterTraderRankingsHistory extends MasterTraderRankingsHistory {
     private static final long serialVersionUID = 1L;
-    private Long userId;
-    private String openAccountRealname;
+
     private String phone;
     private String nickname;
     private String myBrokerName;
     private String myAgentName;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getOpenAccountRealname() {
-        return openAccountRealname;
-    }
-
-    public void setOpenAccountRealname(String openAccountRealname) {
-        this.openAccountRealname = openAccountRealname;
-    }
 
     public String getPhone() {
         return phone;
