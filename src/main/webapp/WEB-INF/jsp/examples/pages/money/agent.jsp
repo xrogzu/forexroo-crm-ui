@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../../../includes/taglib.jsp"%>
 
-<title>交易商出入金</title>
+<title>代理商出金</title>
 
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
@@ -50,11 +50,8 @@
 		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <td>交易商姓名</td>
-		                <td>交易账号</td>
-		                <td>MT4账号</td>
-		                <td>所属经纪人</td>
-		                <td>所属代理商</td>
+		                <td>代理商名称</td>
+		                <td>代理商代码</td>
 		                <td>类别</td>
 		                <td>金额</td>
 		                <td>日期时间</td>
@@ -76,7 +73,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/money/allForDealer",
+					    "url": "${ctx}/money/allForAgent",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -84,16 +81,13 @@
 					    }
 					},
 					"columns": [
-					    {"data": "nickname", "defaultContent": "暂无数据"},
-					    {"data": "phone", "defaultContent": "暂无数据"},
-					    {"data": "login", "defaultContent": "暂无数据"},
-					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
-					    {"data": "myAgentName", "defaultContent": "暂无数据"},
+					    {"data": "agentName", "defaultContent": "暂无数据"},
+					    {"data": "agentId", "defaultContent": "暂无数据"},
 					    {"data": "type", "defaultContent": "暂无数据"},
 					    {"data": "amount", "defaultContent": "暂无数据"},
 					    {"data": "time", "defaultContent": "暂无数据"},
 					    {"data": "status", "defaultContent": "暂未审核"},
-					    {"data": "orderId", "defaultContent": ""},
+					    {"data": "id", "defaultContent": ""},
 					    {"data": "comment", "defaultContent": "暂无数据"},
 					    {"data": null, "defaultContent": "暂无数据"},
 					    {"data": "auditTimestamp", "defaultContent": "暂无数据"},
