@@ -83,9 +83,9 @@
 					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
 					    {"data": "totalProfit", "defaultContent": "暂无数据"},
 					    {"data": "singleProfit", "defaultContent": "暂无数据"},
-					    {"data": "successRate", "defaultContent": "暂未审核"},
-					    {"data": "myBrokerName", "defaultContent": "暂未审核"},
-					    {"data": "myAgentName", "defaultContent": "暂未审核"}
+					    {"data": "successRate", "defaultContent": "暂无数据"},
+					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
+					    {"data": "myAgentName", "defaultContent": "暂无数据"}
 					],
 					"columnDefs": [
 			        ],
