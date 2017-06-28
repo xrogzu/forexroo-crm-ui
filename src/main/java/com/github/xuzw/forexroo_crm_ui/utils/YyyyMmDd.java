@@ -70,4 +70,10 @@ public class YyyyMmDd {
         Calendar calendar = Calendar.getInstance();
         return new YyyyMmDd(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
+
+    public static YyyyMmDd yesterday() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return new YyyyMmDd(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
 }

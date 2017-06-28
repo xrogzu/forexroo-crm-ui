@@ -11,6 +11,7 @@ public class ExtMasterTraderRankingsHistory extends MasterTraderRankingsHistory 
 
     private String phone;
     private String nickname;
+    private String openAccountRealname;
     private String myBrokerName;
     private String myAgentName;
 
@@ -28,6 +29,14 @@ public class ExtMasterTraderRankingsHistory extends MasterTraderRankingsHistory 
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getOpenAccountRealname() {
+        return openAccountRealname;
+    }
+
+    public void setOpenAccountRealname(String openAccountRealname) {
+        this.openAccountRealname = openAccountRealname;
     }
 
     public String getMyBrokerName() {
