@@ -147,7 +147,7 @@
 					            tr.removeClass('shown');
 					        } else {
 					        	tr.data('shownChildName', 'details-control');
-					            row.child('详情').show();
+					            row.child(formatDetailsControl(row.data())).show();
 					            tr.addClass('shown');
 					        }
 					    });
@@ -174,6 +174,46 @@
 			        }
 				}));
 			});
+		    function formatDetailsControl(d) {
+		    	// 照片
+		    	var openAccountPictureHtml = '';
+		    	if (d.openAccountPictureUrl) {
+		    		openAccountPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div><div class="col-sm-12">手持身份证正面照</div></div></div></div>';
+		    	}
+		    	if (d.openAccountSignUrl) {
+		    		openAccountPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountSignUrl+'"/></div><div class="col-sm-12">签名图片</div></div></div></div>';
+		    	}
+		    	// 协议
+		    	var openAccountAgreementsHtml = '';
+		    	var openAccountAgreements = eval(d.openAccountAgreements);
+		    	if (openAccountAgreements) {
+			    	for (var i = 0; i < openAccountAgreements.length; i++) {
+			    		switch (openAccountAgreements[i]) {
+						case "1": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《交易商告知书》</a>'; break;
+						case "2": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《交易商协议书》</a>'; break;
+						case "3": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《入市交易协议书》</a>'; break;
+						case "4": openAccountAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《本人是该账户的最终且唯一受益拥有人》</a>'; break;
+						}
+					}
+		    	}
+		    	// 拼接
+		    	return '<div class="page-content container-fluid" style="background-color:rgb(243,247,249);">\n\
+					    	<div class="row">\n\
+				                <div class="col-sm-6">姓名：'+d.openAccountRealname+'</div>\n\
+				                <div class="col-sm-6">身份证号：'+d.openAccountIdentityCardNumber+'</div>\n\
+				            </div>\n\
+					        <div class="row">'+openAccountPictureHtml+'</div>\n\
+					        <div class="row">\n\
+				                <div class="col-sm-6">银行卡号：'+d.bankCardNumber+'</div>\n\
+				                <div class="col-sm-6">开户银行：'+d.bankName+'</div>\n\
+				            </div>\n\
+					        <div class="row">\n\
+				                <div class="col-sm-6">开种类：'+d.cardType+'</div>\n\
+				                <div class="col-sm-6">预留手机号：'+d.reservedPhone+'</div>\n\
+				            </div>\n\
+			                <div class="row"><div class="list-group bg-blue-grey-100 bg-inherit">'+openAccountAgreementsHtml+'</div></div>\n\
+			            </div>';
+		    }
 		    </script>
 		</div>
     </div>

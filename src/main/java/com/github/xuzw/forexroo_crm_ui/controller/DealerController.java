@@ -1,5 +1,6 @@
 package com.github.xuzw.forexroo_crm_ui.controller;
 
+import static com.github.xuzw.forexroo.entity.Tables.MY_BANK_CARD;
 import static com.github.xuzw.forexroo.entity.Tables.USER;
 
 import java.sql.SQLException;
@@ -187,7 +188,7 @@ public class DealerController extends BaseController {
         Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
-        List<ExtUser> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
+        List<ExtUser> rows = db.select().from(USER).leftJoin(MY_BANK_CARD).on(USER.ID.eq(MY_BANK_CARD.USER_ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
         for (ExtUser user : rows) {
             if (user.getIsDisable() == BooleanEnum.yes.getValue()) {
                 user.setStatus(UserStatusEnum.disable.getValue());
