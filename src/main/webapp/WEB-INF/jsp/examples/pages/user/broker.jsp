@@ -139,7 +139,7 @@
 					            tr.removeClass('shown');
 					        } else {
 					        	tr.data('shownChildName', 'details-control');
-					            row.child('详情').show();
+					            row.child(formatDetailsControl(row.data())).show();
 					            tr.addClass('shown');
 					        }
 					    });
@@ -179,6 +179,37 @@
 			        }
 				}));
 			});
+		    function formatDetailsControl(d) {
+		    	// 照片
+		    	var brokerRequestPictureHtml = '';
+		    	if (d.openAccountPictureUrl) {
+		    		brokerRequestPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div><div class="col-sm-12">手持身份证正面照</div></div></div></div>';
+		    	}
+		    	if (d.brokerRequestSignUrl) {
+		    		brokerRequestPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.brokerRequestSignUrl+'"/></div><div class="col-sm-12">签名图片</div></div></div></div>';
+		    	}
+		    	// 协议
+		    	var brokerRequestAgreementsHtml = '';
+		    	var brokerRequestAgreements = eval(d.brokerRequestAgreements);
+		    	if (brokerRequestAgreements) {
+			    	for (var i = 0; i < brokerRequestAgreements.length; i++) {
+			    		switch (brokerRequestAgreements[i]) {
+						case "1": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人协议》</a>'; break;
+						case "2": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人承诺书》</a>'; break;
+						case "3": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人劳务服务协议》</a>'; break;
+						}
+					}
+		    	}
+		    	// 拼接
+		    	return '<div class="page-content container-fluid" style="background-color:rgb(243,247,249);">\n\
+					    	<div class="row">\n\
+				                <div class="col-sm-6">姓名：'+d.openAccountRealname+'</div>\n\
+				                <div class="col-sm-6">身份证号：'+d.openAccountIdentityCardNumber+'</div>\n\
+				            </div>\n\
+					        <div class="row">'+brokerRequestPictureHtml+'</div>\n\
+			                <div class="row"><div class="list-group bg-blue-grey-100 bg-inherit">'+brokerRequestAgreementsHtml+'</div></div>\n\
+			            </div>';
+		    }
 		    </script>
 		</div>
     </div>
