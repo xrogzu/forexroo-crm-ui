@@ -88,6 +88,12 @@
 					    {"data": "myAgentName", "defaultContent": "暂无数据"}
 					],
 					"columnDefs": [
+						{
+			                "render": function (data, type, row, meta) {
+			                	return data + '%';
+			                },
+			                "targets": 5
+			            }
 			        ],
 			        "initComplete": function () {
 			        	$('#resetButton').click(function() {
