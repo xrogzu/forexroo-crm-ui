@@ -127,7 +127,7 @@ public class WithdrawController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
@@ -135,9 +135,8 @@ public class WithdrawController extends BaseController {
         DSLContext db = DSL.using(Jooq.buildConfiguration());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : DEPOSIT_AND_WITHDRAW.TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : DEPOSIT_AND_WITHDRAW.TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
-        Condition auditStatusCondition = auditStatus == null ? null : DEPOSIT_AND_WITHDRAW.STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : DEPOSIT_AND_WITHDRAW.USER_ID.like(search);
-        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<ExtDepositAndWithdraw> rows = db.select().from(DEPOSIT_AND_WITHDRAW).leftJoin(USER).on(DEPOSIT_AND_WITHDRAW.USER_ID.eq(USER.ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtDepositAndWithdraw.class);
         long totalRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW);
         long totalDisplayRecords = db.fetchCount(DEPOSIT_AND_WITHDRAW, finalCondition);

@@ -114,7 +114,7 @@ public class AgentWithdrawController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
@@ -122,9 +122,8 @@ public class AgentWithdrawController extends BaseController {
         DSLContext db = DSL.using(Jooq.buildConfiguration());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : AGENT_DEPOSIT_AND_WITHDRAW.TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : AGENT_DEPOSIT_AND_WITHDRAW.TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
-        Condition auditStatusCondition = auditStatus == null ? null : AGENT_DEPOSIT_AND_WITHDRAW.STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : AGENT_DEPOSIT_AND_WITHDRAW.AGENT_ID.like(search);
-        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<Field<?>> fields = new ArrayList<>();
         fields.addAll(Arrays.asList(AGENT_DEPOSIT_AND_WITHDRAW.fields()));
         fields.add(AGENT.NAME.as("agentName"));
