@@ -132,7 +132,7 @@ public class BrokerController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
@@ -141,9 +141,8 @@ public class BrokerController extends BaseController {
         Condition brokerRequestStatusCondition = USER.BROKER_REQUEST_STATUS.eq(BrokerRequestStatusEnum.auditing.getValue());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
-        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        Condition finalCondition = Jooq.and(brokerRequestStatusCondition, dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(brokerRequestStatusCondition, dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
         for (User user : rows) {
             if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
