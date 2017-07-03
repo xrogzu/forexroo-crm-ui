@@ -7,7 +7,7 @@
 #
 # Host: rm-wz9g37e75ha54f140o.mysql.rds.aliyuncs.com (MySQL 5.6.34)
 # Database: forexroo
-# Generation Time: 2017-07-03 06:12:06 +0000
+# Generation Time: 2017-07-03 06:48:59 +0000
 # ************************************************************
 
 
@@ -18,6 +18,334 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table agent
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `agent`;
+
+CREATE TABLE `agent` (
+  `name` varchar(255) DEFAULT NULL COMMENT '代理商名称',
+  `account` varchar(255) DEFAULT NULL COMMENT '代理商帐号',
+  `balance` varchar(255) DEFAULT NULL COMMENT '余额',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `region` varchar(255) DEFAULT NULL COMMENT '地区',
+  `is_disable` int(11) NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `is_closing` int(11) NOT NULL DEFAULT '0' COMMENT '是否销户',
+  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间戳',
+  `bank_detail_account_name` varchar(255) DEFAULT NULL COMMENT '银行资料-开户名称',
+  `bank_detail_account_number` varchar(255) DEFAULT NULL COMMENT '银行资料-银行账号',
+  `bank_detail_opening_bank` varchar(255) DEFAULT NULL COMMENT '银行资料-开户银行',
+  `bank_detail_opening_bank_address` varchar(255) DEFAULT NULL COMMENT '银行资料-开户地',
+  `creator_user_id` bigint(20) DEFAULT NULL COMMENT '创建人-ID',
+  `creator_user_name` varchar(255) DEFAULT NULL COMMENT '创建人-姓名',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `account` (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table agent_deposit_and_withdraw
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `agent_deposit_and_withdraw`;
+
+CREATE TABLE `agent_deposit_and_withdraw` (
+  `type` int(11) DEFAULT NULL COMMENT '类型',
+  `amount` varchar(255) DEFAULT NULL COMMENT '金额',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `agent_id` bigint(20) DEFAULT NULL COMMENT '代理商ID',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态',
+  `time` bigint(20) DEFAULT NULL COMMENT '申请时间戳',
+  `audit_user_id` bigint(20) DEFAULT NULL COMMENT '审核人-ID',
+  `audit_user_name` varchar(255) DEFAULT NULL COMMENT '审核人-姓名',
+  `audit_timestamp` bigint(20) DEFAULT NULL COMMENT '审核时间戳',
+  `audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '审核失败-原因',
+  `audit_success_time` bigint(20) DEFAULT NULL COMMENT '审核通过时间戳',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table deposit_and_withdraw
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `deposit_and_withdraw`;
+
+CREATE TABLE `deposit_and_withdraw` (
+  `raw_request` text COMMENT '原始请求',
+  `mt4_raw_request` text COMMENT 'MT4-原始请求',
+  `mt4_raw_response` text COMMENT 'MT4-原始响应',
+  `mt4_request_time` bigint(20) DEFAULT NULL COMMENT 'MT4-发送请求时间戳',
+  `mt4_response_time` bigint(20) DEFAULT NULL COMMENT 'MT4-收到响应时间戳',
+  `type` int(11) DEFAULT NULL COMMENT '类型',
+  `order_id` varchar(255) DEFAULT NULL COMMENT '订单ID',
+  `amount` varchar(255) DEFAULT NULL COMMENT '金额',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `mt4_real_account` int(11) DEFAULT NULL COMMENT 'MT4-真实账号',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态',
+  `time` bigint(20) DEFAULT NULL COMMENT '申请时间戳',
+  `audit_user_id` bigint(20) DEFAULT NULL COMMENT '审核人-ID',
+  `audit_user_name` varchar(255) DEFAULT NULL COMMENT '审核人-姓名',
+  `audit_timestamp` bigint(20) DEFAULT NULL COMMENT '审核时间戳',
+  `audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '审核失败-原因',
+  `audit_success_time` bigint(20) DEFAULT NULL COMMENT '审核通过时间戳',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `deposit_and_withdraw` WRITE;
+/*!40000 ALTER TABLE `deposit_and_withdraw` DISABLE KEYS */;
+
+INSERT INTO `deposit_and_withdraw` (`raw_request`, `mt4_raw_request`, `mt4_raw_response`, `mt4_request_time`, `mt4_response_time`, `type`, `order_id`, `amount`, `comment`, `user_id`, `mt4_real_account`, `status`, `time`, `audit_user_id`, `audit_user_name`, `audit_timestamp`, `audit_fail_reason`, `audit_success_time`, `id`)
+VALUES
+	('{\"amount\":\"20000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1499062668576,\"sendToEngineTimestamp\":0,\"token\":\"0405a790-f1aa-48e3-a946-b69c14575148\",\"uuid\":\"e3922b2f-dc4d-465f-9221-1484a671af36\"}','{\"amount\":20000.0,\"operationtype\":1,\"login\":2089113428}','{\"orderid\":6762746,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":2089113428,\"reqid\":\"db27c266-2c3f-43da-9e86-3d2113c44320\"}',1499062668587,1499062668843,1,'6762746','20000.0',NULL,18000100,NULL,0,1499062668843,NULL,NULL,NULL,0,NULL,1),
+	('{\"amount\":\"10000.00\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1499062675468,\"sendToEngineTimestamp\":0,\"token\":\"0405a790-f1aa-48e3-a946-b69c14575148\",\"uuid\":\"bb441b57-1932-4b02-bc5b-79f17114115f\"}','{\"amount\":10000.0,\"operationtype\":1,\"login\":2089113428}','{\"orderid\":6762747,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":2089113428,\"reqid\":\"84087514-f0e7-4840-96fa-f6d7b0895c06\"}',1499062675477,1499062675732,1,'6762747','10000.0',NULL,18000100,NULL,0,1499062675732,NULL,NULL,NULL,0,NULL,2),
+	('{\"amount\":\"1000\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1499063068193,\"sendToEngineTimestamp\":0,\"token\":\"0352efdb-d4f5-4be5-8927-95e0570922b2\",\"uuid\":\"97da883d-893d-4702-b3d5-fcb8c5bbc6c9\"}','{\"amount\":1000.0,\"operationtype\":1,\"login\":2089113429}','{\"orderid\":6762928,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":2089113429,\"reqid\":\"fe254f97-1f56-4d09-80cf-88906d729686\"}',1499063068203,1499063068460,1,'6762928','1000.0',NULL,18000101,NULL,0,1499063068460,NULL,NULL,NULL,0,NULL,3),
+	('{\"amount\":\"5000\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1499063100619,\"sendToEngineTimestamp\":0,\"token\":\"0352efdb-d4f5-4be5-8927-95e0570922b2\",\"uuid\":\"b2fd9ee4-af53-4b40-85c3-1e35e09fe786\"}','{\"amount\":5000.0,\"operationtype\":1,\"login\":2089113429}','{\"orderid\":6762939,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":2089113429,\"reqid\":\"6c588677-fa47-49ae-9f49-cd9d845e3291\"}',1499063100628,1499063100890,1,'6762939','5000.0',NULL,18000101,NULL,0,1499063100890,NULL,NULL,NULL,0,NULL,4),
+	('{\"amount\":\"100000\",\"apiName\":\"Deposit_SubmitAmount_Api\",\"executeByEngineTimestamp\":1499063422575,\"sendToEngineTimestamp\":0,\"token\":\"0352efdb-d4f5-4be5-8927-95e0570922b2\",\"uuid\":\"0d45c0a2-3c47-4f0e-b1dc-9636cdd928d2\"}','{\"amount\":100000.0,\"operationtype\":1,\"login\":2089113429}','{\"orderid\":6763058,\"comment\":\"\",\"operationtype\":1,\"error\":\"\",\"login\":2089113429,\"reqid\":\"600be2c8-9ce2-481e-89be-0e7a828b0e8c\"}',1499063422583,1499063422864,1,'6763058','100000.0',NULL,18000101,NULL,0,1499063422864,NULL,NULL,NULL,0,NULL,5);
+
+/*!40000 ALTER TABLE `deposit_and_withdraw` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table feedback
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `feedback`;
+
+CREATE TABLE `feedback` (
+  `content` text COMMENT '意见反馈详细描述',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `picture_urls` varchar(255) DEFAULT NULL COMMENT '截图照片URL',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table master_trader_rankings_history
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `master_trader_rankings_history`;
+
+CREATE TABLE `master_trader_rankings_history` (
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `mt4_real_account` int(11) DEFAULT NULL COMMENT 'MT4-真实账号',
+  `total_profit` double DEFAULT NULL COMMENT '总盈利',
+  `single_profit` double DEFAULT NULL COMMENT '均单盈利',
+  `success_rate` double DEFAULT NULL COMMENT '成功率',
+  `time` varchar(255) DEFAULT NULL COMMENT '时间',
+  `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(255) DEFAULT NULL COMMENT '创建者',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table mt4_history_order
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `mt4_history_order`;
+
+CREATE TABLE `mt4_history_order` (
+  `activation` varchar(255) DEFAULT NULL,
+  `close_price` double DEFAULT NULL,
+  `close_time` bigint(20) DEFAULT NULL,
+  `cmd` int(11) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `commission` int(11) DEFAULT NULL,
+  `commission_agent` int(11) DEFAULT NULL,
+  `conv_rates1` double DEFAULT NULL,
+  `conv_rates2` double DEFAULT NULL,
+  `conv_reserv` varchar(255) DEFAULT NULL,
+  `digits` int(11) DEFAULT NULL,
+  `expiration` int(11) DEFAULT NULL,
+  `gw_close_price` int(11) DEFAULT NULL,
+  `gw_open_price` int(11) DEFAULT NULL,
+  `gw_order` int(11) DEFAULT NULL,
+  `gw_volume` int(11) DEFAULT NULL,
+  `login` int(11) DEFAULT NULL,
+  `magic` int(11) DEFAULT NULL,
+  `margin_rate` double DEFAULT NULL,
+  `open_price` double DEFAULT NULL,
+  `open_time` bigint(20) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `profit` double DEFAULT NULL,
+  `reason` int(11) DEFAULT NULL,
+  `sl` double DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `storage` int(11) DEFAULT NULL,
+  `symbol` varchar(255) DEFAULT NULL,
+  `taxes` int(11) DEFAULT NULL,
+  `timestamp` bigint(20) DEFAULT NULL,
+  `tp` double DEFAULT NULL,
+  `volume` int(11) DEFAULT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `mt4_history_order` WRITE;
+/*!40000 ALTER TABLE `mt4_history_order` DISABLE KEYS */;
+
+INSERT INTO `mt4_history_order` (`activation`, `close_price`, `close_time`, `cmd`, `comment`, `commission`, `commission_agent`, `conv_rates1`, `conv_rates2`, `conv_reserv`, `digits`, `expiration`, `gw_close_price`, `gw_open_price`, `gw_order`, `gw_volume`, `login`, `magic`, `margin_rate`, `open_price`, `open_time`, `order_id`, `profit`, `reason`, `sl`, `state`, `storage`, `symbol`, `taxes`, `timestamp`, `tp`, `volume`, `id`)
+VALUES
+	('0',0,1499062668,6,'',0,0,0,0,'',0,0,0,0,0,0,2089113428,0,0,0,1499062668,6762746,20000,0,0,0,0,'',0,1499062668,0,1,1),
+	('0',0,1499062675,6,'',0,0,0,0,'',0,0,0,0,0,0,2089113428,0,0,0,1499062675,6762747,10000,0,0,0,0,'',0,1499062675,0,1,2),
+	('0',112.592,1499062830,0,'2017-07-03 06:18:15 +0000IOS[2',0,0,0,0,'',3,0,0,0,0,0,2089113428,0,1,112.609,1499062695,6762755,-1.51,2,0,3,0,'USDJPY',0,1499062830,0,10,3),
+	('0',1235.83,0,0,'2017-07-03 06:19:59 +0000IOS',0,0,0,0,'',3,0,0,0,0,0,2089113428,0,1235.99,1235.99,1499062799,6762779,-1.6,2,0,0,0,'XAUUSD',0,1499062799,0,10,4),
+	('0',0,1499063068,6,'',0,0,0,0,'',0,0,0,0,0,0,2089113429,0,0,0,1499063068,6762928,1000,0,0,0,0,'',0,1499063068,0,1,5),
+	('0',0,1499063100,6,'',0,0,0,0,'',0,0,0,0,0,0,2089113429,0,0,0,1499063100,6762939,5000,0,0,0,0,'',0,1499063100,0,1,6),
+	('0',0,1499063422,6,'',0,0,0,0,'',0,0,0,0,0,0,2089113429,0,0,0,1499063422,6763058,100000,0,0,0,0,'',0,1499063422,0,1,7),
+	('0',112.543,0,0,'20170429test',0,0,0,0,'',3,0,0,0,0,0,2089113429,0,1,112.551,1499063434,6763064,-7.11,2,0,0,0,'USDJPY',0,1499063434,0,100,8),
+	('0',0.7669,0,1,'20170429test',0,0,0,0,'',5,0,0,0,0,0,2089113429,0,0.76683,0.76683,1499063455,6763083,-7,2,0,0,0,'AUDUSD',0,1499063455,0,100,9),
+	('0',48.88,0,0,'20170429test',0,0,0,0,'',3,0,0,0,0,0,2089113429,0,48.99,48.99,1499063467,6763091,-11,2,0,0,0,'UKOUSD',0,1499063467,0,100,10),
+	('0',1236.38,0,0,'20170429test',0,0,0,0,'',3,0,0,0,0,0,2089113429,0,1236.25,1236.25,1499063506,6763101,13,2,0,0,0,'XAUUSD',0,1499063506,0,100,11);
+
+/*!40000 ALTER TABLE `mt4_history_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table mt4_history_order_sync_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `mt4_history_order_sync_log`;
+
+CREATE TABLE `mt4_history_order_sync_log` (
+  `request_arg_login` int(11) DEFAULT NULL COMMENT '请求参数-MT4帐号',
+  `request_arg_symbol` varchar(255) DEFAULT NULL COMMENT '请求参数-品种',
+  `request_arg_trade_type` int(11) DEFAULT NULL COMMENT '请求参数-类型',
+  `request_arg_from_time` bigint(20) DEFAULT NULL COMMENT '请求参数-开始时间戳',
+  `request_arg_end_time` bigint(20) DEFAULT NULL COMMENT '请求参数-结束时间戳',
+  `request_time` bigint(20) DEFAULT NULL COMMENT '请求时间戳',
+  `response_time` bigint(20) DEFAULT NULL COMMENT '响应时间戳',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_bank_card
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_bank_card`;
+
+CREATE TABLE `my_bank_card` (
+  `bank_card_number` varchar(255) DEFAULT NULL COMMENT '银行卡号',
+  `reserved_phone` varchar(255) DEFAULT NULL COMMENT '预留手机号',
+  `bank_image` varchar(255) DEFAULT NULL COMMENT '银行LOGO',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `card_name` varchar(255) DEFAULT NULL COMMENT '卡名称',
+  `card_type` varchar(255) DEFAULT NULL COMMENT '卡类型',
+  `service_phone` varchar(255) DEFAULT NULL COMMENT '服务热线',
+  `apistore_raw_response` text COMMENT '寻程-银行卡四要素认证v3-原始响应',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `bank_card_number` (`bank_card_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_master_trader
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_master_trader`;
+
+CREATE TABLE `my_master_trader` (
+  `master_trader_user_id` bigint(20) DEFAULT NULL COMMENT '大师ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table my_symbol
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `my_symbol`;
+
+CREATE TABLE `my_symbol` (
+  `symbol` varchar(255) DEFAULT NULL COMMENT '品种',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `time` bigint(20) DEFAULT NULL COMMENT '时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `my_symbol` WRITE;
+/*!40000 ALTER TABLE `my_symbol` DISABLE KEYS */;
+
+INSERT INTO `my_symbol` (`symbol`, `user_id`, `time`, `id`)
+VALUES
+	('EURUSD',18000100,1499062477538,1),
+	('USDJPY',18000100,1499062477538,2),
+	('AUDUSD',18000100,1499062477538,3),
+	('XAUUSD',18000100,1499062477538,4),
+	('UKOUSD',18000100,1499062477538,5),
+	('EURUSD',18000101,1499062519942,6),
+	('USDJPY',18000101,1499062519942,7),
+	('AUDUSD',18000101,1499062519942,8),
+	('XAUUSD',18000101,1499062519942,9),
+	('UKOUSD',18000101,1499062519942,10);
+
+/*!40000 ALTER TABLE `my_symbol` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table schema_version
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `schema_version`;
+
+CREATE TABLE `schema_version` (
+  `installed_rank` int(11) NOT NULL,
+  `version` varchar(50) DEFAULT NULL,
+  `description` varchar(200) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `script` varchar(1000) NOT NULL,
+  `checksum` int(11) DEFAULT NULL,
+  `installed_by` varchar(100) NOT NULL,
+  `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `execution_time` int(11) NOT NULL,
+  `success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`installed_rank`),
+  KEY `schema_version_s_idx` (`success`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `schema_version` WRITE;
+/*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
+
+INSERT INTO `schema_version` (`installed_rank`, `version`, `description`, `type`, `script`, `checksum`, `installed_by`, `installed_on`, `execution_time`, `success`)
+VALUES
+	(1,'1','<< Flyway Baseline >>','BASELINE','<< Flyway Baseline >>',NULL,'forexroo','2017-07-03 14:13:11',0,1),
+	(2,'1.1','CreateTable User','JDBC','com.github.xuzw.forexroo.database.migration.V1_1__CreateTable_User',NULL,'forexroo','2017-07-03 14:13:12',120,1),
+	(3,'1.2','CreateTable Feedback','JDBC','com.github.xuzw.forexroo.database.migration.V1_2__CreateTable_Feedback',NULL,'forexroo','2017-07-03 14:13:12',95,1),
+	(4,'1.3','CreateTable MasterTraderRankingsHistory','JDBC','com.github.xuzw.forexroo.database.migration.V1_3__CreateTable_MasterTraderRankingsHistory',NULL,'forexroo','2017-07-03 14:13:13',95,1),
+	(5,'1.4','CreateTable MySymbol','JDBC','com.github.xuzw.forexroo.database.migration.V1_4__CreateTable_MySymbol',NULL,'forexroo','2017-07-03 14:13:14',107,1),
+	(6,'1.5','CreateTable MyMasterTrader','JDBC','com.github.xuzw.forexroo.database.migration.V1_5__CreateTable_MyMasterTrader',NULL,'forexroo','2017-07-03 14:13:15',91,1),
+	(7,'1.6','CreateTable MyBankCard','JDBC','com.github.xuzw.forexroo.database.migration.V1_6__CreateTable_MyBankCard',NULL,'forexroo','2017-07-03 14:13:15',112,1),
+	(8,'1.7','CreateTable DepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_7__CreateTable_DepositAndWithdraw',NULL,'forexroo','2017-07-03 14:13:16',93,1),
+	(9,'1.8','CreateTable Agent','JDBC','com.github.xuzw.forexroo.database.migration.V1_8__CreateTable_Agent',NULL,'forexroo','2017-07-03 14:13:17',101,1),
+	(10,'1.9','CreateTable Mt4HistoryOrder','JDBC','com.github.xuzw.forexroo.database.migration.V1_9__CreateTable_Mt4HistoryOrder',NULL,'forexroo','2017-07-03 14:13:17',113,1),
+	(11,'1.10','CreateTable Mt4HistoryOrderSyncLog','JDBC','com.github.xuzw.forexroo.database.migration.V1_10__CreateTable_Mt4HistoryOrderSyncLog',NULL,'forexroo','2017-07-03 14:13:18',104,1),
+	(12,'1.11','CreateTable AgentDepositAndWithdraw','JDBC','com.github.xuzw.forexroo.database.migration.V1_11__CreateTable_AgentDepositAndWithdraw',NULL,'forexroo','2017-07-03 14:13:19',94,1);
+
+/*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_blacklist
@@ -349,7 +677,25 @@ VALUES
 	(504,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-06-27 17:55:51','117.114.192.50'),
 	(505,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=WZ9Y ]',1,'2017-07-03 14:10:39','117.114.192.50'),
 	(506,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-07-03 14:11:12','114.248.191.5'),
-	(507,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zf5w remember=on ]',1,'2017-07-03 14:11:33','114.248.191.5');
+	(507,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=zf5w remember=on ]',1,'2017-07-03 14:11:33','114.248.191.5'),
+	(508,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-07-03 14:15:20','117.114.192.50'),
+	(509,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=3TBB ]',1,'2017-07-03 14:16:07','117.114.192.50'),
+	(510,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=GWPJ ]',1,'2017-07-03 14:18:23','117.114.192.50'),
+	(511,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=NNZC ]',1,'2017-07-03 14:19:04','117.114.192.50'),
+	(512,'/system/login','登录','[loginName=admui password=994b3a9ba46b3caae2e1522d96bc41c2 loginType=cookie ]',1,'2017-07-03 14:23:20','117.114.192.50'),
+	(513,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=257p ]',1,'2017-07-03 14:26:35','117.114.192.50'),
+	(514,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=SZXC ]',1,'2017-07-03 14:28:18','117.114.192.50'),
+	(515,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=GSVM ]',1,'2017-07-03 14:30:07','117.114.192.50'),
+	(516,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ZKBK ]',1,'2017-07-03 14:31:30','117.114.192.50'),
+	(517,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=xc5z ]',1,'2017-07-03 14:35:05','114.248.191.5'),
+	(518,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=DRTK ]',1,'2017-07-03 14:40:35','117.114.192.50'),
+	(519,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=M23U ]',1,'2017-07-03 14:43:11','117.114.192.50'),
+	(520,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=XBQZ ]',1,'2017-07-03 14:43:49','117.114.192.50'),
+	(521,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=ggct ]',NULL,'2017-07-03 14:46:00',NULL),
+	(522,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=gaps remember=on ]',1,'2017-07-03 14:46:07','114.248.191.5'),
+	(523,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=VDNT ]',1,'2017-07-03 14:46:22','117.114.192.50'),
+	(524,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=3XHH ]',1,'2017-07-03 14:47:36','117.114.192.50'),
+	(525,'/system/login','登录','[loginName=admui password=d7b775bd8d001d3d5f4b94be27905b9a validCode=9UZX ]',1,'2017-07-03 14:48:45','117.114.192.50');
 
 /*!40000 ALTER TABLE `sys_log` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -411,46 +757,43 @@ LOCK TABLES `sys_menu` WRITE;
 
 INSERT INTO `sys_menu` (`menu_id`, `name`, `parent_id`, `layer`, `icon`, `url`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'系统管理',0,'07','wb-settings','#',NULL,NULL,1,'2017-01-08 15:59:18'),
-	(2,'系统信息',1,'0701','','',NULL,NULL,1,'2016-12-18 14:46:18'),
-	(3,'我的账户',1,'0702','','',NULL,NULL,1,'2017-06-15 15:02:27'),
-	(4,'菜单管理',2,'070101','fa-bars','/system/menu',NULL,NULL,1,'2016-12-18 14:46:18'),
-	(5,'用户管理',2,'070102','fa-street-view','/system/user',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(6,'日志信息',2,'070103','fa-file-text-o','/system/log',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(7,'黑名单',2,'070104','fa-shield','/system/blacklist',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(8,'系统设置',2,'070105','fa-gear','',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(10,'显示设置',8,'07010501','','/system/settings/display',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(11,'日志设置',8,'07010502','','/system/settings/log',NULL,NULL,1,'2017-06-20 14:43:10'),
-	(12,'账户信息',3,'070201','fa-key','/system/account',NULL,NULL,1,'2017-06-15 15:03:21'),
-	(11309,'审核管理',0,'08','fa-bars',NULL,1,'2017-06-13 13:57:39',NULL,NULL),
-	(11310,'审核管理',11309,'0801','','',1,'2017-06-13 13:58:46',NULL,NULL),
-	(11311,'交易商开户申请审核',11310,'080101','fa-bars','/pages/audit/open-account',1,'2017-06-13 13:58:47',NULL,NULL),
-	(11312,'用户管理',0,'09','fa-bars',NULL,1,'2017-06-15 16:00:06',NULL,NULL),
-	(11313,'用户管理',11312,'0901','','',1,'2017-06-15 16:02:19',NULL,NULL),
-	(11314,'交易商',11313,'090101','fa-child','/pages/user/dealer',1,'2017-06-15 16:02:19',1,'2017-06-15 18:39:20'),
-	(11318,'订单管理',0,'10','fa-bars',NULL,1,'2017-06-16 13:12:38',NULL,NULL),
-	(11319,'订单管理',11318,'1001','','',1,'2017-06-16 13:13:01',NULL,NULL),
-	(11320,'订单管理',11319,'100101','fa-server','/pages/history-order',1,'2017-06-16 13:13:01',1,'2017-06-16 20:11:34'),
-	(11321,'风险监控',0,'11','fa-bars',NULL,1,'2017-06-16 13:21:47',NULL,NULL),
-	(11322,'风险监控',11321,'1101','','',1,'2017-06-16 13:22:19',NULL,NULL),
-	(11323,'交易商监控',11322,'110101','fa-binoculars','/pages/risk/dealer',1,'2017-06-16 13:22:19',1,'2017-06-16 20:10:35'),
-	(11324,'持仓监控',11322,'110102','fa-bar-chart','/pages/risk/order',1,'2017-06-16 13:29:19',1,'2017-06-16 20:10:35'),
-	(11325,'经纪人申请审核',11310,'080102','fa-bars','/pages/audit/broker-request',1,'2017-06-16 14:23:46',NULL,NULL),
-	(11326,'经纪人',11313,'090102','fa-bars','/pages/user/broker',1,'2017-06-16 16:56:12',NULL,NULL),
-	(11327,'代理商',11313,'090103','fa-bars','/pages/user/agent',1,'2017-06-16 17:16:18',NULL,NULL),
-	(11328,'交易商出金审核',11310,'080103','fa-bars','/pages/audit/dealer-withdraw',1,'2017-06-19 15:35:46',1,'2017-06-20 10:39:09'),
-	(11329,'代理商出金审核',11310,'080104','fa-bars','/pages/audit/agent-withdraw',1,'2017-06-20 10:39:09',NULL,NULL),
-	(11330,'返佣管理',0,'12','fa-bars',NULL,1,'2017-06-20 11:25:02',NULL,NULL),
-	(11331,'返佣管理',11330,'1201','','',1,'2017-06-20 11:26:01',NULL,NULL),
-	(11332,'经纪人记录',11331,'120101','fa-bars','/pages/commission/broker',1,'2017-06-20 11:26:02',NULL,NULL),
-	(11333,'代理商记录',11331,'120102','fa-bars','/pages/commission/agent',1,'2017-06-20 11:36:21',NULL,NULL),
-	(11334,'资金管理',0,'13','fa-bars',NULL,1,'2017-06-27 12:38:36',NULL,NULL),
-	(11335,'资金管理',11334,'1301','','',1,'2017-06-27 12:39:38',NULL,NULL),
-	(11336,'交易商出入金',11335,'130101','fa-bars','/pages/money/dealer',1,'2017-06-27 12:39:38',NULL,NULL),
-	(11337,'代理商出金',11335,'130102','fa-bars','/pages/money/agent',1,'2017-06-27 14:00:32',NULL,NULL),
-	(11338,'交易大师',0,'14','fa-bars',NULL,1,'2017-06-27 17:34:30',NULL,NULL),
-	(11339,'交易大师',11338,'1401','','',1,'2017-06-27 17:35:09',NULL,NULL),
-	(11340,'昨日盈利前十排行榜',11339,'140101','fa-bars','/pages/master-trader/top',1,'2017-06-27 17:35:09',NULL,NULL);
+	(1,'ForexRoo',0,'07','wb-settings',NULL,NULL,NULL,1,'2017-07-03 14:47:18'),
+	(2,'ForexRoo',1,'0701','','',NULL,NULL,1,'2017-07-03 14:18:57'),
+	(4,'菜单管理',8,'07011203','','/system/menu',NULL,NULL,1,'2017-07-03 14:48:19'),
+	(5,'用户管理',11354,'07010901','','/system/user',NULL,NULL,1,'2017-07-03 14:48:19'),
+	(8,'系统设置',2,'070112','fa-gear','',NULL,NULL,1,'2017-07-03 14:48:19'),
+	(10,'显示设置',8,'07011202','','/system/settings/display',NULL,NULL,1,'2017-07-03 14:48:19'),
+	(12,'账户信息',8,'07011201','','/system/account',NULL,NULL,1,'2017-07-03 14:48:19'),
+	(11341,'首页',2,'070101','fa-home','/pages/home',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11342,'风险监控',2,'070102','fa-bar-chart','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11343,'持仓监控',11342,'07010201','','/pages/risk/order',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11344,'交易商',11342,'07010202','','/pages/risk/dealer',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11345,'订单管理',2,'070103','fa-bars','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11346,'审核管理',2,'070104','fa-exclamation-circle','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11347,'开户',11346,'07010401','','/pages/audit/open-account',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11348,'经纪人',11346,'07010402','','/pages/audit/broker-request',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11349,'客户出金',11346,'07010403','','/pages/audit/dealer-withdraw',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11350,'代理商出金',11346,'07010404','','/pages/audit/agent-withdraw',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11351,'佣金管理',2,'070105','fa-money','#',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11352,'资金管理',2,'070106','fa-money','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11353,'用户管理',2,'070108','fa-child','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11354,'控制管理',2,'070109','fa-cogs','',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11355,'消息管理',2,'070110','fa-comment','#',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11356,'日志管理',2,'070111','fa-newspaper-o','/system/settings/log',1,'2017-07-03 14:15:27',1,'2017-07-03 14:48:19'),
+	(11358,'经纪人',11351,'07010501','','/pages/commission/broker',1,'2017-07-03 14:18:17',1,'2017-07-03 14:48:19'),
+	(11359,'代理商',11351,'07010502','','/pages/commission/agent',1,'2017-07-03 14:18:17',1,'2017-07-03 14:48:19'),
+	(11360,'交易商出入金',11352,'07010601','','/pages/money/dealer',1,'2017-07-03 14:20:27',1,'2017-07-03 14:48:19'),
+	(11361,'代理商出入金',11352,'07010602','','/pages/money/agent',1,'2017-07-03 14:20:27',1,'2017-07-03 14:48:19'),
+	(11362,'交易管理',2,'070107','fa-exchange','',1,'2017-07-03 14:20:27',1,'2017-07-03 14:48:19'),
+	(11363,'交易大师',11362,'07010701','','/pages/master-trader/top',1,'2017-07-03 14:20:58',1,'2017-07-03 14:48:19'),
+	(11364,'复制交易',11362,'07010702','','#',1,'2017-07-03 14:20:58',1,'2017-07-03 14:48:19'),
+	(11365,'机构交易',11362,'07010703','','#',1,'2017-07-03 14:20:58',1,'2017-07-03 14:48:19'),
+	(11366,'全部交易',11345,'07010301','','/pages/history-order',1,'2017-07-03 14:23:51',1,'2017-07-03 14:48:19'),
+	(11367,'自主交易',11345,'07010302','','/pages/history-order',1,'2017-07-03 14:23:51',1,'2017-07-03 14:48:19'),
+	(11368,'复制交易',11345,'07010303','','#',1,'2017-07-03 14:23:51',1,'2017-07-03 14:48:19'),
+	(11369,'交易商',11353,'07010801','','/pages/user/dealer',1,'2017-07-03 14:24:45',1,'2017-07-03 14:48:19'),
+	(11370,'经纪人',11353,'07010802','','/pages/user/broker',1,'2017-07-03 14:24:45',1,'2017-07-03 14:48:19'),
+	(11371,'代理商',11353,'07010803','','/pages/user/agent',1,'2017-07-03 14:24:45',1,'2017-07-03 14:48:19');
 
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -477,66 +820,45 @@ LOCK TABLES `sys_menu_role` WRITE;
 
 INSERT INTO `sys_menu_role` (`rm_id`, `menu_id`, `role_id`)
 VALUES
-	(824,1,1),
-	(825,2,1),
-	(826,4,1),
-	(827,5,1),
-	(828,6,1),
-	(829,7,1),
 	(830,8,1),
-	(831,10,1),
-	(832,11,1),
-	(834,12,1),
-	(836,11309,1),
-	(837,11310,1),
-	(838,11311,1),
-	(839,3,1),
-	(840,11312,1),
-	(841,11313,1),
-	(842,11314,1),
-	(845,11318,1),
-	(846,11319,1),
-	(847,11320,1),
-	(848,11321,1),
-	(849,11322,1),
-	(850,11323,1),
-	(851,11324,1),
-	(852,11325,1),
-	(853,11326,1),
-	(854,11327,1),
-	(855,11328,1),
-	(856,11329,1),
-	(857,11330,1),
-	(858,11331,1),
-	(859,11332,1),
-	(860,11333,1),
-	(861,1,2),
-	(862,11309,2),
-	(863,11310,2),
-	(864,11311,2),
-	(865,11325,2),
-	(866,11312,2),
-	(867,11313,2),
-	(868,11314,2),
-	(869,11326,2),
-	(870,11327,2),
-	(871,2,2),
-	(872,3,2),
-	(873,4,2),
-	(874,5,2),
-	(875,6,2),
-	(876,7,2),
 	(877,8,2),
-	(878,10,2),
-	(879,11,2),
-	(880,12,2),
-	(881,11334,1),
-	(882,11335,1),
-	(883,11336,1),
-	(884,11337,1),
-	(885,11338,1),
-	(886,11339,1),
-	(887,11340,1);
+	(888,11344,1),
+	(889,11345,1),
+	(890,11347,1),
+	(891,11348,1),
+	(892,11349,1),
+	(893,11350,1),
+	(894,11341,1),
+	(895,11342,1),
+	(896,11343,1),
+	(897,11346,1),
+	(898,11351,1),
+	(899,11358,1),
+	(900,11359,1),
+	(901,2,1),
+	(902,11360,1),
+	(903,11361,1),
+	(904,11362,1),
+	(905,11363,1),
+	(906,11366,1),
+	(907,11367,1),
+	(908,11368,1),
+	(909,11364,1),
+	(910,11365,1),
+	(911,11353,1),
+	(912,11369,1),
+	(913,11370,1),
+	(914,11371,1),
+	(915,11354,1),
+	(916,5,1),
+	(917,11355,1),
+	(918,11356,1),
+	(919,12,1),
+	(920,4,1),
+	(921,10,1),
+	(929,11352,1),
+	(930,1,1),
+	(931,1,2);
 
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -665,7 +987,7 @@ LOCK TABLES `sys_user` WRITE;
 
 INSERT INTO `sys_user` (`user_id`, `login_name`, `password`, `login_count`, `state`, `last_login_time`, `last_login_ip`, `create_user`, `create_time`, `update_user`, `update_time`)
 VALUES
-	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',856,'NORMAL','2017-07-03 14:11:33','114.248.191.5',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54'),
+	(1,'admui','d7b775bd8d001d3d5f4b94be27905b9a',874,'NORMAL','2017-07-03 14:48:45','117.114.192.50',NULL,'2016-12-21 11:16:00',1,'2017-04-18 22:55:54'),
 	(2,'test','cc03e747a6afbbcbf8be7668acfebee5',1,'NORMAL','2017-06-20 14:51:27','0:0:0:0:0:0:0:1',1,'2017-06-20 14:50:19',NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
@@ -697,6 +1019,70 @@ VALUES
 	(65,2,2);
 
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `phone` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `password` varchar(255) DEFAULT NULL COMMENT '登录密码',
+  `token` varchar(255) DEFAULT NULL COMMENT '用户唯一标识码',
+  `is_disable` int(11) NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `is_closing` int(11) NOT NULL DEFAULT '0' COMMENT '是否销户',
+  `register_time` bigint(20) DEFAULT NULL COMMENT '注册时间戳',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  `sex` varchar(255) DEFAULT NULL COMMENT '性别',
+  `country` varchar(255) DEFAULT NULL COMMENT '国家',
+  `mt4_real_account` int(11) DEFAULT NULL COMMENT 'MT4-真实账号',
+  `mt4_history_order_last_sync_time` bigint(20) DEFAULT NULL COMMENT 'MT4-历史订单-上次同步时间戳',
+  `my_broker_id` bigint(20) DEFAULT NULL COMMENT '所属经纪人-ID',
+  `my_broker_name` varchar(255) DEFAULT NULL COMMENT '所属经纪人-姓名',
+  `my_agent_id` bigint(20) DEFAULT NULL COMMENT '所属代理商-ID',
+  `my_agent_name` varchar(255) DEFAULT NULL COMMENT '所属代理商-姓名',
+  `open_account_realname` varchar(255) DEFAULT NULL COMMENT '开户-姓名',
+  `open_account_identity_card_number` varchar(255) DEFAULT NULL COMMENT '开户-身份证号',
+  `open_account_picture_url` varchar(255) DEFAULT NULL COMMENT '开户-手持身份证正面照URL',
+  `open_account_agreements` varchar(255) DEFAULT NULL COMMENT '开户-签订协议',
+  `open_account_sign_url` varchar(255) DEFAULT NULL COMMENT '开户-签名图片URL',
+  `open_account_status` int(11) NOT NULL DEFAULT '0' COMMENT '开户-状态',
+  `open_account_audit_user_id` bigint(20) DEFAULT NULL COMMENT '开户-审核人-ID',
+  `open_account_audit_user_name` varchar(255) DEFAULT NULL COMMENT '开户-审核人-姓名',
+  `open_account_audit_timestamp` bigint(20) DEFAULT NULL COMMENT '开户-审核时间戳',
+  `open_account_audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '开户-审核失败-原因',
+  `open_account_time` bigint(20) DEFAULT NULL COMMENT '开户-申请时间戳',
+  `open_account_audit_success_time` bigint(20) DEFAULT NULL COMMENT '开户-审核通过时间戳',
+  `broker_request_agreements` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签订协议',
+  `broker_request_sign_url` varchar(255) DEFAULT NULL COMMENT '经纪人申请-签名图片URL',
+  `broker_request_status` int(11) NOT NULL DEFAULT '0' COMMENT '经纪人申请-状态',
+  `broker_request_audit_user_id` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核人-ID',
+  `broker_request_audit_user_name` varchar(255) DEFAULT NULL COMMENT '经纪人申请-审核人-姓名',
+  `broker_request_audit_timestamp` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核时间戳',
+  `broker_request_audit_fail_reason` int(11) NOT NULL DEFAULT '0' COMMENT '经纪人申请-审核失败-原因',
+  `broker_request_time` bigint(20) DEFAULT NULL COMMENT '经纪人申请-申请时间戳',
+  `broker_request_audit_success_time` bigint(20) DEFAULT NULL COMMENT '经纪人申请-审核通过时间戳',
+  `master_trader_total_profit` double DEFAULT NULL COMMENT '交易大师-总盈利',
+  `master_trader_single_profit` double DEFAULT NULL COMMENT '交易大师-均单盈利',
+  `master_trader_success_rate` double DEFAULT NULL COMMENT '交易大师-成功率',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone` (`phone`),
+  UNIQUE KEY `token` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`phone`, `password`, `token`, `is_disable`, `is_closing`, `register_time`, `avatar`, `nickname`, `sex`, `country`, `mt4_real_account`, `mt4_history_order_last_sync_time`, `my_broker_id`, `my_broker_name`, `my_agent_id`, `my_agent_name`, `open_account_realname`, `open_account_identity_card_number`, `open_account_picture_url`, `open_account_agreements`, `open_account_sign_url`, `open_account_status`, `open_account_audit_user_id`, `open_account_audit_user_name`, `open_account_audit_timestamp`, `open_account_audit_fail_reason`, `open_account_time`, `open_account_audit_success_time`, `broker_request_agreements`, `broker_request_sign_url`, `broker_request_status`, `broker_request_audit_user_id`, `broker_request_audit_user_name`, `broker_request_audit_timestamp`, `broker_request_audit_fail_reason`, `broker_request_time`, `broker_request_audit_success_time`, `master_trader_total_profit`, `master_trader_single_profit`, `master_trader_success_rate`, `id`)
+VALUES
+	('13550311857','a123456','0405a790-f1aa-48e3-a946-b69c14575148',0,0,1499062477480,NULL,NULL,NULL,NULL,2089113428,NULL,NULL,NULL,NULL,NULL,'窦华胜','513023197611166771','8f7453d8080e7816717f8862b8796e9a','[\"1\",\"2\",\"3\",\"4\"]','388f9794ba4d5b43f67121bdb13279b1',2,1,'admui',1499062626270,0,1499062604800,1499062626270,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000100),
+	('13641122206','mxl123456','0352efdb-d4f5-4be5-8927-95e0570922b2',0,0,1499062519911,NULL,NULL,NULL,NULL,2089113429,NULL,NULL,NULL,NULL,NULL,'马雄鹿','420983198905083213','b1545589317a9c8020f9724d4b08701b','[\"1\",\"2\",\"3\",\"4\"]','18000101opensignature',2,1,'admui',1499063053868,0,1499062989807,1499063053868,NULL,NULL,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,18000101);
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
