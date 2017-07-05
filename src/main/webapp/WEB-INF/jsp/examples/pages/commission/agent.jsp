@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../../includes/taglib.jsp"%>
+<%@ include file="../../../includes/taglib.jsp"%>
 
-<title>历史订单</title>
+<title>代理商记录</title>
 
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
@@ -50,24 +50,12 @@
 		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <td>交易商姓名</td>
-		                <td>交易账号</td>
-		                <td>MT4账号</td>
-		                <td>交易商品</td>
-		                <td>建仓方向</td>
-		                <td>建仓价格</td>
-		                <td>建仓时间</td>
-		                <td>平仓价格</td>
-		                <td>平仓时间</td>
-		                <td>平仓类型</td>
-		                <td>交易数量</td>
-		                <td>交易编码</td>
-		                <td>保证金</td>
-		                <td>手续费</td>
-		                <td>隔夜费</td>
-		                <td>盈亏</td>
-		                <td>所属经纪人</td>
-		                <td>所属代理商</td>
+		                <td>代理商名称</td>
+		                <td>代理商代码</td>
+		                <td>手续费返佣金额</td>
+		                <td>返佣结算日期</td>
+		                <td>结算方式</td>
+		                <td>返佣编码</td>
 		            </tr>
 		            </thead>
 		        </table>
@@ -80,60 +68,30 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/historyOrder/all",
+					    "url": "${ctx}/agentWithdraw/commissionDepositList",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
+					        d.auditStatus = $('#auditStatus').val();
 					        d.searchKeyword = $('#searchKeyword').val();
 					    }
 					},
 					"columns": [
-					    {"data": "nickname", "defaultContent": "暂无数据"},
-					    {"data": "phone", "defaultContent": "暂无数据"},
-					    {"data": "login", "defaultContent": "暂无数据"},
-					    {"data": "symbol", "defaultContent": "暂无数据"},
-					    {"data": "cmd", "defaultContent": "暂无数据"},
-					    {"data": "openPrice", "defaultContent": "暂无数据"},
-					    {"data": "openTime", "defaultContent": "暂无数据"},
-					    {"data": "closePrice", "defaultContent": "暂无数据"},
-					    {"data": "closeTime", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "暂无数据"},
-					    {"data": "volume", "defaultContent": "暂无数据"},
-					    {"data": "order", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "暂无数据"},
-					    {"data": "commission", "defaultContent": "暂无数据"},
-					    {"data": "taxes", "defaultContent": "暂无数据"},
-					    {"data": "profit", "defaultContent": "暂无数据"},
-					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
-					    {"data": "myAgentName", "defaultContent": "暂无数据"}
+					    {"data": "agentName", "defaultContent": "暂无数据"},
+					    {"data": "agentId", "defaultContent": "暂无数据"},
+					    {"data": "amount", "defaultContent": "暂无数据"},
+					    {"data": "time", "defaultContent": "暂未审核"},
+					    {"data": "", "defaultContent": "日终结算"},
+					    {"data": "id", "defaultContent": "暂无数据"}
 					],
 					"columnDefs": [
 			            {
 			                "render": function (data, type, row, meta) {
-			                	switch (data) {
-			                	case 0: return '<span style="color:#fe644a;">买入</span>';
-			                	case 1: return '<span style="color:#00c69a;">卖出</span>';
-			                	}
-			                },
-			                "targets": 4
-			            },
-			            {
-			                "render": function (data, type, row, meta) {
 			                	if (data) {
-				                	return getTime('$Y-$m-$d $h:$i:$s', new Date(data*1000));
+				                	return getTime('$Y-$m-$d', new Date(data));
 			                	}
 			                },
-			                "targets": [6, 8]
-			            },
-			            {
-			                "render": function (data, type, row, meta) {
-			                	if (data > 0) {
-			                		return '<span style="color:#fe644a;">'+data+'</span>';
-			                	} else {
-			                		return '<span style="color:#00c69a;">'+data+'</span>';
-			                	}
-			                },
-			                "targets": 15
+			                "targets": 3
 			            }
 			        ],
 			        "initComplete": function () {

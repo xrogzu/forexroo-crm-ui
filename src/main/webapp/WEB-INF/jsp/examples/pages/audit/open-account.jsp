@@ -33,15 +33,6 @@
 	                        </div>
 	                    </div>
 	                    <div class="form-group">
-	                    	<select class="form-control" data-plugin="selectpicker" id="auditStatus">
-                                <option value="">审核状态</option>
-                                <option value="0">未开户</option>
-								<option value="1">审核中</option>
-								<option value="2">审核成功</option>
-								<option value="3">审核失败</option>
-                            </select>
-	                    </div>
-	                    <div class="form-group">
 	                        <button id="resetButton" type="button" class="btn btn-primary btn-outline">重置</button>
 	                    </div>
                         <div class="form-group">
@@ -85,7 +76,6 @@
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
-					        d.auditStatus = $('#auditStatus').val();
 					        d.searchKeyword = $('#searchKeyword').val();
 					    }
 					},

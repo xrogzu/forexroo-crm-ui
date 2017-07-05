@@ -3,6 +3,7 @@ package com.github.xuzw.forexroo_crm_ui.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author 徐泽威 xuzewei_2012@126.com
@@ -43,6 +44,10 @@ public class YyyyMmDd {
         return calendar.getTimeInMillis();
     }
 
+    public String format(String format) {
+        return new SimpleDateFormat(format).format(new Date(firstMillsecond()));
+    }
+
     public int getYyyy() {
         return yyyy;
     }
@@ -58,6 +63,17 @@ public class YyyyMmDd {
     public static YyyyMmDd parse(String format, String string) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new SimpleDateFormat(format).parse(string));
+        return new YyyyMmDd(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public static YyyyMmDd today() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        return new YyyyMmDd(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public static YyyyMmDd yesterday() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
         return new YyyyMmDd(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 }

@@ -1,5 +1,6 @@
 package com.github.xuzw.forexroo_crm_ui.controller;
 
+import static com.github.xuzw.forexroo.entity.Tables.MY_BANK_CARD;
 import static com.github.xuzw.forexroo.entity.Tables.USER;
 
 import java.sql.SQLException;
@@ -16,6 +17,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +37,9 @@ import com.github.xuzw.forexroo_crm_ui.database.model.BooleanEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.ExtUser;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.UserStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.utils.ApistoreService;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
+import com.github.xuzw.forexroo_crm_ui.utils.SmsTemplateEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
 import cn.ermei.admui.controller.BaseController;
@@ -47,6 +52,7 @@ import cn.ermei.admui.vo.UserVo;
 @Controller
 @RequestMapping("/dealer")
 public class DealerController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(DealerController.class);
 
     @RequestMapping(value = "/auditSuccess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -59,15 +65,21 @@ public class DealerController extends BaseController {
             if (user.getOpenAccountStatus() != OpenAccountStatusEnum.auditing.getValue()) {
                 throw new Exception("状态异常");
             }
+            if (StringUtils.isBlank(user.getPassword())) {
+                throw new Exception("尚未设置密码");
+            }
             JSONObject json = new JSONObject();
             json.put("username", user.getPhone());
             json.put("leverage", 100);
-            json.put("groupname", "testssss");
-            json.put("password", "abc123456");
-            json.put("investor", "abc123456");
-            json.put("phonepwd", "abc123456");
+            json.put("groupname", "demoforexroo");
+            json.put("password", user.getPassword());
+            json.put("investor", user.getPassword());
+            json.put("phonepwd", user.getPassword());
             JSONObject resp = ActiveMq.sendRequestAndAwait("Register_User_Info_Topic", json);
             String mt4RealAccount = resp.getString("login");
+            if (StringUtils.isBlank(mt4RealAccount) || mt4RealAccount.equals("0")) {
+                throw new Exception("无效的mt4账号");
+            }
             int openAccountStatus = OpenAccountStatusEnum.auditing_success.getValue();
             long openAccountAuditTimestamp = System.currentTimeMillis();
             String openAccountAuditUserName = loginUser.getLoginName();
@@ -84,6 +96,12 @@ public class DealerController extends BaseController {
             jsonResponse.put("openAccountStatus", openAccountStatus);
             jsonResponse.put("openAccountAuditTimestamp", openAccountAuditTimestamp);
             jsonResponse.put("openAccountAuditUserName", openAccountAuditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.open_account_audit_success, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -117,6 +135,12 @@ public class DealerController extends BaseController {
             jsonResponse.put("openAccountStatus", openAccountStatus);
             jsonResponse.put("openAccountAuditTimestamp", openAccountAuditTimestamp);
             jsonResponse.put("openAccountAuditUserName", openAccountAuditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.open_account_audit_fail, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -126,17 +150,17 @@ public class DealerController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition openAccountStatusCondition = USER.OPEN_ACCOUNT_STATUS.eq(OpenAccountStatusEnum.auditing.getValue());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
-        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(openAccountStatusCondition, dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
         for (User user : rows) {
             if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
@@ -164,7 +188,7 @@ public class DealerController extends BaseController {
         Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
         Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
-        List<ExtUser> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
+        List<ExtUser> rows = db.select().from(USER).leftJoin(MY_BANK_CARD).on(USER.ID.eq(MY_BANK_CARD.USER_ID)).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
         for (ExtUser user : rows) {
             if (user.getIsDisable() == BooleanEnum.yes.getValue()) {
                 user.setStatus(UserStatusEnum.disable.getValue());

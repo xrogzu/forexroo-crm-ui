@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../../../includes/taglib.jsp"%>
 
-<title>经纪人申请审核</title>
+<title>交易商出金审核</title>
 
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
@@ -50,14 +50,17 @@
 		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <td>经纪人名称</td>
-		                <td>经纪人代码</td>
-		                <td>经纪人账号</td>
+		                <td>交易商姓名</td>
+		                <td>交易账号</td>
+		                <td>MT4账号</td>
+		                <td>类别</td>
+		                <td>日期</td>
+		                <td>金额</td>
 		                <td>审核状态</td>
 		                <td>审核时间</td>
 		                <td>审核人</td>
+		                <td>所属经纪人</td>
 		                <td>所属代理商</td>
-		                <td>经纪人资料</td>
 		                <td>操作</td>
 		            </tr>
 		            </thead>
@@ -71,7 +74,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/broker/auditList",
+					    "url": "${ctx}/withdraw/auditList",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -80,27 +83,19 @@
 					},
 					"columns": [
 					    {"data": "nickname", "defaultContent": "暂无数据"},
-					    {"data": "id", "defaultContent": "暂无数据"},
-					    {"data": "phone", "defaultContent": "暂无数据"},
-					    {"data": "brokerRequestStatus", "defaultContent": "暂无数据"},
-					    {"data": "brokerRequestAuditTimestamp", "defaultContent": "暂无数据"},
-					    {"data": "brokerRequestAuditUserName", "defaultContent": "暂未审核"},
+					    {"data": "userId", "defaultContent": "暂无数据"},
+					    {"data": "mt4RealAccount", "defaultContent": "暂无数据"},
+					    {"data": "", "defaultContent": "提现"},
+					    {"data": "time", "defaultContent": "暂无数据"},
+					    {"data": "amount", "defaultContent": "暂无数据"},
+					    {"data": "status", "defaultContent": "暂未审核"},
+					    {"data": "auditTimestamp", "defaultContent": "暂无数据"},
+					    {"data": "auditUserName", "defaultContent": "暂无数据"},
+					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
 					    {"data": "myAgentName", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "", "class": 'details-control'},
 					    {"data": null, "defaultContent": ""}
 					],
 					"columnDefs": [
-			            {
-			                "render": function (data, type, row, meta) {
-			                	switch (data) {
-			                	case 0: return '未申请';
-			                	case 1: return '<span style="color:#ff7000;">审核中</span>';
-			                	case 2: return '<span style="color:#00c69a;">审核成功</span>';
-			                	case 3: return '<span style="color:#9b9b9b;">审核失败</span>';
-			                	}
-			                },
-			                "targets": 3
-			            },
 			            {
 			                "render": function (data, type, row, meta) {
 			                	if (data) {
@@ -111,9 +106,13 @@
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
-			                	return '<button type="button" class="btn btn-sm btn-block btn-default">查看</button>';
+			                	switch (data) {
+			                	case 0: return '<span style="color:#ff7000;">审核中</span>';
+			                	case 1: return '<span style="color:#00c69a;">审核成功</span>';
+			                	case 2: return '<span style="color:#9b9b9b;">审核失败</span>';
+			                	}
 			                },
-			                "targets": 7
+			                "targets": 6
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
@@ -126,16 +125,8 @@
 		                                            <li role="presentation" class="audit-success-menu">\n\
 		                                                <a href="javascript:;" role="menuitem" tabindex="-1">通过</a>\n\
 		                                            </li>\n\
-		                                            <li class="divider" role="presentation"></li>\n\
-		                                            <li class="dropdown-submenu dropdown-menu-left">\n\
-		                                                <a href="javascript:;" tabindex="-1">拒绝</a>\n\
-		                                                <ul class="dropdown-menu" role="menu">\n\
-		                                                    <li role="presentation" class="audit-fail-menu" data-reason="1">\n\
-		                                                        <a href="javascript:;" role="menuitem" tabindex="-1">\n\
-		                                                            签名不清晰\n\
-		                                                        </a>\n\
-		                                                    </li>\n\
-		                                                </ul>\n\
+		                                            <li role="presentation" class="audit-fail-menu">\n\
+		                                                <a href="javascript:;" role="menuitem" tabindex="-1">拒绝</a>\n\
 		                                            </li>\n\
 	                                            </ul>\n\
 				                            </div>';
@@ -143,53 +134,37 @@
 			                		return '';
 			                	}
 			                },
-			                "targets": 8
+			                "targets": 11
 			            }
 			        ],
 			        "initComplete": function () {
-			        	$('#table tbody').on('click', 'td.details-control', function() {
-					        var tr = $(this).closest('tr');
-					        var row = $('#table').DataTable().row(tr);
-					        if (row.child.isShown() && tr.data('shownChildName') == 'details-control') {
-					        	tr.data('shownChildName', '');
-					            row.child.hide();
-					            tr.removeClass('shown');
-					        } else {
-					        	tr.data('shownChildName', 'details-control');
-					            row.child(format(row.data())).show();
-					            tr.addClass('shown');
-					        }
-					    });
 			        	$('#table li.audit-success-menu').click(function() {
 					        var tr = $(this).closest('tr');
 					        var row = $('#table').DataTable().row(tr);
 					        var rowData = row.data();
-					        $.get('${ctx}/broker/auditSuccess', { "id": rowData.id }, function(data) {
+					        $.get('${ctx}/withdraw/auditSuccess', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
 									return;
 								}
-						        rowData.brokerRequestStatus = data.brokerRequestStatus;
-						        rowData.brokerRequestAuditTimestamp = data.brokerRequestAuditTimestamp;
-						        rowData.brokerRequestAuditUserName = data.brokerRequestAuditUserName;
+						        rowData.status = data.status;
+						        rowData.auditTimestamp = data.auditTimestamp;
+						        rowData.auditUserName = data.auditUserName;
 						        row.data(rowData);
 							});
 					    });
 			        	$('#table li.audit-fail-menu').click(function() {
-			        		var li = $(this);
-			        		var reason = li.data('reason');
-					        var tr = li.closest('tr');
+					        var tr = $(this).closest('tr');
 					        var row = $('#table').DataTable().row(tr);
 					        var rowData = row.data();
-					        $.get('${ctx}/broker/auditFail', { "id": rowData.id, "reason": reason }, function(data) {
+					        $.get('${ctx}/withdraw/auditFail', { "id": rowData.id }, function(data) {
 								if (data.code != 0) {
 									alert('Error: ' + data.message);
 									return;
 								}
-						        rowData.brokerRequestAuditFailReason = data.brokerRequestAuditFailReason;
-						        rowData.brokerRequestStatus = data.brokerRequestStatus;
-						        rowData.brokerRequestAuditTimestamp = data.brokerRequestAuditTimestamp;
-						        rowData.brokerRequestAuditUserName = data.brokerRequestAuditUserName;
+						        rowData.status = data.status;
+						        rowData.auditTimestamp = data.auditTimestamp;
+						        rowData.auditUserName = data.auditUserName;
 						        row.data(rowData);
 							});
 					    });
@@ -203,37 +178,6 @@
 			        }
 				}));
 			});
-		    function format(d) {
-		    	// 照片
-		    	var brokerRequestPictureHtml = '';
-		    	if (d.openAccountPictureUrl) {
-		    		brokerRequestPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.openAccountPictureUrl+'"/></div><div class="col-sm-12">手持身份证正面照</div></div></div></div>';
-		    	}
-		    	if (d.brokerRequestSignUrl) {
-		    		brokerRequestPictureHtml += '<div class="col-xlg-4 col-md-6"><div class="panel panel-bordered"><div class="panel-body"><div class="col-sm-12"><img height="150" src="'+d.brokerRequestSignUrl+'"/></div><div class="col-sm-12">签名图片</div></div></div></div>';
-		    	}
-		    	// 协议
-		    	var brokerRequestAgreementsHtml = '';
-		    	var brokerRequestAgreements = eval(d.brokerRequestAgreements);
-		    	if (brokerRequestAgreements) {
-			    	for (var i = 0; i < brokerRequestAgreements.length; i++) {
-			    		switch (brokerRequestAgreements[i]) {
-						case "1": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人协议》</a>'; break;
-						case "2": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人承诺书》</a>'; break;
-						case "3": brokerRequestAgreementsHtml += '<a class="list-group-item blue-grey-500" href="javascript:;">已签订《经纪人劳务服务协议》</a>'; break;
-						}
-					}
-		    	}
-		    	// 拼接
-		    	return '<div class="page-content container-fluid" style="background-color:rgb(243,247,249);">\n\
-					    	<div class="row">\n\
-				                <div class="col-sm-6">姓名：'+d.openAccountRealname+'</div>\n\
-				                <div class="col-sm-6">身份证号：'+d.openAccountIdentityCardNumber+'</div>\n\
-				            </div>\n\
-					        <div class="row">'+brokerRequestPictureHtml+'</div>\n\
-			                <div class="row"><div class="list-group bg-blue-grey-100 bg-inherit">'+brokerRequestAgreementsHtml+'</div></div>\n\
-			            </div>';
-		    }
 		    </script>
 		</div>
     </div>

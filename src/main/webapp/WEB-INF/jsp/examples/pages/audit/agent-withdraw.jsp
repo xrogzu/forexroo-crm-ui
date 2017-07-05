@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../../includes/taglib.jsp"%>
+<%@ include file="../../../includes/taglib.jsp"%>
 
-<title>历史订单</title>
+<title>代理商出金审核</title>
 
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/default.css">
 <link rel="stylesheet" href="${ctx}/public/vendor/highlight/github-gist.css">
@@ -50,24 +50,15 @@
 		        <table class="table table-bordered table-hover dataTable table-striped width-full text-nowrap text-center" id="table">
 		            <thead>
 		            <tr>
-		                <td>交易商姓名</td>
-		                <td>交易账号</td>
-		                <td>MT4账号</td>
-		                <td>交易商品</td>
-		                <td>建仓方向</td>
-		                <td>建仓价格</td>
-		                <td>建仓时间</td>
-		                <td>平仓价格</td>
-		                <td>平仓时间</td>
-		                <td>平仓类型</td>
-		                <td>交易数量</td>
-		                <td>交易编码</td>
-		                <td>保证金</td>
-		                <td>手续费</td>
-		                <td>隔夜费</td>
-		                <td>盈亏</td>
-		                <td>所属经纪人</td>
-		                <td>所属代理商</td>
+		                <td>代理商名称</td>
+		                <td>代理商代码</td>
+		                <td>类别</td>
+		                <td>日期</td>
+		                <td>金额</td>
+		                <td>审核状态</td>
+		                <td>审核时间</td>
+		                <td>审核人</td>
+		                <td>操作</td>
 		            </tr>
 		            </thead>
 		        </table>
@@ -80,7 +71,7 @@
 				    "processing": true,
 				    "serverSide": true,
 					"ajax": {
-					    "url": "${ctx}/historyOrder/all",
+					    "url": "${ctx}/agentWithdraw/auditList",
 					    "data": function (d) {
 					        d.dateStart = $('#dateStart').val();
 					        d.dateEnd = $('#dateEnd').val();
@@ -88,55 +79,77 @@
 					    }
 					},
 					"columns": [
-					    {"data": "nickname", "defaultContent": "暂无数据"},
-					    {"data": "phone", "defaultContent": "暂无数据"},
-					    {"data": "login", "defaultContent": "暂无数据"},
-					    {"data": "symbol", "defaultContent": "暂无数据"},
-					    {"data": "cmd", "defaultContent": "暂无数据"},
-					    {"data": "openPrice", "defaultContent": "暂无数据"},
-					    {"data": "openTime", "defaultContent": "暂无数据"},
-					    {"data": "closePrice", "defaultContent": "暂无数据"},
-					    {"data": "closeTime", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "暂无数据"},
-					    {"data": "volume", "defaultContent": "暂无数据"},
-					    {"data": "order", "defaultContent": "暂无数据"},
-					    {"data": null, "defaultContent": "暂无数据"},
-					    {"data": "commission", "defaultContent": "暂无数据"},
-					    {"data": "taxes", "defaultContent": "暂无数据"},
-					    {"data": "profit", "defaultContent": "暂无数据"},
-					    {"data": "myBrokerName", "defaultContent": "暂无数据"},
-					    {"data": "myAgentName", "defaultContent": "暂无数据"}
+					    {"data": "agentName", "defaultContent": "暂无数据"},
+					    {"data": "id", "defaultContent": "暂无数据"},
+					    {"data": "type", "defaultContent": "暂无数据"},
+					    {"data": "time", "defaultContent": "暂无数据"},
+					    {"data": "amount", "defaultContent": "暂无数据"},
+					    {"data": "status", "defaultContent": "暂未审核"},
+					    {"data": "auditTimestamp", "defaultContent": "暂无数据"},
+					    {"data": "auditUserName", "defaultContent": "暂无数据"},
+					    {"data": null, "defaultContent": ""}
 					],
 					"columnDefs": [
 			            {
 			                "render": function (data, type, row, meta) {
 			                	switch (data) {
-			                	case 0: return '<span style="color:#fe644a;">买入</span>';
-			                	case 1: return '<span style="color:#00c69a;">卖出</span>';
+			                	case 1: return '入金';
+			                	case 2: return '出金';
+			                	case 101: return '佣金入金';
 			                	}
 			                },
-			                "targets": 4
+			                "targets": 2
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
 			                	if (data) {
-				                	return getTime('$Y-$m-$d $h:$i:$s', new Date(data*1000));
+				                	return getTime('$Y-$m-$d', new Date(data));
 			                	}
 			                },
-			                "targets": [6, 8]
+			                "targets": 3
 			            },
 			            {
 			                "render": function (data, type, row, meta) {
-			                	if (data > 0) {
-			                		return '<span style="color:#fe644a;">'+data+'</span>';
-			                	} else {
-			                		return '<span style="color:#00c69a;">'+data+'</span>';
+			                	switch (data) {
+			                	case 0: return '<span style="color:#ff7000;">审核中</span>';
+			                	case 1: return '<span style="color:#00c69a;">审核成功</span>';
+			                	case 2: return '<span style="color:#9b9b9b;">审核失败</span>';
 			                	}
 			                },
-			                "targets": 15
+			                "targets": 5
 			            }
 			        ],
 			        "initComplete": function () {
+			        	$('#table li.audit-success-menu').click(function() {
+					        var tr = $(this).closest('tr');
+					        var row = $('#table').DataTable().row(tr);
+					        var rowData = row.data();
+					        $.get('${ctx}/agentWithdraw/auditSuccess', { "id": rowData.id }, function(data) {
+								if (data.code != 0) {
+									alert('Error: ' + data.message);
+									return;
+								}
+						        rowData.status = data.status;
+						        rowData.auditTimestamp = data.auditTimestamp;
+						        rowData.auditUserName = data.auditUserName;
+						        row.data(rowData);
+							});
+					    });
+			        	$('#table li.audit-fail-menu').click(function() {
+					        var tr = $(this).closest('tr');
+					        var row = $('#table').DataTable().row(tr);
+					        var rowData = row.data();
+					        $.get('${ctx}/agentWithdraw/auditFail', { "id": rowData.id }, function(data) {
+								if (data.code != 0) {
+									alert('Error: ' + data.message);
+									return;
+								}
+						        rowData.status = data.status;
+						        rowData.auditTimestamp = data.auditTimestamp;
+						        rowData.auditUserName = data.auditUserName;
+						        row.data(rowData);
+							});
+					    });
 			        	$('#resetButton').click(function() {
 			        		window.location.reload();
 					    });

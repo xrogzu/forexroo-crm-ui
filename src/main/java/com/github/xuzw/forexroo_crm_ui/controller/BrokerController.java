@@ -16,6 +16,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +36,9 @@ import com.github.xuzw.forexroo_crm_ui.database.model.BrokerRequestStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.ExtUser;
 import com.github.xuzw.forexroo_crm_ui.database.model.OpenAccountStatusEnum;
 import com.github.xuzw.forexroo_crm_ui.database.model.UserStatusEnum;
+import com.github.xuzw.forexroo_crm_ui.utils.ApistoreService;
 import com.github.xuzw.forexroo_crm_ui.utils.OssUtils;
+import com.github.xuzw.forexroo_crm_ui.utils.SmsTemplateEnum;
 import com.github.xuzw.forexroo_crm_ui.utils.YyyyMmDd;
 
 import cn.ermei.admui.controller.BaseController;
@@ -47,6 +51,7 @@ import cn.ermei.admui.vo.UserVo;
 @Controller
 @RequestMapping("/broker")
 public class BrokerController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(BrokerController.class);
 
     @RequestMapping(value = "/auditSuccess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -73,6 +78,12 @@ public class BrokerController extends BaseController {
             jsonResponse.put("brokerRequestStatus", status);
             jsonResponse.put("brokerRequestAuditTimestamp", timestamp);
             jsonResponse.put("brokerRequestAuditUserName", auditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.broker_request_audit_success, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -106,6 +117,12 @@ public class BrokerController extends BaseController {
             jsonResponse.put("brokerRequestStatus", status);
             jsonResponse.put("brokerRequestAuditTimestamp", timestamp);
             jsonResponse.put("brokerRequestAuditUserName", auditUserName);
+            JSONObject tplArgs = new JSONObject();
+            tplArgs.put("name", StringUtils.isNotBlank(user.getNickname()) ? user.getNickname() : user.getId());
+            JSONObject smsSendResponse = ApistoreService.sendSms(user.getPhone(), SmsTemplateEnum.broker_request_audit_fail, tplArgs);
+            if (smsSendResponse.getIntValue("error_code") != 0) {
+                log.error("SmsService Send Error, {}", smsSendResponse.getString("reason"));
+            }
         } catch (Exception e) {
             jsonResponse.put("code", 1);
             jsonResponse.put("message", ExceptionUtils.getMessage(e));
@@ -115,17 +132,17 @@ public class BrokerController extends BaseController {
 
     @RequestMapping(value = "/auditList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String auditList(String dateStart, String dateEnd, Integer auditStatus, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
+    public String auditList(String dateStart, String dateEnd, String searchKeyword, HttpServletRequest request) throws SQLException, ParseException {
         DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
         Integer offset = criterias.getStart();
         Integer numberOfRows = criterias.getLength();
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition brokerRequestStatusCondition = USER.BROKER_REQUEST_STATUS.eq(BrokerRequestStatusEnum.auditing.getValue());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
-        Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(brokerRequestStatusCondition, dateStartCondition, dateEndCondition, searchKeywordCondition);
         List<User> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(User.class);
         for (User user : rows) {
             if (StringUtils.isNoneBlank(user.getOpenAccountPictureUrl())) {
@@ -148,11 +165,12 @@ public class BrokerController extends BaseController {
         Integer numberOfRows = criterias.getLength();
         String search = "%" + searchKeyword + "%";
         DSLContext db = DSL.using(Jooq.buildConfiguration());
+        Condition brokerRequestStatusCondition = USER.BROKER_REQUEST_STATUS.eq(BrokerRequestStatusEnum.auditing_success.getValue());
         Condition dateStartCondition = StringUtils.isBlank(dateStart) ? null : USER.REGISTER_TIME.ge(YyyyMmDd.parse("yyyy年MM月dd日", dateStart).firstMillsecond());
         Condition dateEndCondition = StringUtils.isBlank(dateEnd) ? null : USER.REGISTER_TIME.le(YyyyMmDd.parse("yyyy年MM月dd日", dateEnd).lastMillsecond());
         Condition auditStatusCondition = auditStatus == null ? null : USER.OPEN_ACCOUNT_STATUS.eq(auditStatus);
         Condition searchKeywordCondition = StringUtils.isBlank(searchKeyword) ? null : USER.NICKNAME.like(search).or(USER.OPEN_ACCOUNT_REALNAME.like(search)).or(USER.PHONE.like(search)).or(USER.MT4_REAL_ACCOUNT.like(search));
-        Condition finalCondition = Jooq.and(DSL.condition(true), dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
+        Condition finalCondition = Jooq.and(brokerRequestStatusCondition, dateStartCondition, dateEndCondition, auditStatusCondition, searchKeywordCondition);
         List<ExtUser> rows = db.selectFrom(USER).where(finalCondition).limit(offset, numberOfRows).fetchInto(ExtUser.class);
         for (ExtUser user : rows) {
             if (user.getIsDisable() == BooleanEnum.yes.getValue()) {
